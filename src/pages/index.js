@@ -1,17 +1,25 @@
-import LoginPage from './login/LoginPage';
-import { ListPage as DataListPage } from './data/ListPage';
-import { LabelingPage as DataLabelingPage } from './data/LabelingPage';
-import { ListPage as ProblemListPage } from './problem/ListPage';
-import { AddPage as ProblemAddPage } from './problem/AddPage';
-import { DetailPage as ProblemDetailPage } from './problem/DetailPage';
-import { EditPage as ProblemEditPage } from './problem/EditPage';
+import { LoginPage } from './login/LoginPage';
+import { DoneDataDetailPage } from './data/done/DoneDataDetailPage';
+import { DoneDataListPage } from './data/done/DoneDataListPage';
+import { DataLabelingPage } from './data/labeling/DataLabelingPage';
+import { LabelingDataListPage } from './data/labeling/LabelingDataListPage';
+import { ValidatingDataListPage } from './data/validating/ValidatingDataListPage';
+import { ValidatingDataPage } from './data/validating/ValidatingDataPage';
+import { LongProblemListPage } from './problem/long/LongProblemListPage';
+import { LongProblemAddPage } from './problem/long/LongProblemAddPage';
+import { LongProblemDetailPage } from './problem/long/LongProblemDetailPage';
+import { LongProblemEditPage } from './problem/long/LongProblemEditPage';
 
 export {
   LoginPage,
   DataLabelingPage,
-  DataListPage,
-  ProblemAddPage,
-  ProblemDetailPage,
-  ProblemListPage,
-  ProblemEditPage,
+  DoneDataDetailPage,
+  ValidatingDataPage,
+  LabelingDataListPage,
+  ValidatingDataListPage,
+  DoneDataListPage,
+  LongProblemAddPage,
+  LongProblemDetailPage,
+  LongProblemListPage,
+  LongProblemEditPage,
 };
