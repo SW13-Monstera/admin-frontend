@@ -8,7 +8,7 @@ import { IDataListElement } from '../../../types/data/api';
 import { HeadCell, IFilter } from '../../../types/etc';
 import { DATA_FILTER } from '../../../constants/filter';
 import { v4 as uuidv4 } from 'uuid';
-import { useState, MouseEvent } from 'react';
+import { useState, MouseEvent, ChangeEvent } from 'react';
 
 const headCells: readonly HeadCell[] = [
   {
@@ -63,8 +63,23 @@ export const DoneDataListPage = () => {
     const id = event.currentTarget.id;
     setFilterState((prev) => prev.filter((e) => e.id !== id));
   }
-  function updateCondition(event: MouseEvent<Element, MouseEvent>) {}
-  function updateFilterValue(event: MouseEvent<Element, MouseEvent>) {}
+  function updateCondition(newCondition: string, DOMId: string) {
+    setFilterState((prev) =>
+      prev.map(({ id, condition, value }) =>
+        id === DOMId ? { id, value, condition: newCondition } : { id, condition, value },
+      ),
+    );
+  }
+  function updateFilterValue(event: ChangeEvent<HTMLTextAreaElement>) {
+    if (!event.currentTarget) return;
+    const DOMId = event.currentTarget.id;
+    const DOMValue = event.currentTarget.value;
+    setFilterState((prev) =>
+      prev.map(({ id, condition, value }) =>
+        id === DOMId ? { id, value: DOMValue, condition } : { id, condition, value },
+      ),
+    );
+  }
 
   return (
     <PageTemplate>

@@ -98,10 +98,6 @@ export const LongProblemListPage = () => {
     );
   }
 
-  useEffect(() => {
-    console.log(filterState);
-  }, [filterState]);
-
   return (
     <PageTemplate>
       <Typography>문제 관리</Typography>
