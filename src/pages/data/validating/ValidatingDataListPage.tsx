@@ -15,7 +15,7 @@ const headCells: readonly HeadCell[] = [
     label: 'Data ID',
   },
   {
-    id: 'title',
+    id: 'problemTitle',
     numeric: false,
     disablePadding: false,
     label: '문제 제목',
@@ -30,7 +30,7 @@ const headCells: readonly HeadCell[] = [
     id: 'updatedAt',
     numeric: false,
     disablePadding: false,
-    label: '생성 시간',
+    label: '완료된 시간',
   },
 ];
 
