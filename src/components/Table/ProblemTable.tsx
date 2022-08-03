@@ -17,7 +17,8 @@ import { v4 as uuidv4 } from 'uuid';
 import { useNavigate } from 'react-router-dom';
 import { ILongProblem } from '../../types/problem/api';
 import { URLWithParam } from '../../constants/url';
-import { HeadCell } from '../../types/etc';
+import { HeadCell, IFilter } from '../../types/etc';
+import { FILTER_PARAMS } from '../../constants/filter';
 
 interface EnhancedTableProps {
   numSelected: number;
@@ -81,10 +82,11 @@ const EnhancedTableToolbar = (props: { numSelected: any }) => {
 interface ICustomTable {
   tableHeads: (keyof ILongProblem)[];
   headCells: readonly HeadCell[];
-  getData: (page: number) => Promise<any>;
+  getData: (page: number, params: object) => Promise<any>;
+  filterState: IFilter[];
 }
 
-export function ProblemTable({ headCells, tableHeads, getData }: ICustomTable) {
+export function ProblemTable({ headCells, tableHeads, getData, filterState }: ICustomTable) {
   const [selected, setSelected] = useState<readonly string[]>([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage] = useState(10);
@@ -93,11 +95,14 @@ export function ProblemTable({ headCells, tableHeads, getData }: ICustomTable) {
   const navigate = useNavigate();
 
   useEffect(() => {
-    getData(page).then((res) => {
+    const params = Object.fromEntries(
+      new Map(filterState.map((filter) => [FILTER_PARAMS[filter.condition], filter.value])),
+    );
+    getData(page, params).then((res) => {
       setData(res.problems);
       setTotalElements(res.totalElements);
     });
-  }, [page]);
+  }, [page, filterState]);
 
   const handleRowClick = (id: string) => {
     navigate(URLWithParam.LONG_PROBLEM_DETAIL(id));

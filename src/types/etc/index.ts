@@ -5,10 +5,24 @@ interface HeadCell {
   numeric: boolean;
 }
 
+interface IProblemCondition {
+  id: string;
+  title: string;
+  desc: string;
+}
+
+interface IDataCondition {
+  id: string;
+  title: string;
+  content: string;
+  assignedUser: string;
+  validatingUser: string;
+}
+
 interface IFilter {
-  condition: string;
+  condition: keyof IProblemCondition | keyof IDataCondition;
   value: string;
   id: string;
 }
 
-export type { HeadCell, IFilter };
+export type { HeadCell, IFilter, IProblemCondition, IDataCondition };

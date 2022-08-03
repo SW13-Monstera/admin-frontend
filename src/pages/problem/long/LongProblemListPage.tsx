@@ -5,10 +5,10 @@ import PageTemplate from '../../../templates/PageTemplate';
 import { URL } from '../../../constants/url';
 import { ProblemTable } from '../../../components/Table/ProblemTable';
 import { ILongProblem } from '../../../types/problem/api';
-import { HeadCell, IFilter } from '../../../types/etc';
+import { HeadCell, IFilter, IProblemCondition } from '../../../types/etc';
 import { longProblemApiWrapper } from '../../../api/wrapper/problem/longProblemApiWrapper';
 import { useState, MouseEvent, useEffect, ChangeEvent } from 'react';
-import { PROBLEM_FILTER } from '../../../constants/filter';
+import { FILTER_PARAMS, PROBLEM_FILTER } from '../../../constants/filter';
 import { v4 as uuidv4 } from 'uuid';
 
 const headCells: readonly HeadCell[] = [
@@ -68,22 +68,25 @@ const tableHeads: (keyof ILongProblem)[] = [
 
 export const LongProblemListPage = () => {
   const [filterState, setFilterState] = useState<IFilter[]>([]);
-  function getLongDataList(page: number) {
-    return longProblemApiWrapper.getLongProblemList({ page: page });
+
+  function getLongDataList(page: number, params: object) {
+    return longProblemApiWrapper.getLongProblemList({ ...params, page: page });
   }
 
   function addFilter() {
-    setFilterState((prev) => [...prev, { id: uuidv4(), condition: '', value: '' }]);
+    setFilterState((prev) => [...prev, { id: uuidv4(), condition: 'id', value: '' }]);
   }
   function deletetFilter(event: MouseEvent<Element, MouseEvent>) {
     const id = event.currentTarget.id;
     setFilterState((prev) => prev.filter((e) => e.id !== id));
   }
 
-  function updateCondition(newCondition: string, DOMId: string) {
+  function updateCondition(newCondition: IProblemCondition, DOMId: string) {
     setFilterState((prev) =>
       prev.map(({ id, condition, value }) =>
-        id === DOMId ? { id, value, condition: newCondition } : { id, condition, value },
+        id === DOMId
+          ? ({ id, value, condition: newCondition } as unknown as IFilter)
+          : { id, condition, value },
       ),
     );
   }
@@ -126,7 +129,12 @@ export const LongProblemListPage = () => {
           </Link>
         </Appbar>
       </Box>
-      <ProblemTable tableHeads={tableHeads} headCells={headCells} getData={getLongDataList} />
+      <ProblemTable
+        tableHeads={tableHeads}
+        headCells={headCells}
+        getData={getLongDataList}
+        filterState={filterState}
+      />
     </PageTemplate>
   );
 };

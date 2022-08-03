@@ -50,7 +50,7 @@ export const ValidatingDataListPage = () => {
     return dataApiWrapper.getDataList({ page: page, isLabeled: true, isValidated: false });
   }
   function addFilter() {
-    setFilterState((prev) => [...prev, { id: uuidv4(), condition: '', value: '' }]);
+    setFilterState((prev) => [...prev, { id: uuidv4(), condition: 'id', value: '' }]);
   }
   function deletetFilter(event: MouseEvent<Element, MouseEvent>) {
     const id = event.currentTarget.id;
@@ -59,7 +59,9 @@ export const ValidatingDataListPage = () => {
   function updateCondition(newCondition: string, DOMId: string) {
     setFilterState((prev) =>
       prev.map(({ id, condition, value }) =>
-        id === DOMId ? { id, value, condition: newCondition } : { id, condition, value },
+        id === DOMId
+          ? ({ id, value, condition: newCondition } as unknown as IFilter)
+          : { id, condition, value },
       ),
     );
   }

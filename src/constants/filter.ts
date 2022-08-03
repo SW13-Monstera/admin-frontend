@@ -11,3 +11,12 @@ export const DATA_FILTER = [
   { value: 'assignedUser', name: '할당 유저' },
   { value: 'validatingUser', name: '검수 유저' },
 ];
+
+export const FILTER_PARAMS = {
+  id: 'id',
+  title: 'title',
+  desc: 'description',
+  content: 'content',
+  assignedUser: 'assignedUser',
+  validatingUser: 'validatingUser',
+};

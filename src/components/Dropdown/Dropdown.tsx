@@ -45,11 +45,11 @@ export default function Dropdown({
           value={selectedItem}
           label='search-criteria'
           onChange={handleChange}
-          defaultValue={defaultValue}
+          defaultValue='id'
         >
           {menuItems.map((menuItem) => (
             <MenuItem value={menuItem.value} key={menuItem.value}>
-              {menuItem.name}
+              <option value={menuItem.value}>{menuItem.name}</option>
             </MenuItem>
           ))}
         </Select>
