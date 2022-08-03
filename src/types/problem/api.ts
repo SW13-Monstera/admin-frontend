@@ -26,8 +26,11 @@ interface IProblemDetailRequest {
   problem_id: number;
 }
 
+interface IStandardResponse extends IStandard {
+  id: number;
+}
+
 interface IStandard {
-  id?: number;
   content: string;
   score: number;
   type: string;
@@ -39,7 +42,7 @@ interface IProblemDetailResponse {
   description: string;
   standardAnswer: string;
   tags: string[];
-  gradingStandards: IStandard[];
+  gradingStandards: IStandardResponse[];
 }
 
 interface IProblemCreateData {
@@ -55,6 +58,7 @@ export type {
   ILongProblem,
   ILongProblemListData,
   IProblemDetailRequest,
+  IStandardResponse,
   IStandard,
   IProblemDetailResponse,
   IProblemCreateData,
