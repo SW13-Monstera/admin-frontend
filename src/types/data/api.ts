@@ -22,6 +22,8 @@ interface IDataListElement {
 
 interface IDataListResponse {
   userAnswers: IDataListElement[];
+  totalElements: number;
+  totalPages: number;
 }
 
 interface IDataDetailRequest {

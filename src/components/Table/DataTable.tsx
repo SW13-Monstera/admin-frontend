@@ -18,7 +18,7 @@ import { alpha } from '@mui/material/styles';
 import FilterIcon from '@mui/icons-material/FilterAltRounded';
 import { v4 as uuidv4 } from 'uuid';
 import { useNavigate } from 'react-router-dom';
-import { ILongProblem } from '../../types/problem/api';
+import { IDataListElement } from '../../types/data/api';
 import { URLWithParam } from '../../constants/url';
 import { HeadCell } from '../../types/etc';
 
@@ -87,22 +87,22 @@ const EnhancedTableToolbar = (props: { numSelected: any }) => {
 };
 
 interface ICustomTable {
-  tableHeads: (keyof ILongProblem)[];
+  tableHeads: (keyof IDataListElement)[];
   headCells: readonly HeadCell[];
   getData: (page: number) => Promise<any>;
 }
 
-export function ProblemTable({ headCells, tableHeads, getData }: ICustomTable) {
+export function DataTable({ headCells, tableHeads, getData }: ICustomTable) {
   const [selected, setSelected] = useState<readonly string[]>([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage] = useState(10);
-  const [data, setData] = useState<any[]>([]);
+  const [data, setData] = useState<IDataListElement[]>([]);
   const [totalElements, setTotalElements] = useState(0);
   const navigate = useNavigate();
 
   useEffect(() => {
     getData(page).then((res) => {
-      setData(res.problems);
+      setData(res.userAnswers);
       setTotalElements(res.totalElements);
     });
   }, []);
@@ -187,7 +187,7 @@ export function ProblemTable({ headCells, tableHeads, getData }: ICustomTable) {
                     />
                   </TableCell>
                   {Object.keys(row).map((key) =>
-                    tableHeads.includes(key as keyof ILongProblem) ? (
+                    tableHeads.includes(key as keyof IDataListElement) ? (
                       key === 'title' || key === 'problemTitle' ? (
                         <TableCell
                           align='center'
@@ -200,19 +200,21 @@ export function ProblemTable({ headCells, tableHeads, getData }: ICustomTable) {
                           }}
                           onClick={() => handleRowClick(row.id.toString())}
                         >
-                          {row[key as keyof ILongProblem] ?? 'N/A'}
+                          {row[key as keyof IDataListElement] ?? 'N/A'}
                         </TableCell>
                       ) : (
                         <TableCell align='center' key={uuidv4()}>
-                          {typeof row[key as keyof ILongProblem] === 'boolean' ? (
+                          {typeof row[key as keyof IDataListElement] === 'boolean' ? (
                             <Checkbox
                               disabled
                               checked={
-                                row[key as keyof ILongProblem].toString() === 'true' ? true : false
+                                row[key as keyof IDataListElement].toString() === 'true'
+                                  ? true
+                                  : false
                               }
                             />
                           ) : (
-                            row[key as keyof ILongProblem] ?? 'N/A'
+                            row[key as keyof IDataListElement] ?? 'N/A'
                           )}
                         </TableCell>
                       )

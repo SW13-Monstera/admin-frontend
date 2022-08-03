@@ -2,9 +2,11 @@ import {
   IDataListRequest,
   IDataListCreateRequestData,
   IDataDetailRequest,
+  IDataListResponse,
 } from '../../../types/data/api';
 import apiClient from '../../apiClient';
 import { API_URL } from '../../../constants/apiUrl';
+import { ILongProblemListData } from '../../../types/problem/api';
 
 export const dataApiWrapper = {
   getDataList: ({
@@ -30,12 +32,14 @@ export const dataApiWrapper = {
       size,
     };
 
-    return apiClient.get(API_URL.DATA_LIST, {
-      params: params,
-    });
+    return apiClient
+      .get(API_URL.DATA_LIST, {
+        params: params,
+      })
+      .then((res: { data: IDataListResponse }) => res.data);
   },
   postDataList: (data: IDataListCreateRequestData) => {
-    apiClient.post(API_URL.DATA_LIST_CREATE, data);
+    apiClient.post(API_URL.DATA_LIST_CREATE, data).then((response) => response.data);
   },
   getDataDetail: ({ user_answer_id }: IDataDetailRequest) => {
     return apiClient.get(API_URL.DATA_DETAIL(user_answer_id)).then((response) => response.data);
