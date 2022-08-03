@@ -11,11 +11,8 @@ import {
   Toolbar,
   Typography,
   Checkbox,
-  IconButton,
-  Tooltip,
 } from '@mui/material';
 import { alpha } from '@mui/material/styles';
-import FilterIcon from '@mui/icons-material/FilterAltRounded';
 import { v4 as uuidv4 } from 'uuid';
 import { useNavigate } from 'react-router-dom';
 import { ILongProblem } from '../../types/problem/api';
@@ -77,11 +74,6 @@ const EnhancedTableToolbar = (props: { numSelected: any }) => {
       <Typography sx={{ flex: '1 1 100%' }} color='inherit' variant='subtitle1' component='div'>
         {numSelected} selected
       </Typography>
-      <Tooltip title='Filter'>
-        <IconButton>
-          <FilterIcon />
-        </IconButton>
-      </Tooltip>
     </Toolbar>
   );
 };
