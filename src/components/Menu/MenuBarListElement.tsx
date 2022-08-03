@@ -2,21 +2,21 @@ import { ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
 import { Link } from 'react-router-dom';
 
 interface IMenuBarListElement {
-  icon: JSX.Element;
   text: string;
+  icon?: JSX.Element;
   url?: string;
 }
 
-export const MenuBarListElement = ({ icon, text, url = '/' }: IMenuBarListElement) =>
+export const MenuBarListElement = ({ text, icon, url = '/' }: IMenuBarListElement) =>
   url === '/' ? (
     <ListItemButton disabled={true}>
-      <ListItemIcon>{icon}</ListItemIcon>
+      {icon ? <ListItemIcon>{icon}</ListItemIcon> : ''}
       <ListItemText primary={text} />
     </ListItemButton>
   ) : (
     <Link to={url}>
       <ListItemButton>
-        <ListItemIcon>{icon}</ListItemIcon>
+        {icon ? <ListItemIcon>{icon}</ListItemIcon> : ''}
         <ListItemText primary={text} />
       </ListItemButton>
     </Link>
