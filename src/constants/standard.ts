@@ -1,6 +1,6 @@
 const STANDARD_TYPE = {
-  KEYWORD: 'keyword',
-  CONTENT: 'content',
+  KEYWORD: 'KEYWORD',
+  CONTENT: 'PROMPT',
 };
 
 export { STANDARD_TYPE };
