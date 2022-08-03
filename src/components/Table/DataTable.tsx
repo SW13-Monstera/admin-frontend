@@ -97,7 +97,7 @@ export function DataTable({ headCells, tableHeads, getData }: ICustomTable) {
       setData(res.userAnswers);
       setTotalElements(res.totalElements);
     });
-  }, []);
+  }, [page]);
 
   const handleRowClick = (id: string) => {
     navigate(URLWithParam.LONG_PROBLEM_DETAIL(id));
