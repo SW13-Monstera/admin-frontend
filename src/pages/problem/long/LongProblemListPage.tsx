@@ -7,7 +7,7 @@ import { ProblemTable } from '../../../components/Table/ProblemTable';
 import { ILongProblem } from '../../../types/problem/api';
 import { HeadCell, IFilter } from '../../../types/etc';
 import { longProblemApiWrapper } from '../../../api/wrapper/problem/longProblemApiWrapper';
-import { useState, MouseEvent } from 'react';
+import { useState, MouseEvent, useEffect, ChangeEvent } from 'react';
 import { PROBLEM_FILTER } from '../../../constants/filter';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -80,6 +80,28 @@ export const LongProblemListPage = () => {
     setFilterState((prev) => prev.filter((e) => e.id !== id));
   }
 
+  function updateCondition(newCondition: string, DOMId: string) {
+    setFilterState((prev) =>
+      prev.map(({ id, condition, value }) =>
+        id === DOMId ? { id, value, condition: newCondition } : { id, condition, value },
+      ),
+    );
+  }
+  function updateFilterValue(event: ChangeEvent<HTMLTextAreaElement>) {
+    if (!event.currentTarget) return;
+    const DOMId = event.currentTarget.id;
+    const DOMValue = event.currentTarget.value;
+    setFilterState((prev) =>
+      prev.map(({ id, condition, value }) =>
+        id === DOMId ? { id, value: DOMValue, condition } : { id, condition, value },
+      ),
+    );
+  }
+
+  useEffect(() => {
+    console.log(filterState);
+  }, [filterState]);
+
   return (
     <PageTemplate>
       <Typography>문제 관리</Typography>
@@ -98,6 +120,8 @@ export const LongProblemListPage = () => {
           filterCount={filterState.length}
           addFilter={addFilter}
           deleteFilter={deletetFilter}
+          updateCondition={updateCondition}
+          updateFilterValue={updateFilterValue}
         >
           <Link to={URL.LONG_PROBLEM_ADD}>
             <Button variant='contained' sx={{ height: '100%' }}>

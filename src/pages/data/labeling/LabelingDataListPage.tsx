@@ -57,7 +57,8 @@ export const LabelingDataListPage = () => {
     const id = event.currentTarget.id;
     setFilterState((prev) => prev.filter((e) => e.id !== id));
   }
-
+  function updateCondition(event: MouseEvent<Element, MouseEvent>) {}
+  function updateFilterValue(event: MouseEvent<Element, MouseEvent>) {}
   return (
     <PageTemplate>
       <Box
@@ -75,6 +76,8 @@ export const LabelingDataListPage = () => {
           filterCount={filterState.length}
           addFilter={addFilter}
           deleteFilter={deletetFilter}
+          updateCondition={updateCondition}
+          updateFilterValue={updateFilterValue}
         >
           <>
             <label htmlFor='upload-csv'>

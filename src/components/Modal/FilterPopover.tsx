@@ -11,6 +11,8 @@ interface IFilterPopover {
   conditions: IFilter[];
   addFilter: () => void;
   deleteFilter: (event: MouseEvent<Element, MouseEvent>) => void;
+  updateCondition: (event: any, id: string) => void;
+  updateFilterValue: (event: any) => void;
 }
 
 export const FilterPopover = ({
@@ -20,6 +22,8 @@ export const FilterPopover = ({
   conditions,
   addFilter,
   deleteFilter,
+  updateCondition,
+  updateFilterValue,
 }: IFilterPopover) => {
   const open = Boolean(anchorEl);
   const id = open ? 'simple-popover' : undefined;
@@ -45,6 +49,8 @@ export const FilterPopover = ({
             menuItems={menuItems}
             key={e.id}
             deleteFilter={deleteFilter}
+            updateCondition={updateCondition}
+            updateFilterValue={updateFilterValue}
           />
         ))}
         <AddButton onClick={addFilter} />

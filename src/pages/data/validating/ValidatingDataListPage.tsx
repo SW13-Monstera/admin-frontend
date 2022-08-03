@@ -56,7 +56,8 @@ export const ValidatingDataListPage = () => {
     const id = event.currentTarget.id;
     setFilterState((prev) => prev.filter((e) => e.id !== id));
   }
-
+  function updateCondition(event: MouseEvent<Element, MouseEvent>) {}
+  function updateFilterValue(event: MouseEvent<Element, MouseEvent>) {}
   return (
     <PageTemplate>
       <Box
@@ -74,6 +75,8 @@ export const ValidatingDataListPage = () => {
           filterCount={filterState.length}
           addFilter={addFilter}
           deleteFilter={deletetFilter}
+          updateCondition={updateCondition}
+          updateFilterValue={updateFilterValue}
         >
           <Link to={'/data/labeling/0'}>
             <Button variant='outlined'>전체 검수 시작</Button>

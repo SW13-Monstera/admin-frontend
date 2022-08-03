@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
@@ -14,22 +14,34 @@ interface IDropdown {
   title: string;
   menuItems: IMenuItem[];
   defaultValue?: string;
+  id: string;
+  updateCondition: (event: any, id: string) => void;
 }
 
-export default function Dropdown({ title, menuItems, defaultValue }: IDropdown) {
+export default function Dropdown({
+  title,
+  menuItems,
+  defaultValue,
+  id,
+  updateCondition,
+}: IDropdown) {
   const [selectedItem, setselectedItem] = useState('');
 
   const handleChange = (event: SelectChangeEvent) => {
-    setselectedItem(event.target.value as string);
+    setselectedItem(event.target.value);
   };
+
+  useEffect(() => {
+    updateCondition(selectedItem, id);
+  }, [selectedItem]);
 
   return (
     <Box sx={{ minWidth: 120 }}>
       <FormControl fullWidth>
-        <InputLabel id='demo-simple-select-label'>{title}</InputLabel>
+        <InputLabel id={id}>{title}</InputLabel>
         <Select
-          labelId='demo-simple-select-label'
-          id='demo-simple-select'
+          labelId={id}
+          id={id}
           value={selectedItem}
           label='search-criteria'
           onChange={handleChange}

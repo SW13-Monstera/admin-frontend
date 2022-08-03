@@ -9,13 +9,35 @@ interface ISearchForm {
   content: string;
   menuItems: any[];
   deleteFilter: (event: any) => void;
+  updateCondition: (event: any, id: string) => void;
+  updateFilterValue: (event: any) => void;
 }
 
-export const SearchForm = ({ id, condition, content, menuItems, deleteFilter }: ISearchForm) => {
+export const SearchForm = ({
+  id,
+  condition,
+  content,
+  menuItems,
+  deleteFilter,
+  updateCondition,
+  updateFilterValue,
+}: ISearchForm) => {
   return (
     <Box sx={{ display: 'flex', gap: 1 }}>
-      <Dropdown title='검색 조건' menuItems={menuItems} defaultValue={condition} />
-      <TextField id='outlined-basic' variant='outlined' type='search' defaultValue={content} />
+      <Dropdown
+        title='검색 조건'
+        menuItems={menuItems}
+        defaultValue={condition}
+        updateCondition={updateCondition}
+        id={id}
+      />
+      <TextField
+        id={id}
+        variant='outlined'
+        type='search'
+        defaultValue={content}
+        onChange={updateFilterValue}
+      />
       <DeleteButton id={id} onClick={deleteFilter} />
     </Box>
   );

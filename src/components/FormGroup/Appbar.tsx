@@ -13,6 +13,8 @@ interface IAppbar {
   filterCount: number;
   addFilter: () => void;
   deleteFilter: (event: MouseEvent<Element, MouseEvent>) => void;
+  updateCondition: (event: any, id: string) => void;
+  updateFilterValue: (event: any) => void;
 }
 
 export const Appbar = ({
@@ -22,6 +24,8 @@ export const Appbar = ({
   filterCount,
   addFilter,
   deleteFilter,
+  updateCondition,
+  updateFilterValue,
 }: IAppbar) => {
   const { anchorEl, handleClick, handleClose } = usePopover();
 
@@ -52,6 +56,8 @@ export const Appbar = ({
               conditions={conditions}
               addFilter={addFilter}
               deleteFilter={deleteFilter}
+              updateCondition={updateCondition}
+              updateFilterValue={updateFilterValue}
             ></FilterPopover>
           </Badge>
         </Badge>

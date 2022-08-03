@@ -63,6 +63,8 @@ export const DoneDataListPage = () => {
     const id = event.currentTarget.id;
     setFilterState((prev) => prev.filter((e) => e.id !== id));
   }
+  function updateCondition(event: MouseEvent<Element, MouseEvent>) {}
+  function updateFilterValue(event: MouseEvent<Element, MouseEvent>) {}
 
   return (
     <PageTemplate>
@@ -81,6 +83,8 @@ export const DoneDataListPage = () => {
           filterCount={filterState.length}
           addFilter={addFilter}
           deleteFilter={deletetFilter}
+          updateCondition={updateCondition}
+          updateFilterValue={updateFilterValue}
         >
           <>
             <label htmlFor='upload-csv'>
