@@ -18,6 +18,7 @@ import { longProblemApiWrapper } from '../../../api/wrapper/problem/longProblemA
 import { URLWithParam } from '../../../constants/url';
 import { IProblemDetailResponse } from '../../../types/problem/api';
 import { STANDARD_TYPE } from '../../../constants/standard';
+import { TAGS } from '../../../constants/tags';
 
 export const LongProblemDetailPage = () => {
   const { id } = useParams();
@@ -41,7 +42,14 @@ export const LongProblemDetailPage = () => {
   return (
     <PageTemplate>
       <Typography variant='h4'>{data.title}</Typography>
+      <Box sx={{ display: 'flex', gap: 1, my: 1 }}>
+        {data.tags.map((id) => (
+          <Box key={id}>{TAGS.find((e) => e.id === id)?.name}</Box>
+        ))}
+      </Box>
+
       <Box sx={{ mt: 2 }}>{data.description}</Box>
+      <Box sx={{ mt: 2 }}>{data.standardAnswer}</Box>
       <List>
         <ListSubheader
           component='div'
