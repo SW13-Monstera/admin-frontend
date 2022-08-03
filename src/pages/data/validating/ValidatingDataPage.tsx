@@ -1,3 +1,5 @@
+import PageTemplate from '../../../templates/PageTemplate';
+
 export const ValidatingDataPage = () => {
-  return <div>ValidatingDataPage</div>;
+  return <PageTemplate></PageTemplate>;
 };
