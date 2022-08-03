@@ -5,7 +5,10 @@ import { Link } from 'react-router-dom';
 import { Appbar } from '../../../components/FormGroup/Appbar';
 import { dataApiWrapper } from '../../../api/wrapper/data/dataApiWrapper';
 import { IDataListElement } from '../../../types/data/api';
-import { HeadCell } from '../../../types/etc';
+import { HeadCell, IFilter } from '../../../types/etc';
+import { DATA_FILTER } from '../../../constants/filter';
+import { v4 as uuidv4 } from 'uuid';
+import { useState, MouseEvent } from 'react';
 
 const headCells: readonly HeadCell[] = [
   {
@@ -49,8 +52,16 @@ const tableHeads: (keyof IDataListElement)[] = [
 ];
 
 export const DoneDataListPage = () => {
+  const [filterState, setFilterState] = useState<IFilter[]>([]);
   function getLabelingDataList(page: number) {
     return dataApiWrapper.getDataList({ page: page, isLabeled: false, isValidated: false });
+  }
+  function addFilter() {
+    setFilterState((prev) => [...prev, { id: uuidv4(), condition: '', value: '' }]);
+  }
+  function deletetFilter(event: MouseEvent<Element, MouseEvent>) {
+    const id = event.currentTarget.id;
+    setFilterState((prev) => prev.filter((e) => e.id !== id));
   }
 
   return (
@@ -64,7 +75,13 @@ export const DoneDataListPage = () => {
         }}
       >
         <Typography>AI 데이터 리스트</Typography>
-        <Appbar menuItems={[]}>
+        <Appbar
+          menuItems={DATA_FILTER}
+          conditions={filterState}
+          filterCount={filterState.length}
+          addFilter={addFilter}
+          deleteFilter={deletetFilter}
+        >
           <>
             <label htmlFor='upload-csv'>
               <Input type='file' style={{ display: 'none' }} id='upload-csv' name='upload-csv' />

@@ -3,15 +3,26 @@ import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import { usePopover } from '../../hooks/usePopover';
 import { FilterPopover } from '../Modal/FilterPopover';
 import { v4 as uuidv4 } from 'uuid';
-
-const newSearchFormData: any = { criteria: '', content: '', id: uuidv4() };
+import { IFilter } from '../../types/etc';
+import { MouseEvent } from 'react';
 
 interface IAppbar {
   children?: JSX.Element;
   menuItems: any[];
+  conditions: IFilter[];
+  filterCount: number;
+  addFilter: () => void;
+  deleteFilter: (event: MouseEvent<Element, MouseEvent>) => void;
 }
 
-export const Appbar = ({ children, menuItems }: IAppbar) => {
+export const Appbar = ({
+  children,
+  menuItems,
+  conditions,
+  filterCount,
+  addFilter,
+  deleteFilter,
+}: IAppbar) => {
   const { anchorEl, handleClick, handleClose } = usePopover();
 
   return (
@@ -33,11 +44,16 @@ export const Appbar = ({ children, menuItems }: IAppbar) => {
           <Button variant='outlined' startIcon={<FilterAltIcon />} onClick={handleClick}>
             필터
           </Button>
-          <FilterPopover
-            anchorEl={anchorEl}
-            handleClose={handleClose}
-            menuItems={menuItems}
-          ></FilterPopover>
+          <Badge badgeContent={filterCount} color='primary'>
+            <FilterPopover
+              anchorEl={anchorEl}
+              handleClose={handleClose}
+              menuItems={menuItems}
+              conditions={conditions}
+              addFilter={addFilter}
+              deleteFilter={deleteFilter}
+            ></FilterPopover>
+          </Badge>
         </Badge>
       </Box>
       <Box

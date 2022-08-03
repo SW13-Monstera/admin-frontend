@@ -5,4 +5,10 @@ interface HeadCell {
   numeric: boolean;
 }
 
-export type { HeadCell };
+interface IFilter {
+  condition: string;
+  value: string;
+  id: string;
+}
+
+export type { HeadCell, IFilter };

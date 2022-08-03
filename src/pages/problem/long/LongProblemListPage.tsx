@@ -5,8 +5,11 @@ import PageTemplate from '../../../templates/PageTemplate';
 import { URL } from '../../../constants/url';
 import { ProblemTable } from '../../../components/Table/ProblemTable';
 import { ILongProblem } from '../../../types/problem/api';
-import { HeadCell } from '../../../types/etc';
+import { HeadCell, IFilter } from '../../../types/etc';
 import { longProblemApiWrapper } from '../../../api/wrapper/problem/longProblemApiWrapper';
+import { useState, MouseEvent } from 'react';
+import { PROBLEM_FILTER } from '../../../constants/filter';
+import { v4 as uuidv4 } from 'uuid';
 
 const headCells: readonly HeadCell[] = [
   {
@@ -64,8 +67,17 @@ const tableHeads: (keyof ILongProblem)[] = [
 ];
 
 export const LongProblemListPage = () => {
+  const [filterState, setFilterState] = useState<IFilter[]>([]);
   function getLongDataList(page: number) {
     return longProblemApiWrapper.getLongProblemList({ page: page });
+  }
+
+  function addFilter() {
+    setFilterState((prev) => [...prev, { id: uuidv4(), condition: '', value: '' }]);
+  }
+  function deletetFilter(event: MouseEvent<Element, MouseEvent>) {
+    const id = event.currentTarget.id;
+    setFilterState((prev) => prev.filter((e) => e.id !== id));
   }
 
   return (
@@ -80,7 +92,13 @@ export const LongProblemListPage = () => {
         }}
       >
         <Typography>서술형 문제</Typography>
-        <Appbar menuItems={[]}>
+        <Appbar
+          menuItems={PROBLEM_FILTER}
+          conditions={filterState}
+          filterCount={filterState.length}
+          addFilter={addFilter}
+          deleteFilter={deletetFilter}
+        >
           <Link to={URL.LONG_PROBLEM_ADD}>
             <Button variant='contained' sx={{ height: '100%' }}>
               문제 추가

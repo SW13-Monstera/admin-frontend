@@ -1,14 +1,26 @@
 import { Popover, Box } from '@mui/material';
 import { SearchForm } from '../FormGroup/SearchForm';
 import { AddButton } from '../Button/AddButton';
+import { IFilter } from '../../types/etc';
+import { MouseEvent } from 'react';
 
 interface IFilterPopover {
   anchorEl: HTMLButtonElement | null;
   handleClose: () => void;
   menuItems: any[];
+  conditions: IFilter[];
+  addFilter: () => void;
+  deleteFilter: (event: MouseEvent<Element, MouseEvent>) => void;
 }
 
-export const FilterPopover = ({ anchorEl, handleClose, menuItems }: IFilterPopover) => {
+export const FilterPopover = ({
+  anchorEl,
+  handleClose,
+  menuItems,
+  conditions,
+  addFilter,
+  deleteFilter,
+}: IFilterPopover) => {
   const open = Boolean(anchorEl);
   const id = open ? 'simple-popover' : undefined;
 
@@ -25,16 +37,17 @@ export const FilterPopover = ({ anchorEl, handleClose, menuItems }: IFilterPopov
       sx={{ mt: 1 }}
     >
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, m: 5 }}>
-        {[].map((e: any) => (
+        {conditions.map((e: IFilter) => (
           <SearchForm
             id={e.id}
-            criteria={e.criteria}
-            content={e.content}
+            condition={e.condition}
+            content={e.value}
             menuItems={menuItems}
             key={e.id}
+            deleteFilter={deleteFilter}
           />
         ))}
-        <AddButton onClick={() => {}} />
+        <AddButton onClick={addFilter} />
       </Box>
     </Popover>
   );
