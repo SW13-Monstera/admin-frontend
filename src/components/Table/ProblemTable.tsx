@@ -19,6 +19,7 @@ import { ILongProblem } from '../../types/problem/api';
 import { URLWithParam } from '../../constants/url';
 import { HeadCell, IFilter } from '../../types/etc';
 import { FILTER_PARAMS } from '../../constants/filter';
+import { roundToSecondDigit } from '../../utils';
 
 interface EnhancedTableProps {
   numSelected: number;
@@ -208,6 +209,8 @@ export function ProblemTable({ headCells, tableHeads, getData, filterState }: IC
                                 row[key as keyof ILongProblem].toString() === 'true' ? true : false
                               }
                             />
+                          ) : typeof row[key as keyof ILongProblem] === 'number' ? (
+                            roundToSecondDigit(row[key as keyof ILongProblem]) ?? 'N/A'
                           ) : (
                             row[key as keyof ILongProblem] ?? 'N/A'
                           )}

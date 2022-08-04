@@ -18,6 +18,7 @@ import { useNavigate } from 'react-router-dom';
 import { IDataListElement } from '../../types/data/api';
 import { URL, URLWithParam } from '../../constants/url';
 import { HeadCell } from '../../types/etc';
+import { parseDateTime } from '../../utils';
 
 interface EnhancedTableProps {
   numSelected: number;
@@ -214,7 +215,7 @@ export function DataTable({ headCells, tableHeads, getData }: ICustomTable) {
                               }
                             />
                           ) : (
-                            row[key as keyof IDataListElement] ?? 'N/A'
+                            parseDateTime(row[key as keyof IDataListElement].toString()) ?? 'N/A'
                           )}
                         </TableCell>
                       )
