@@ -14,7 +14,7 @@ import { Link, useParams, useNavigate } from 'react-router-dom';
 import { ChangeEvent, useEffect, useState } from 'react';
 import { dataApiWrapper } from '../../../api/wrapper/data/dataApiWrapper';
 import { IDataDetailResponseData } from '../../../types/data/api';
-import { URLWithParam } from '../../../constants/url';
+import { URL } from '../../../constants/url';
 
 interface ICheckedState {
   id: number;
@@ -138,7 +138,7 @@ export const ValidatingDataPage = () => {
           </FormGroup>
         </FormControl>
       </Box>
-      <Link to={URLWithParam.DATA_LABELING(data.id.toString())}>
+      <Link to={URL.VALIDATING_DATA_LIST}>
         <Button variant='contained' onClick={postValidatedData}>
           제출
         </Button>
