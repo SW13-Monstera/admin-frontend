@@ -191,7 +191,7 @@ export function DataTable({ headCells, tableHeads, getData }: ICustomTable) {
                       key === 'title' || key === 'problemTitle' ? (
                         <TableCell
                           align='center'
-                          key={key}
+                          key={`${key}-${row.id}`}
                           sx={{
                             cursor: 'pointer',
                             '&:hover': {
@@ -203,7 +203,7 @@ export function DataTable({ headCells, tableHeads, getData }: ICustomTable) {
                           {row[key as keyof IDataListElement] ?? 'N/A'}
                         </TableCell>
                       ) : (
-                        <TableCell align='center' key={row.id}>
+                        <TableCell align='center' key={`${key}-${row.id}`}>
                           {typeof row[key as keyof IDataListElement] === 'boolean' ? (
                             <Checkbox
                               disabled
