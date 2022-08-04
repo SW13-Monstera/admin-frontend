@@ -2,7 +2,6 @@ import { Button, Box, Badge } from '@mui/material';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import { usePopover } from '../../hooks/usePopover';
 import { FilterPopover } from '../Modal/FilterPopover';
-import { v4 as uuidv4 } from 'uuid';
 import { IFilter } from '../../types/etc';
 import { MouseEvent } from 'react';
 

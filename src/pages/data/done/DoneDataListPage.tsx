@@ -7,8 +7,8 @@ import { dataApiWrapper } from '../../../api/wrapper/data/dataApiWrapper';
 import { IDataListElement } from '../../../types/data/api';
 import { HeadCell, IFilter } from '../../../types/etc';
 import { DATA_FILTER } from '../../../constants/filter';
-import { v4 as uuidv4 } from 'uuid';
 import { useState, MouseEvent, ChangeEvent } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 
 const headCells: readonly HeadCell[] = [
   {

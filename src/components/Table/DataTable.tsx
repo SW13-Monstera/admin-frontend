@@ -13,7 +13,6 @@ import {
   Checkbox,
 } from '@mui/material';
 import { alpha } from '@mui/material/styles';
-import { v4 as uuidv4 } from 'uuid';
 import { useNavigate } from 'react-router-dom';
 import { IDataListElement } from '../../types/data/api';
 import { URL, URLWithParam } from '../../constants/url';
@@ -204,7 +203,7 @@ export function DataTable({ headCells, tableHeads, getData }: ICustomTable) {
                           {row[key as keyof IDataListElement] ?? 'N/A'}
                         </TableCell>
                       ) : (
-                        <TableCell align='center' key={uuidv4()}>
+                        <TableCell align='center' key={row.id}>
                           {typeof row[key as keyof IDataListElement] === 'boolean' ? (
                             <Checkbox
                               disabled

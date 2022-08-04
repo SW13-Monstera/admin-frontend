@@ -11,7 +11,7 @@ import {
   FormControlLabel,
 } from '@mui/material';
 import { Link, useParams } from 'react-router-dom';
-import { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent, SetStateAction, useEffect, useState } from 'react';
 import { dataApiWrapper } from '../../../api/wrapper/data/dataApiWrapper';
 import { IDataDetailResponseData } from '../../../types/data/api';
 import { URLWithParam } from '../../../constants/url';
@@ -71,7 +71,7 @@ export const DataLabelingPage = () => {
       .getDataDetail({
         user_answer_id: parseInt(dataId),
       })
-      .then((res) => {
+      .then((res: any) => {
         setData(res);
       });
   }, []);

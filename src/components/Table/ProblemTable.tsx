@@ -13,7 +13,6 @@ import {
   Checkbox,
 } from '@mui/material';
 import { alpha } from '@mui/material/styles';
-import { v4 as uuidv4 } from 'uuid';
 import { useNavigate } from 'react-router-dom';
 import { ILongProblem } from '../../types/problem/api';
 import { URLWithParam } from '../../constants/url';
@@ -201,7 +200,7 @@ export function ProblemTable({ headCells, tableHeads, getData, filterState }: IC
                           {row[key as keyof ILongProblem] ?? 'N/A'}
                         </TableCell>
                       ) : (
-                        <TableCell align='center' key={uuidv4()}>
+                        <TableCell align='center' key={row.id}>
                           {typeof row[key as keyof ILongProblem] === 'boolean' ? (
                             <Checkbox
                               disabled
