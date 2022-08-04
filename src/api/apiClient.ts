@@ -1,8 +1,7 @@
 import axios from 'axios';
-import { API_BASE_URL } from '../../global';
 
 const apiClient = axios.create({
-  baseURL: API_BASE_URL,
+  baseURL: import.meta.env.REACT_APP_API_BASE_URL,
   withCredentials: true,
 });
 
