@@ -40,6 +40,10 @@ interface IDataDetailResponseData {
   isValidated: boolean;
   keywordsGradingStandards: IStandardResponse[];
   promptGradingStandards: IStandardResponse[];
+  problemId: number;
+  problemTitle: string;
+  problemDescription: string;
+  selectedGradingStandards: number[];
 }
 
 interface IUserAnswer {

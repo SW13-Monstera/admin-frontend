@@ -29,10 +29,13 @@ export const ValidatingDataPage = () => {
     isValidated: false,
     keywordsGradingStandards: [],
     promptGradingStandards: [],
+    problemId: 0,
+    problemTitle: '',
+    problemDescription: '',
+    selectedGradingStandards: [],
   });
   const [keywordStandards, setKeywordStandards] = useState<ICheckedState[]>([]);
   const [contentStandards, setContentStandards] = useState<ICheckedState[]>([]);
-  const [selectedGradingStandards, setSelectedGradingStandards] = useState<string[]>([]);
 
   const { id: dataId } = useParams();
   if (!dataId) return;
@@ -68,29 +71,28 @@ export const ValidatingDataPage = () => {
       .getDataDetail({
         user_answer_id: parseInt(dataId),
       })
-      .then(({ data, selectedGradingStandards }) => {
+      .then((data) => {
         setData(data);
-        selectedGradingStandards(selectedGradingStandards);
       });
   }, []);
 
   useEffect(() => {
     setKeywordStandards(
       data.keywordsGradingStandards.map((e) => {
-        return { id: e.id, checked: selectedGradingStandards.includes(e.id.toString()) };
+        return { id: e.id, checked: data.selectedGradingStandards.includes(e.id) };
       }),
     );
     setContentStandards(
       data.promptGradingStandards.map((e) => {
-        return { id: e.id, checked: selectedGradingStandards.includes(e.id.toString()) };
+        return { id: e.id, checked: data.selectedGradingStandards.includes(e.id) };
       }),
     );
   }, [data]);
 
   return (
     <PageTemplate title='AI 데이터 관리'>
-      <Typography variant='h4'> 검수 #{data.id}</Typography>
-      <Box sx={{ mt: 2 }}>{}</Box>
+      <Typography variant='h4'>[검수] {data.problemTitle}</Typography>
+      <Box sx={{ mt: 2 }}>{data.problemDescription}</Box>
       <Card variant='outlined' sx={{ mt: 2, p: 2 }}>
         {data.answer}
       </Card>

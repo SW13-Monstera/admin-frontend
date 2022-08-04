@@ -29,6 +29,10 @@ export const DataLabelingPage = () => {
     isValidated: false,
     keywordsGradingStandards: [],
     promptGradingStandards: [],
+    problemId: 0,
+    problemTitle: '',
+    problemDescription: '',
+    selectedGradingStandards: [],
   });
   const [keywordStandards, setKeywordStandards] = useState<ICheckedState[]>([]);
   const [contentStandards, setContentStandards] = useState<ICheckedState[]>([]);
@@ -87,8 +91,8 @@ export const DataLabelingPage = () => {
 
   return (
     <PageTemplate title='AI 데이터 관리'>
-      <Typography variant='h4'>라벨링 #{data.id}</Typography>
-      <Box sx={{ mt: 2 }}>{}</Box>
+      <Typography variant='h4'>[라벨링] {data.problemTitle}</Typography>
+      <Box sx={{ mt: 2 }}>{data.problemDescription}</Box>
       <Card variant='outlined' sx={{ mt: 2, p: 2 }}>
         {data.answer}
       </Card>
