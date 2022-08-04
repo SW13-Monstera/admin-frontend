@@ -54,7 +54,7 @@ const tableHeads: (keyof IDataListElement)[] = [
 export const DoneDataListPage = () => {
   const [filterState, setFilterState] = useState<IFilter[]>([]);
   function getLabelingDataList(page: number) {
-    return dataApiWrapper.getDataList({ page: page, isLabeled: false, isValidated: false });
+    return dataApiWrapper.getDataList({ page: page, isLabeled: true, isValidated: true });
   }
   function addFilter() {
     setFilterState((prev) => [...prev, { id: uuidv4(), condition: 'id', value: '' }]);
