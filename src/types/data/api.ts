@@ -1,3 +1,5 @@
+import { IStandardResponse } from '../problem/api';
+
 interface IDataListRequest {
   id?: number;
   assignedBy?: string;
@@ -31,6 +33,15 @@ interface IDataDetailRequest {
   selectedGradingStandardIds?: number[];
 }
 
+interface IDataDetailResponseData {
+  id: number;
+  answer: string;
+  isLabeled: boolean;
+  isValidated: boolean;
+  keywordsGradingStandards: IStandardResponse[];
+  promptGradingStandards: IStandardResponse[];
+}
+
 interface IUserAnswer {
   assignedUserId: string;
   validatingUserId: string;
@@ -50,4 +61,5 @@ export type {
   IDataListCreateRequestData,
   IDataListResponse,
   IDataListElement,
+  IDataDetailResponseData,
 };

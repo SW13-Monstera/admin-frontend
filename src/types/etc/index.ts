@@ -25,4 +25,10 @@ interface IFilter {
   id: string;
 }
 
-export type { HeadCell, IFilter, IProblemCondition, IDataCondition };
+interface IChoice {
+  id: string;
+  value: string;
+  isChecked: boolean;
+}
+
+export type { HeadCell, IFilter, IProblemCondition, IDataCondition, IChoice };

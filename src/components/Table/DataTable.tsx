@@ -16,7 +16,7 @@ import { alpha } from '@mui/material/styles';
 import { v4 as uuidv4 } from 'uuid';
 import { useNavigate } from 'react-router-dom';
 import { IDataListElement } from '../../types/data/api';
-import { URLWithParam } from '../../constants/url';
+import { URL, URLWithParam } from '../../constants/url';
 import { HeadCell } from '../../types/etc';
 
 interface EnhancedTableProps {
@@ -100,7 +100,15 @@ export function DataTable({ headCells, tableHeads, getData }: ICustomTable) {
   }, [page]);
 
   const handleRowClick = (id: string) => {
-    navigate(URLWithParam.LONG_PROBLEM_DETAIL(id));
+    if (location.pathname === URL.LABELING_DATA_LIST) {
+      navigate(URLWithParam.DATA_LABELING(id));
+    } else if (location.pathname === URL.VALIDATING_DATA_LIST) {
+      navigate(URLWithParam.DATA_LABELING(id));
+    } else if (location.pathname === URL.DONE_DATA_LIST) {
+      navigate(URLWithParam.DATA_LABELING(id));
+    } else {
+      navigate(URL.LOGIN);
+    }
   };
 
   const handleSelectAllClick = (event: ChangeEvent<HTMLInputElement>) => {
