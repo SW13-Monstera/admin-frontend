@@ -103,9 +103,9 @@ export function DataTable({ headCells, tableHeads, getData }: ICustomTable) {
     if (location.pathname === URL.LABELING_DATA_LIST) {
       navigate(URLWithParam.DATA_LABELING(id));
     } else if (location.pathname === URL.VALIDATING_DATA_LIST) {
-      navigate(URLWithParam.DATA_LABELING(id));
+      navigate(URLWithParam.DATA_VALIDATING(id));
     } else if (location.pathname === URL.DONE_DATA_LIST) {
-      navigate(URLWithParam.DATA_LABELING(id));
+      navigate(URLWithParam.DATA_DONE(id));
     } else {
       navigate(URL.LOGIN);
     }

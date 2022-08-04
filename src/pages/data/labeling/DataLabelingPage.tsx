@@ -10,11 +10,11 @@ import {
   FormGroup,
   FormControlLabel,
 } from '@mui/material';
-import { Link, useParams, useNavigate } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { ChangeEvent, useEffect, useState } from 'react';
 import { dataApiWrapper } from '../../../api/wrapper/data/dataApiWrapper';
 import { IDataDetailResponseData } from '../../../types/data/api';
-import { URL, URLWithParam } from '../../../constants/url';
+import { URLWithParam } from '../../../constants/url';
 
 interface ICheckedState {
   id: number;
@@ -87,7 +87,7 @@ export const DataLabelingPage = () => {
 
   return (
     <PageTemplate title='AI 데이터 관리'>
-      <Typography variant='h4'>{data.id}</Typography>
+      <Typography variant='h4'>라벨링 #{data.id}</Typography>
       <Box sx={{ mt: 2 }}>{}</Box>
       <Card variant='outlined' sx={{ mt: 2, p: 2 }}>
         {data.answer}
