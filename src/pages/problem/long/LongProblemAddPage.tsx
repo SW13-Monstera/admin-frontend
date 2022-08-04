@@ -17,6 +17,8 @@ import { longProblemApiWrapper } from '../../../api/wrapper/problem/longProblemA
 import { IProblemCreateData } from '../../../types/problem/api';
 import { STANDARD_TYPE } from '../../../constants/standard';
 import { useState } from 'react';
+import { URL } from '../../../constants/url';
+import { Link } from 'react-router-dom';
 
 export const LongProblemAddPage = () => {
   const [tagState, setTagState] = useState(
@@ -30,6 +32,7 @@ export const LongProblemAddPage = () => {
     setTagState((prev) => [
       ...prev.map((e) => (e.id !== id ? e : { id: id, isChecked: !e.isChecked })),
     ]);
+    console.log(tagState);
   };
 
   function createProblem() {
@@ -38,7 +41,7 @@ export const LongProblemAddPage = () => {
       description: (document.getElementById('desc') as HTMLTextAreaElement).value || '',
       standardAnswer:
         (document.getElementById('standardAnswer') as HTMLTextAreaElement).value || '',
-      tags: ['db', 'network'],
+      tags: tagState.filter((tag) => tag.isChecked).map((e) => e.id),
       gradingStandards: [
         {
           content: 'keyword-1',
@@ -100,9 +103,11 @@ export const LongProblemAddPage = () => {
           <TextNumberInput text={text} number={number} id={id} key={id} />
         ))}
       </Box>
-      <Button variant='contained' sx={{ mt: 2 }} onClick={createProblem}>
-        저장
-      </Button>
+      <Link to={URL.LONG_PROBLEM_LIST}>
+        <Button variant='contained' sx={{ mt: 2 }} onClick={createProblem}>
+          저장
+        </Button>
+      </Link>
     </PageTemplate>
   );
 };

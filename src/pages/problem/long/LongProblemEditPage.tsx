@@ -67,7 +67,7 @@ export const LongProblemEditPage = () => {
       description: (document.getElementById('desc') as HTMLTextAreaElement).value || '',
       standardAnswer:
         (document.getElementById('standardAnswer') as HTMLTextAreaElement).value || '',
-      tags: tagState.map((tag) => tag.id),
+      tags: tagState.filter((tag) => tag.isChecked).map((e) => e.id),
       gradingStandards: [
         {
           content: 'keyword-1',
