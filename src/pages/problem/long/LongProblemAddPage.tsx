@@ -14,9 +14,9 @@ import {
 import { TextNumberInput } from '../../../components/FormGroup/TextNumberInput';
 import { TAGS } from '../../../constants/tags';
 import { longProblemApiWrapper } from '../../../api/wrapper/problem/longProblemApiWrapper';
-import { IProblemCreateData } from '../../../types/problem/api';
+import { IProblemCreateData, IStandard, IStandardResponse } from '../../../types/problem/api';
 import { STANDARD_TYPE } from '../../../constants/standard';
-import { useState } from 'react';
+import { useState, ChangeEvent, useEffect } from 'react';
 import { URL } from '../../../constants/url';
 import { Link } from 'react-router-dom';
 
@@ -26,13 +26,45 @@ export const LongProblemAddPage = () => {
       return { id: tag.id, isChecked: false };
     }),
   );
+  const [standardState, setStandardState] = useState<IStandardResponse[]>([
+    { content: '', score: 0, id: 0, type: STANDARD_TYPE.KEYWORD },
+    { content: '', score: 0, id: 1, type: STANDARD_TYPE.CONTENT },
+  ]);
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleTagChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { id } = event.target;
     setTagState((prev) => [
       ...prev.map((e) => (e.id !== id ? e : { id: id, isChecked: !e.isChecked })),
     ]);
-    console.log(tagState);
+  };
+
+  const handleStandardChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const target = event.target;
+    if (target.type === 'text') {
+      console.log(target.id);
+      setStandardState((prev) =>
+        prev.map((standard) =>
+          standard.id.toString() === target.id.replace('text-', '')
+            ? { id: standard.id, score: standard.score, content: target.value, type: standard.type }
+            : standard,
+        ),
+      );
+    } else if (target.type === 'number') {
+      setStandardState((prev) =>
+        prev.map((standard) =>
+          standard.id.toString() === target.id.replace('number-', '')
+            ? {
+                id: standard.id,
+                score: parseFloat(target.value) || 0,
+                content: standard.content,
+                type: standard.type,
+              }
+            : standard,
+        ),
+      );
+    } else {
+      return;
+    }
   };
 
   function createProblem() {
@@ -42,21 +74,16 @@ export const LongProblemAddPage = () => {
       standardAnswer:
         (document.getElementById('standardAnswer') as HTMLTextAreaElement).value || '',
       tags: tagState.filter((tag) => tag.isChecked).map((e) => e.id),
-      gradingStandards: [
-        {
-          content: 'keyword-1',
-          score: 1.0,
-          type: 'KEYWORD',
-        },
-        {
-          content: 'prompt-1',
-          score: 2.0,
-          type: 'PROMPT',
-        },
-      ],
+      gradingStandards: standardState.map(({ content, score, type }) => {
+        return { content, score, type };
+      }),
     };
     longProblemApiWrapper.createLongProblem(data);
   }
+
+  useEffect(() => {
+    console.log(standardState);
+  }, [standardState]);
 
   return (
     <PageTemplate>
@@ -77,7 +104,7 @@ export const LongProblemAddPage = () => {
                     control={
                       <Checkbox
                         checked={tagState.find((e) => e.id === tag.id)?.isChecked}
-                        onChange={handleChange}
+                        onChange={handleTagChange}
                         name={tag.name}
                         id={tag.id}
                       />
@@ -94,14 +121,30 @@ export const LongProblemAddPage = () => {
         <TextField id='standardAnswer' label='모범 답안' multiline rows={4} sx={{ my: 2 }} />
         <Divider sx={{ my: 2 }} />
         <Typography>키워드 채점 기준</Typography>
-        {[{ text: '', number: 0, id: '' }].map(({ text, number, id }) => (
-          <TextNumberInput text={text} number={number} id={id} key={id} />
-        ))}
+        {standardState
+          .filter((e) => e.type === STANDARD_TYPE.KEYWORD)
+          .map(({ content, score, id }) => (
+            <TextNumberInput
+              text={content}
+              number={score}
+              id={id.toString()}
+              key={id}
+              onChange={handleStandardChange}
+            />
+          ))}
         <Divider sx={{ my: 2 }} />
         <Typography>내용 채점 기준</Typography>
-        {[{ text: '', number: 0, id: '' }].map(({ text, number, id }) => (
-          <TextNumberInput text={text} number={number} id={id} key={id} />
-        ))}
+        {standardState
+          .filter((e) => e.type === STANDARD_TYPE.CONTENT)
+          .map(({ content, score, id }) => (
+            <TextNumberInput
+              text={content}
+              number={score}
+              id={id.toString()}
+              key={id}
+              onChange={handleStandardChange}
+            />
+          ))}
       </Box>
       <Link to={URL.LONG_PROBLEM_LIST}>
         <Button variant='contained' sx={{ mt: 2 }} onClick={createProblem}>

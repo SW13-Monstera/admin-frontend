@@ -11,15 +11,20 @@ import {
   FormControlLabel,
   Checkbox,
 } from '@mui/material';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { TextNumberInput } from '../../../components/FormGroup/TextNumberInput';
 import { TAGS } from '../../../constants/tags';
 import { useDialog } from '../../../hooks/useDialog';
 import { WarningDialog } from '../../../components/Dialog/WarningDialog';
-import { useState, useEffect } from 'react';
-import { IProblemCreateData, IProblemDetailResponse } from '../../../types/problem/api';
+import { useState, useEffect, ChangeEvent } from 'react';
+import {
+  IProblemCreateData,
+  IProblemDetailResponse,
+  IStandardResponse,
+} from '../../../types/problem/api';
 import { longProblemApiWrapper } from '../../../api/wrapper/problem/longProblemApiWrapper';
 import { STANDARD_TYPE } from '../../../constants/standard';
+import { URL } from '../../../constants/url';
 
 export const LongProblemEditPage = () => {
   const { id } = useParams();
@@ -36,12 +41,42 @@ export const LongProblemEditPage = () => {
       return { id: tag.id, isChecked: false };
     }),
   );
+  const [standardState, setStandardState] = useState<IStandardResponse[]>([]);
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleTagChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { id } = event.target;
     setTagState((prev) => [
       ...prev.map((e) => (e.id !== id ? e : { id: id, isChecked: !e.isChecked })),
     ]);
+  };
+
+  const handleStandardChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const target = event.target;
+    if (target.type === 'text') {
+      console.log(target.id);
+      setStandardState((prev) =>
+        prev.map((standard) =>
+          standard.id.toString() === target.id.replace('text-', '')
+            ? { id: standard.id, score: standard.score, content: target.value, type: standard.type }
+            : standard,
+        ),
+      );
+    } else if (target.type === 'number') {
+      setStandardState((prev) =>
+        prev.map((standard) =>
+          standard.id.toString() === target.id.replace('number-', '')
+            ? {
+                id: standard.id,
+                score: parseFloat(target.value) || 0,
+                content: standard.content,
+                type: standard.type,
+              }
+            : standard,
+        ),
+      );
+    } else {
+      return;
+    }
   };
 
   if (!id) return;
@@ -58,6 +93,7 @@ export const LongProblemEditPage = () => {
         return { id: tag.id, isChecked: data.tags.includes(tag.id) };
       }),
     );
+    setStandardState(data.gradingStandards);
   }, [data]);
 
   function editProblem() {
@@ -68,18 +104,9 @@ export const LongProblemEditPage = () => {
       standardAnswer:
         (document.getElementById('standardAnswer') as HTMLTextAreaElement).value || '',
       tags: tagState.filter((tag) => tag.isChecked).map((e) => e.id),
-      gradingStandards: [
-        {
-          content: 'keyword-1',
-          score: 1.0,
-          type: 'KEYWORD',
-        },
-        {
-          content: 'prompt-1',
-          score: 2.0,
-          type: 'PROMPT',
-        },
-      ],
+      gradingStandards: standardState.map(({ content, score, type }) => {
+        return { content, score, type };
+      }),
     };
     longProblemApiWrapper.updateLongProblem(parseInt(id), data);
   }
@@ -111,7 +138,7 @@ export const LongProblemEditPage = () => {
                     control={
                       <Checkbox
                         checked={tagState.find((e) => e.id === tag.id)?.isChecked}
-                        onChange={handleChange}
+                        onChange={handleTagChange}
                         name={tag.name}
                         id={tag.id}
                       />
@@ -140,26 +167,28 @@ export const LongProblemEditPage = () => {
         />
         <Divider sx={{ my: 2 }} />
         <Typography>키워드 채점 기준</Typography>
-        {data.gradingStandards
+        {standardState
           .filter((e) => e.type === STANDARD_TYPE.KEYWORD)
-          .map((keyword) => (
+          .map(({ content, score, id }) => (
             <TextNumberInput
-              text={keyword.content}
-              number={keyword.score}
-              id={keyword.id.toString()}
-              key={keyword.id}
+              text={content}
+              number={score}
+              id={id.toString()}
+              key={id}
+              onChange={handleStandardChange}
             />
           ))}
         <Divider sx={{ my: 2 }} />
         <Typography>내용 채점 기준</Typography>
-        {data.gradingStandards
-          .filter((e) => e.type === STANDARD_TYPE.KEYWORD)
-          .map((content) => (
+        {standardState
+          .filter((e) => e.type === STANDARD_TYPE.CONTENT)
+          .map(({ content, score, id }) => (
             <TextNumberInput
-              text={content.content}
-              number={content.score}
-              id={content.id.toString()}
-              key={content.id}
+              text={content}
+              number={score}
+              id={id.toString()}
+              key={id}
+              onChange={handleStandardChange}
             />
           ))}
       </Box>

@@ -10,6 +10,8 @@ import {
 } from '@mui/material';
 
 import { TransitionProps } from '@mui/material/transitions';
+import { URL } from '../../constants/url';
+import { Link } from 'react-router-dom';
 
 interface IWarningDialog {
   isOpen: boolean;
@@ -43,14 +45,16 @@ export const WarningDialog = ({ isOpen, handleClose, onClick }: IWarningDialog) 
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button
-            onClick={() => {
-              handleClose();
-              onClick();
-            }}
-          >
-            확인
-          </Button>
+          <Link to={URL.LONG_PROBLEM_LIST}>
+            <Button
+              onClick={() => {
+                handleClose();
+                onClick();
+              }}
+            >
+              확인
+            </Button>
+          </Link>
         </DialogActions>
       </Dialog>
     </div>
