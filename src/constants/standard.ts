@@ -1,0 +1,6 @@
+const STANDARD_TYPE = {
+  KEYWORD: 'KEYWORD',
+  CONTENT: 'PROMPT',
+};
+
+export { STANDARD_TYPE };
