@@ -1,3 +1,6 @@
+import { IDataListElement } from '../data/api';
+import { ILongProblem } from '../problem/api';
+
 interface HeadCell {
   disablePadding: boolean;
   id: string;
@@ -5,10 +8,24 @@ interface HeadCell {
   numeric: boolean;
 }
 
+interface ICustomTable {
+  headCells: readonly HeadCell[];
+  getData: (page: number, params: any) => Promise<any>;
+  filterState: IFilter[];
+}
+
+interface IProblemTable extends ICustomTable {
+  tableHeads: (keyof ILongProblem)[];
+}
+
+interface IDataTable extends ICustomTable {
+  tableHeads: (keyof IDataListElement)[];
+}
+
 interface IProblemCondition {
   id: string;
   title: string;
-  desc: string;
+  description: string;
 }
 
 interface IDataCondition {
@@ -31,4 +48,13 @@ interface IChoice {
   isChecked: boolean;
 }
 
-export type { HeadCell, IFilter, IProblemCondition, IDataCondition, IChoice };
+export type {
+  HeadCell,
+  IFilter,
+  IProblemCondition,
+  IDataCondition,
+  IChoice,
+  ICustomTable,
+  IProblemTable,
+  IDataTable,
+};
