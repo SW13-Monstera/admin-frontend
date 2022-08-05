@@ -1,7 +1,6 @@
 import PageTemplate from '../../../templates/PageTemplate';
 import { DataTable } from '../../../components/Table/DataTable';
-import { Input, Button, Box, Typography } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { Box, Typography } from '@mui/material';
 import { Appbar } from '../../../components/FormGroup/Appbar';
 import { dataApiWrapper } from '../../../api/wrapper/data/dataApiWrapper';
 import { IDataListElement } from '../../../types/data/api';
@@ -102,19 +101,7 @@ export const DoneDataListPage = () => {
           deleteFilter={deletetFilter}
           updateCondition={updateCondition}
           updateFilterValue={updateFilterValue}
-        >
-          <>
-            <label htmlFor='upload-csv'>
-              <Input type='file' style={{ display: 'none' }} id='upload-csv' name='upload-csv' />
-              <Button variant='outlined' color='secondary' component='span'>
-                csv 파일 불러오기
-              </Button>
-            </label>
-            <Link to={'/data/labeling/0'}>
-              <Button variant='outlined'>전체 라벨링 시작</Button>
-            </Link>
-          </>
-        </Appbar>
+        ></Appbar>
       </Box>
       <DataTable tableHeads={tableHeads} headCells={headCells} getData={getLabelingDataList} />
     </PageTemplate>
