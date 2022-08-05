@@ -26,7 +26,7 @@ export const StandardList = ({
     <>
       <Typography>{title}</Typography>
       {standards.map(({ content, score, id }) => (
-        <Box sx={{ display: 'flex', gap: 1 }} key={id}>
+        <Box sx={{ display: 'flex', gap: 1, width: '100%' }} key={id}>
           <TextNumberInput
             text={content}
             number={score}

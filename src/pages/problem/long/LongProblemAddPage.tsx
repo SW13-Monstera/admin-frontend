@@ -9,14 +9,12 @@ import {
   FormGroup,
   FormControlLabel,
   Checkbox,
-  Typography,
 } from '@mui/material';
-import { TextNumberInput } from '../../../components/FormGroup/TextNumberInput';
 import { TAGS } from '../../../constants/tags';
 import { longProblemApiWrapper } from '../../../api/wrapper/problem/longProblemApiWrapper';
-import { IProblemCreateData, IStandard, IStandardResponse } from '../../../types/problem/api';
+import { IProblemCreateData } from '../../../types/problem/api';
 import { STANDARD_TYPE } from '../../../constants/standard';
-import { useState, ChangeEvent, MouseEvent, useEffect } from 'react';
+import { useState, ChangeEvent } from 'react';
 import { URL } from '../../../constants/url';
 import { Link } from 'react-router-dom';
 import { StandardList } from '../../../components/FormGroup/StandardList';
@@ -60,6 +58,9 @@ export const LongProblemAddPage = () => {
         ...keywordStandardState.map(({ content, score, type }) => {
           return { content, score, type };
         }),
+        ...contentStandardState.map(({ content, score, type }) => {
+          return { content, score, type };
+        }),
       ],
     };
     longProblemApiWrapper.createLongProblem(data);
@@ -97,8 +98,22 @@ export const LongProblemAddPage = () => {
             </FormControl>
           </Box>
         </Card>
-        <TextField id='desc' label='문제 설명' multiline rows={4} sx={{ my: 2 }} />
-        <TextField id='standardAnswer' label='모범 답안' multiline rows={4} sx={{ my: 2 }} />
+        <TextField
+          id='desc'
+          label='문제 설명'
+          multiline
+          rows={4}
+          sx={{ my: 2 }}
+          InputLabelProps={{ shrink: true }}
+        />
+        <TextField
+          id='standardAnswer'
+          label='모범 답안'
+          multiline
+          rows={4}
+          sx={{ my: 2 }}
+          InputLabelProps={{ shrink: true }}
+        />
         <Divider sx={{ my: 2 }} />
         <StandardList
           type={STANDARD_TYPE.KEYWORD}
@@ -108,6 +123,7 @@ export const LongProblemAddPage = () => {
           addStandard={addKeywordStandard}
           deleteStandard={deleteKeywordStandard}
         />
+        <Divider sx={{ my: 2 }} />
         <StandardList
           type={STANDARD_TYPE.KEYWORD}
           title='내용 채점 기준'

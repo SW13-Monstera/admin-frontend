@@ -37,6 +37,7 @@ export const SearchForm = ({
         type='search'
         defaultValue={content}
         onChange={updateFilterValue}
+        InputLabelProps={{ shrink: true }}
       />
       <DeleteButton id={id} onClick={deleteFilter} />
     </Box>

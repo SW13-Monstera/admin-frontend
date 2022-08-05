@@ -5,8 +5,8 @@ import { IStandardResponse } from '../types/problem/api';
 type Keys = keyof typeof STANDARD_TYPE;
 type Types = typeof STANDARD_TYPE[Keys];
 
-export const useStandard = (type: Types) => {
-  const [standardState, setStandardState] = useState<IStandardResponse[]>([]);
+export const useStandard = (type: Types, initialState: IStandardResponse[] = []) => {
+  const [standardState, setStandardState] = useState<IStandardResponse[]>(initialState);
   const [standardId, setStandardId] = useState(0);
 
   function addStandardId() {
@@ -51,5 +51,5 @@ export const useStandard = (type: Types) => {
     }
   };
 
-  return { standardState, addStandard, deleteStandard, handleStandardChange };
+  return { standardState, setStandardState, addStandard, deleteStandard, handleStandardChange };
 };

@@ -54,6 +54,7 @@ export const LoginPage = () => {
               name='email'
               autoComplete='email'
               autoFocus
+              InputLabelProps={{ shrink: true }}
             />
             <TextField
               margin='normal'
@@ -64,6 +65,7 @@ export const LoginPage = () => {
               type='password'
               id='password'
               autoComplete='current-password'
+              InputLabelProps={{ shrink: true }}
             />
             <Button type='submit' fullWidth variant='contained' sx={{ mt: 3, mb: 2 }}>
               Sign In
