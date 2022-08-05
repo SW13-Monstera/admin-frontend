@@ -14,7 +14,7 @@ interface IDropdown {
   title: string;
   menuItems: IMenuItem[];
   defaultValue?: string;
-  id: string;
+  id: number;
   updateCondition: (event: any, id: string) => void;
 }
 
@@ -32,16 +32,16 @@ export default function Dropdown({
   };
 
   useEffect(() => {
-    updateCondition(selectedItem, id);
+    updateCondition(selectedItem, id.toString());
   }, [selectedItem]);
 
   return (
     <Box sx={{ minWidth: 120 }}>
       <FormControl fullWidth>
-        <InputLabel id={id}>{title}</InputLabel>
+        <InputLabel id={id.toString()}>{title}</InputLabel>
         <Select
-          labelId={id}
-          id={id}
+          labelId={id.toString()}
+          id={id.toString()}
           value={selectedItem}
           label='search-criteria'
           onChange={handleChange}

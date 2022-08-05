@@ -22,7 +22,7 @@ interface IDataCondition {
 interface IFilter {
   condition: keyof IProblemCondition | keyof IDataCondition;
   value: string;
-  id: string;
+  id: number;
 }
 
 interface IChoice {
