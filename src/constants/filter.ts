@@ -5,7 +5,7 @@ export const PROBLEM_FILTER = [
 ];
 
 export const DATA_FILTER = [
-  { value: 'id', name: '데이터 ID' },
+  { value: 'id', name: '문제 ID' },
   { value: 'problemTitle', name: '문제 제목' },
   { value: 'answer', name: '유저 답변' },
   { value: 'assignedBy', name: '할당 유저' },
