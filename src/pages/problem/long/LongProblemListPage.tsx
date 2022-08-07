@@ -7,8 +7,8 @@ import { ProblemTable } from '../../../components/Table/ProblemTable';
 import { ILongProblem } from '../../../types/problem/api';
 import { HeadCell, IFilter, IProblemCondition } from '../../../types/etc';
 import { longProblemApiWrapper } from '../../../api/wrapper/problem/longProblemApiWrapper';
-import { useState, MouseEvent, useEffect, ChangeEvent } from 'react';
-import { FILTER_PARAMS, PROBLEM_FILTER } from '../../../constants/filter';
+import { useState, MouseEvent, useEffect, ChangeEvent, useCallback } from 'react';
+import { PROBLEM_FILTER } from '../../../constants/filter';
 import { v4 as uuidv4 } from 'uuid';
 
 const headCells: readonly HeadCell[] = [
@@ -67,7 +67,10 @@ const tableHeads: (keyof ILongProblem)[] = [
 ];
 
 export const LongProblemListPage = () => {
+  let timer: number | null = null;
+
   const [filterState, setFilterState] = useState<IFilter[]>([]);
+  const [filterValueState, setFilterValueState] = useState<string>('');
 
   function getLongDataList(page: number, params: object) {
     return longProblemApiWrapper.getLongProblemList({ ...params, page: page });
@@ -92,14 +95,22 @@ export const LongProblemListPage = () => {
   }
   function updateFilterValue(event: ChangeEvent<HTMLTextAreaElement>) {
     if (!event.currentTarget) return;
-    const DOMId = event.currentTarget.id;
+    if (event && timer) clearTimeout(timer);
+
     const DOMValue = event.currentTarget.value;
-    setFilterState((prev) =>
-      prev.map(({ id, condition, value }) =>
-        id === DOMId ? { id, value: DOMValue, condition } : { id, condition, value },
-      ),
-    );
+
+    timer = setTimeout(() => {
+      setFilterValueState(DOMValue);
+    }, 2000);
   }
+
+  useEffect(() => {
+    setFilterState((prev) =>
+      prev.map(({ id, condition }) => {
+        return { id, value: filterValueState, condition };
+      }),
+    );
+  }, [filterValueState]);
 
   return (
     <PageTemplate>
