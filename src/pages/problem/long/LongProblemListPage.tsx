@@ -101,7 +101,7 @@ export const LongProblemListPage = () => {
 
     timer = setTimeout(() => {
       setFilterValueState(DOMValue);
-    }, 2000);
+    }, 500);
   }
 
   useEffect(() => {
