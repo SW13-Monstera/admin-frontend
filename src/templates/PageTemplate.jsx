@@ -17,6 +17,9 @@ import {
   IconButton,
   Container,
 } from '@mui/material';
+import { USER_INFO } from '../constants/localStorage';
+import { useNavigate } from 'react-router-dom';
+import { URL } from '../constants/url';
 
 const drawerWidth = 240;
 
@@ -68,9 +71,16 @@ const mdTheme = createTheme();
 
 const PageTemplate = ({ children }) => {
   const [open, setOpen] = React.useState(true);
+  const navigate = useNavigate();
+
   const toggleDrawer = () => {
     setOpen(!open);
   };
+
+  function logOut() {
+    localStorage.removeItem(USER_INFO);
+    navigate(URL.LOGIN);
+  }
 
   return (
     <ThemeProvider theme={mdTheme}>
@@ -97,7 +107,9 @@ const PageTemplate = ({ children }) => {
             <Typography component='h1' variant='h6' color='inherit' noWrap sx={{ flexGrow: 1 }}>
               CS Broker [Manager]
             </Typography>
-            <Button>로그아웃</Button>
+            <Button sx={{ color: 'white' }} onClick={logOut}>
+              로그아웃
+            </Button>
           </Toolbar>
         </AppBar>
         <Drawer variant='permanent' open={open}>

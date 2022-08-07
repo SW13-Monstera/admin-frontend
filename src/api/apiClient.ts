@@ -26,10 +26,10 @@ apiClient.interceptors.response.use(
     if (status === 401) {
       console.log('401이라구요ㅠㅜㅜㅠㅜㅠㅜㅠㅜ');
       authApiWrapper.refresh();
-      return;
+    } else if (status === 400) {
+      // location.reload();
     } else if (status !== 200) {
-      window.location.replace('/');
-      return;
+      // window.location.replace('/');
     }
     return Promise.reject(err);
   },
