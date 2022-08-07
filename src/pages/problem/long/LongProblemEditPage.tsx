@@ -53,7 +53,6 @@ export const LongProblemEditPage = () => {
   const handleStandardChange = (event: ChangeEvent<HTMLInputElement>) => {
     const target = event.target;
     if (target.type === 'text') {
-      console.log(target.id);
       setStandardState((prev) =>
         prev.map((standard) =>
           standard.id.toString() === target.id.replace('text-', '')

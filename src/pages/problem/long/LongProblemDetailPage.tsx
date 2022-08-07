@@ -12,16 +12,17 @@ import {
   FormControlLabel,
   Switch,
 } from '@mui/material';
-import { Link, useParams, useNavigate } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { longProblemApiWrapper } from '../../../api/wrapper/problem/longProblemApiWrapper';
 import { URLWithParam } from '../../../constants/url';
-import { IProblemDetailResponse } from '../../../types/problem/api';
+import { IProblemDetailResponse, IProblemUpdateData } from '../../../types/problem/api';
 import { STANDARD_TYPE } from '../../../constants/standard';
 import { TAGS } from '../../../constants/tags';
 
 export const LongProblemDetailPage = () => {
   const { id } = useParams();
+  if (!id) return;
   const [data, setData] = useState<IProblemDetailResponse>({
     id: 0,
     title: '',
@@ -31,7 +32,19 @@ export const LongProblemDetailPage = () => {
     gradingStandards: [],
   });
 
-  if (!id) return;
+  //추후 수정
+  function handleProblemGradablility() {
+    if (!id) return;
+    const newData: IProblemUpdateData = { ...data, isGradable: false, isActive: false };
+    longProblemApiWrapper.updateLongProblem(parseInt(id), newData);
+  }
+
+  //추후 수정
+  function handleProblemActivate() {
+    if (!id) return;
+    const newData: IProblemUpdateData = { ...data, isGradable: false, isActive: false };
+    longProblemApiWrapper.updateLongProblem(parseInt(id), newData);
+  }
 
   useEffect(() => {
     longProblemApiWrapper.getLongProblemDetail({ problem_id: parseInt(id) }).then((res) => {
@@ -88,8 +101,17 @@ export const LongProblemDetailPage = () => {
       <Divider sx={{ my: 2 }} />
       <Box sx={{ display: 'flex', gap: 1, justifyContent: 'space-between' }}>
         <FormGroup>
-          <FormControlLabel disabled control={<Switch />} label='채점 가능 여부' />
-          <FormControlLabel control={<Switch defaultChecked />} label='활성화 여부' />
+          <FormControlLabel
+            disabled
+            control={<Switch />}
+            label='채점 가능 여부'
+            onClick={handleProblemGradablility}
+          />
+          <FormControlLabel
+            control={<Switch defaultChecked />}
+            label='활성화 여부'
+            onClick={handleProblemActivate}
+          />
         </FormGroup>
         <Link to={URLWithParam.LONG_PROBLEM_EDIT(id)}>
           <Button variant='contained'>수정</Button>

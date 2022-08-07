@@ -53,6 +53,11 @@ interface IProblemCreateData {
   gradingStandards: IStandard[];
 }
 
+interface IProblemUpdateData extends IProblemCreateData {
+  isActive: boolean;
+  isGradable: boolean;
+}
+
 export type {
   IProblemListRequest,
   ILongProblem,
@@ -62,4 +67,5 @@ export type {
   IStandard,
   IProblemDetailResponse,
   IProblemCreateData,
+  IProblemUpdateData,
 };
