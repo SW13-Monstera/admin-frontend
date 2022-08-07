@@ -188,7 +188,7 @@ export function DataTable({ headCells, tableHeads, getData }: ICustomTable) {
                   </TableCell>
                   {Object.keys(row).map((key) =>
                     tableHeads.includes(key as keyof IDataListElement) ? (
-                      key === 'title' || key === 'problemTitle' ? (
+                      key === 'problemTitle' ? (
                         <TableCell
                           align='center'
                           key={`${key}-${row.id}`}
@@ -213,8 +213,10 @@ export function DataTable({ headCells, tableHeads, getData }: ICustomTable) {
                                   : false
                               }
                             />
+                          ) : key === 'updatedAt' ? (
+                            parseDateTime(row[key as keyof IDataListElement].toString())
                           ) : (
-                            parseDateTime(row[key as keyof IDataListElement].toString()) ?? 'N/A'
+                            row[key as keyof IDataListElement].toString() ?? 'N/A'
                           )}
                         </TableCell>
                       )
