@@ -27,9 +27,7 @@ apiClient.interceptors.response.use(
       console.log('401이라구요ㅠㅜㅜㅠㅜㅠㅜㅠㅜ');
       authApiWrapper.refresh();
       return;
-    }
-
-    if (status !== 200) {
+    } else if (status !== 200) {
       window.location.replace('/');
       return;
     }
