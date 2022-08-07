@@ -1,5 +1,6 @@
 const API_URL = {
   LOGIN: '/v1/auth/login',
+  REFRESH: '/v1/auth/refresh',
   PROBLEM_LIST: '/admin/problems/long',
   PROBLEM_DETAIL: (problem_id: number) => `/admin/problems/long/${problem_id}`,
   PROBLEM_CREATE: '/admin/problems/long',

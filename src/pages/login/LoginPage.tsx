@@ -3,9 +3,10 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Avatar, Button, CssBaseline, TextField, Box } from '@mui/material';
-import { authApiWrapper } from '../../api/wrapper/auth/authApiWrappter';
+import { authApiWrapper } from '../../api/wrapper/auth/authApiWrapper';
 import { useNavigate } from 'react-router-dom';
 import { URL } from '../../constants/url';
+import { USER_INFO } from '../../constants/localStorage';
 
 const theme = createTheme();
 
@@ -21,7 +22,7 @@ export const LoginPage = () => {
         password: data.get('password')?.toString() || '',
       })
       .then((response) => {
-        localStorage.setItem('userInfo', JSON.stringify(response));
+        localStorage.setItem(USER_INFO, JSON.stringify(response));
         navigate(URL.LONG_PROBLEM_LIST);
       });
   };

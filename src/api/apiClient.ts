@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { authApiWrapper } from './wrapper/auth/authApiWrapper';
 
 const apiClient = axios.create({
   baseURL: 'https://dev.api.csbroker.io/api',
@@ -22,8 +23,12 @@ apiClient.interceptors.response.use(
   (err) => {
     const { status } = err.response;
 
+    if (status === 401) {
+      authApiWrapper.refresh();
+    }
+
     if (status !== 200) {
-      // window.location.replace('/');
+      window.location.replace('/');
     }
     return Promise.reject(err);
   },

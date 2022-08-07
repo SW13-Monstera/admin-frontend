@@ -1,5 +1,6 @@
 import apiClient from '../../apiClient';
 import { API_URL } from '../../../constants/apiUrl';
+import { USER_INFO } from '../../../constants/localStorage';
 
 interface ILoginRequest {
   email: string;
@@ -20,5 +21,15 @@ export const authApiWrapper = {
       apiClient.defaults.headers.common['Authorization'] = `Bearer ${response.data.accessToken}`;
       return response.data;
     });
+  },
+  refresh: () => {
+    if (!localStorage.getItem(USER_INFO)) return new Error('localstorage.userInfo not found');
+    apiClient
+      .get(API_URL.REFRESH, {
+        headers: { Authorization: JSON.parse(localStorage.getItem(USER_INFO)!).accessToken },
+      })
+      .then((response) => {
+        apiClient.defaults.headers.common['Authorization'] = `Bearer ${response.data.accessToken}`;
+      });
   },
 };
