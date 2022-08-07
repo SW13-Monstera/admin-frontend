@@ -24,11 +24,14 @@ apiClient.interceptors.response.use(
     const { status } = err.response;
 
     if (status === 401) {
+      console.log('401이라구요ㅠㅜㅜㅠㅜㅠㅜㅠㅜ');
       authApiWrapper.refresh();
+      return;
     }
 
     if (status !== 200) {
       window.location.replace('/');
+      return;
     }
     return Promise.reject(err);
   },
