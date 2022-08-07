@@ -4,5 +4,3 @@ export const TAGS = [
   { name: '자료구조', isChecked: false, id: 'ds' },
   { name: '데이터베이스', isChecked: false, id: 'db' },
 ];
-
-const temp = 'temp';
