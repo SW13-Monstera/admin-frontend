@@ -24,12 +24,17 @@ export const authApiWrapper = {
   },
   refresh: () => {
     if (!localStorage.getItem(USER_INFO)) return new Error('localstorage.userInfo not found');
+
     apiClient
       .get(API_URL.REFRESH, {
-        headers: { Authorization: JSON.parse(localStorage.getItem(USER_INFO)!).accessToken },
+        headers: {
+          Authorization: `Bearer ${JSON.parse(localStorage.getItem(USER_INFO)!).accessToken}`,
+        },
       })
       .then((response) => {
         apiClient.defaults.headers.common['Authorization'] = `Bearer ${response.data.accessToken}`;
+        const json = JSON.parse(localStorage.getItem(USER_INFO)!);
+        localStorage.setItem(USER_INFO, { ...json, accessToken: response.data.accessToken });
       });
   },
 };

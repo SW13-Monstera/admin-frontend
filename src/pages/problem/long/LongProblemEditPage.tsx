@@ -24,7 +24,6 @@ import {
 } from '../../../types/problem/api';
 import { longProblemApiWrapper } from '../../../api/wrapper/problem/longProblemApiWrapper';
 import { STANDARD_TYPE } from '../../../constants/standard';
-import { URL } from '../../../constants/url';
 
 export const LongProblemEditPage = () => {
   const { id } = useParams();
@@ -78,9 +77,8 @@ export const LongProblemEditPage = () => {
     }
   };
 
-  if (!id) return;
-
   useEffect(() => {
+    if (!id) return;
     longProblemApiWrapper.getLongProblemDetail({ problem_id: parseInt(id) }).then((res) => {
       setData(res);
     });

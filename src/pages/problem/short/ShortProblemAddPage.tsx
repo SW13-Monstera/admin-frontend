@@ -19,17 +19,15 @@ import { STANDARD_TYPE } from '../../../constants/standard';
 import { useState, ChangeEvent, useEffect } from 'react';
 import { URL } from '../../../constants/url';
 import { Link } from 'react-router-dom';
+import { ICreateShortProblemRequest } from '../../../types/problem/shortApi';
+import { shortProblemApiWrapper } from '../../../api/wrapper/problem/shortProblemApiWrapper';
 
-export const LongProblemAddPage = () => {
+export const ShortProblemAddPage = () => {
   const [tagState, setTagState] = useState(
     TAGS.map((tag) => {
       return { id: tag.id, isChecked: false };
     }),
   );
-  const [standardState, setStandardState] = useState<IStandardResponse[]>([
-    { content: '', score: 0, id: 0, type: STANDARD_TYPE.KEYWORD },
-    { content: '', score: 0, id: 1, type: STANDARD_TYPE.CONTENT },
-  ]);
 
   const handleTagChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { id } = event.target;
@@ -38,47 +36,15 @@ export const LongProblemAddPage = () => {
     ]);
   };
 
-  const handleStandardChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const target = event.target;
-    if (target.type === 'text') {
-      console.log(target.id);
-      setStandardState((prev) =>
-        prev.map((standard) =>
-          standard.id.toString() === target.id.replace('text-', '')
-            ? { id: standard.id, score: standard.score, content: target.value, type: standard.type }
-            : standard,
-        ),
-      );
-    } else if (target.type === 'number') {
-      setStandardState((prev) =>
-        prev.map((standard) =>
-          standard.id.toString() === target.id.replace('number-', '')
-            ? {
-                id: standard.id,
-                score: parseFloat(target.value) || 0,
-                content: standard.content,
-                type: standard.type,
-              }
-            : standard,
-        ),
-      );
-    } else {
-      return;
-    }
-  };
-
   function createProblem() {
-    const data: IProblemCreateData = {
+    const data: ICreateShortProblemRequest = {
       title: (document.getElementById('title') as HTMLTextAreaElement).value || '',
       description: (document.getElementById('desc') as HTMLTextAreaElement).value || '',
-      standardAnswer:
-        (document.getElementById('standardAnswer') as HTMLTextAreaElement).value || '',
       tags: tagState.filter((tag) => tag.isChecked).map((e) => e.id),
-      gradingStandards: standardState.map(({ content, score, type }) => {
-        return { content, score, type };
-      }),
+      answer: (document.getElementById('answer') as HTMLTextAreaElement).value || '',
+      score: parseInt((document.getElementById('score') as HTMLTextAreaElement).value) || 0,
     };
-    longProblemApiWrapper.createLongProblem(data);
+    shortProblemApiWrapper.createShortProblem(data);
   }
 
   return (
@@ -114,35 +80,10 @@ export const LongProblemAddPage = () => {
           </Box>
         </Card>
         <TextField id='desc' label='문제 설명' multiline rows={4} sx={{ my: 2 }} />
-        <TextField id='standardAnswer' label='모범 답안' multiline rows={4} sx={{ my: 2 }} />
-        <Divider sx={{ my: 2 }} />
-        <Typography>키워드 채점 기준</Typography>
-        {standardState
-          .filter((e) => e.type === STANDARD_TYPE.KEYWORD)
-          .map(({ content, score, id }) => (
-            <TextNumberInput
-              text={content}
-              number={score}
-              id={id.toString()}
-              key={id}
-              onChange={handleStandardChange}
-            />
-          ))}
-        <Divider sx={{ my: 2 }} />
-        <Typography>내용 채점 기준</Typography>
-        {standardState
-          .filter((e) => e.type === STANDARD_TYPE.CONTENT)
-          .map(({ content, score, id }) => (
-            <TextNumberInput
-              text={content}
-              number={score}
-              id={id.toString()}
-              key={id}
-              onChange={handleStandardChange}
-            />
-          ))}
+        <TextField id='answer' label='정답' multiline rows={4} sx={{ my: 2 }} />
+        <TextField id='score' label='점수' type='number' sx={{ my: 2 }} />
       </Box>
-      <Link to={URL.LONG_PROBLEM_LIST}>
+      <Link to={URL.SHORT_PROBLEM_LIST}>
         <Button variant='contained' sx={{ mt: 2 }} onClick={createProblem}>
           저장
         </Button>

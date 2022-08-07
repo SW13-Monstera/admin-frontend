@@ -24,7 +24,7 @@ export const MenuBarItems = () => {
             icon={<StickyNote2Icon />}
             url={URL.LONG_PROBLEM_LIST}
           />
-          <MenuBarListElement text='단답형' icon={<ShortTextIcon />} />
+          <MenuBarListElement text='단답형' icon={<ShortTextIcon />} url={URL.SHORT_PROBLEM_LIST} />
           <MenuBarListElement text='객관식' icon={<FormatListNumberedIcon />} />
         </List>
       </Collapse>

@@ -4,6 +4,7 @@ import { authApiWrapper } from './wrapper/auth/authApiWrapper';
 const apiClient = axios.create({
   baseURL: 'https://dev.api.csbroker.io/api',
   withCredentials: true,
+  headers: { 'Access-Control-Allow-Origin': 'https://dev.api.csbroker.io' },
 });
 
 // isLogin? -> localstorage userInfo check -> 아래 로직 세팅
@@ -24,7 +25,6 @@ apiClient.interceptors.response.use(
     const { status } = err.response;
 
     if (status === 401) {
-      console.log('401이라구요ㅠㅜㅜㅠㅜㅠㅜㅠㅜ');
       authApiWrapper.refresh();
     } else if (status === 400) {
       // location.reload();

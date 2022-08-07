@@ -22,7 +22,6 @@ import { TAGS } from '../../../constants/tags';
 
 export const LongProblemDetailPage = () => {
   const { id } = useParams();
-  if (!id) return;
   const [data, setData] = useState<IProblemDetailResponse>({
     id: 0,
     title: '',
@@ -47,6 +46,7 @@ export const LongProblemDetailPage = () => {
   }
 
   useEffect(() => {
+    if (!id) return;
     longProblemApiWrapper.getLongProblemDetail({ problem_id: parseInt(id) }).then((res) => {
       setData(res);
     });
@@ -113,7 +113,7 @@ export const LongProblemDetailPage = () => {
             onClick={handleProblemActivate}
           />
         </FormGroup>
-        <Link to={URLWithParam.LONG_PROBLEM_EDIT(id)}>
+        <Link to={URLWithParam.LONG_PROBLEM_EDIT(id!)}>
           <Button variant='contained'>수정</Button>
         </Link>
       </Box>

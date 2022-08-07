@@ -12,6 +12,9 @@ const URL = {
   LONG_PROBLEM_DETAIL: `/problem/:id/long`,
   LONG_PROBLEM_ADD: `/problem/long/add`,
   LONG_PROBLEM_EDIT: `/problem/:id/long/edit`,
+  SHORT_PROBLEM_DETAIL: `/problem/:id/short`,
+  SHORT_PROBLEM_ADD: `/problem/short/add`,
+  SHORT_PROBLEM_EDIT: `/problem/:id/short/edit`,
   DASHBOARD: '/dashboard',
   USER: '/user',
 };
@@ -22,6 +25,8 @@ const URLWithParam = {
   DATA_DONE: (id: string) => `/data/${id}/done`,
   LONG_PROBLEM_DETAIL: (id: string) => `/problem/${id}/long`,
   LONG_PROBLEM_EDIT: (id: string) => `/problem/${id}/long/edit`,
+  SHORT_PROBLEM_DETAIL: (id: string) => `/problem/${id}/short`,
+  SHORT_PROBLEM_EDIT: (id: string) => `/problem/${id}/short/edit`,
 };
 
 export { URL, URLWithParam };

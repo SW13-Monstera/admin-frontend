@@ -15,7 +15,7 @@ import {
 import { alpha } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import { ILongProblem } from '../../types/problem/api';
-import { URLWithParam } from '../../constants/url';
+import { URL, URLWithParam } from '../../constants/url';
 import { HeadCell, IFilter } from '../../types/etc';
 import { FILTER_PARAMS } from '../../constants/filter';
 import { roundToSecondDigit } from '../../utils';
@@ -105,7 +105,13 @@ export function ProblemTable({ headCells, tableHeads, getData, filterState }: IC
   }, [page, filterState]);
 
   const handleRowClick = (id: string) => {
-    navigate(URLWithParam.LONG_PROBLEM_DETAIL(id));
+    if (location.pathname === URL.LONG_PROBLEM_LIST) {
+      navigate(URLWithParam.LONG_PROBLEM_DETAIL(id));
+    } else if (location.pathname === URL.SHORT_PROBLEM_LIST) {
+      navigate(URLWithParam.SHORT_PROBLEM_DETAIL(id));
+    } else {
+      navigate(URL.LOGIN);
+    }
   };
 
   const handleSelectAllClick = (event: ChangeEvent<HTMLInputElement>) => {

@@ -38,7 +38,6 @@ export const ValidatingDataPage = () => {
   const [contentStandards, setContentStandards] = useState<ICheckedState[]>([]);
 
   const { id: dataId } = useParams();
-  if (!dataId) return;
 
   function handleKeywordChange(event: ChangeEvent) {
     setKeywordStandards((prev) =>
@@ -67,6 +66,8 @@ export const ValidatingDataPage = () => {
   }
 
   useEffect(() => {
+    if (!dataId) return;
+
     dataApiWrapper
       .getDataDetail({
         user_answer_id: parseInt(dataId),

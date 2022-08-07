@@ -19,7 +19,6 @@ import { URL } from '../../../constants/url';
 
 export const DoneDataDetailPage = () => {
   const { id: dataId } = useParams();
-  if (!dataId) return;
 
   const [data, setData] = useState<IDataDetailResponseData>({
     id: 0,
@@ -35,6 +34,8 @@ export const DoneDataDetailPage = () => {
   });
 
   useEffect(() => {
+    if (!dataId) return;
+
     dataApiWrapper
       .getDataDetail({
         user_answer_id: parseInt(dataId),
