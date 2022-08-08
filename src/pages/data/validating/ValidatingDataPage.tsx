@@ -10,7 +10,7 @@ import {
   FormGroup,
   FormControlLabel,
 } from '@mui/material';
-import { Link, useParams, useNavigate } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { ChangeEvent, useEffect, useState } from 'react';
 import { dataApiWrapper } from '../../../api/wrapper/data/dataApiWrapper';
 import { IDataDetailResponseData } from '../../../types/data/api';

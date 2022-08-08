@@ -5,11 +5,9 @@ import PageTemplate from '../../../templates/PageTemplate';
 import { URL } from '../../../constants/url';
 import { ProblemTable } from '../../../components/Table/ProblemTable';
 import { ILongProblem } from '../../../types/problem/api';
-import { HeadCell, IFilter } from '../../../types/etc';
+import { HeadCell } from '../../../types/etc';
 import { longProblemApiWrapper } from '../../../api/wrapper/problem/longProblemApiWrapper';
-import { useState, MouseEvent, useEffect, ChangeEvent, useCallback } from 'react';
 import { PROBLEM_FILTER } from '../../../constants/filter';
-import { v4 as uuidv4 } from 'uuid';
 import { useFilter } from '../../../hooks/useFilter';
 
 const headCells: readonly HeadCell[] = [
