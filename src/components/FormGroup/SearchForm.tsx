@@ -1,10 +1,9 @@
 import { Box, TextField } from '@mui/material';
 import Dropdown from '../Dropdown/Dropdown';
 import { DeleteButton } from '../Button/DeleteButton';
-import { useEffect } from 'react';
 
 interface ISearchForm {
-  id: string;
+  id: number;
   condition: string;
   content: string;
   menuItems: any[];
@@ -32,13 +31,14 @@ export const SearchForm = ({
         id={id}
       />
       <TextField
-        id={id}
+        id={id.toString()}
         variant='outlined'
         type='search'
         defaultValue={content}
         onChange={updateFilterValue}
+        InputLabelProps={{ shrink: true }}
       />
-      <DeleteButton id={id} onClick={deleteFilter} />
+      <DeleteButton id={id.toString()} onClick={deleteFilter} />
     </Box>
   );
 };

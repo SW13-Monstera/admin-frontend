@@ -16,8 +16,9 @@ import { alpha } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import { IDataListElement } from '../../types/data/api';
 import { URL, URLWithParam } from '../../constants/url';
-import { HeadCell } from '../../types/etc';
+import { HeadCell, IDataTable } from '../../types/etc';
 import { parseDateTime } from '../../utils';
+import { DATA_FILTER } from '../../constants/filter';
 
 interface EnhancedTableProps {
   numSelected: number;
@@ -78,13 +79,7 @@ const EnhancedTableToolbar = (props: { numSelected: any }) => {
   );
 };
 
-interface ICustomTable {
-  tableHeads: (keyof IDataListElement)[];
-  headCells: readonly HeadCell[];
-  getData: (page: number) => Promise<any>;
-}
-
-export function DataTable({ headCells, tableHeads, getData }: ICustomTable) {
+export function DataTable({ headCells, tableHeads, getData, filterState }: IDataTable) {
   const [selected, setSelected] = useState<readonly string[]>([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage] = useState(10);
@@ -93,11 +88,19 @@ export function DataTable({ headCells, tableHeads, getData }: ICustomTable) {
   const navigate = useNavigate();
 
   useEffect(() => {
-    getData(page).then((res) => {
+    const params = Object.fromEntries(
+      new Map(
+        filterState.map((filter) => [
+          DATA_FILTER.find((e) => filter.condition === e.value)?.value,
+          filter.value,
+        ]),
+      ),
+    );
+    getData(page, params).then((res) => {
       setData(res.userAnswers);
       setTotalElements(res.totalElements);
     });
-  }, [page]);
+  }, [page, filterState]);
 
   const handleRowClick = (id: string) => {
     if (location.pathname === URL.LABELING_DATA_LIST) {
