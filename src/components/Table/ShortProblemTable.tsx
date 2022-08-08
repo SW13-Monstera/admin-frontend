@@ -15,7 +15,7 @@ import {
 import { alpha } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import { URL, URLWithParam } from '../../constants/url';
-import { HeadCell, IProblemTable, IShortProblemTable } from '../../types/etc';
+import { HeadCell, IShortProblemTable } from '../../types/etc';
 import { PROBLEM_FILTER } from '../../constants/filter';
 import { roundToSecondDigit } from '../../utils';
 import { IShortProblemListElement } from '../../types/problem/shortApi';
@@ -192,7 +192,7 @@ export function ShortProblemTable({
                   </TableCell>
                   {Object.keys(row).map((key) =>
                     tableHeads.includes(key as keyof IShortProblemListElement) ? (
-                      key === 'problemTitle' ? (
+                      key === 'title' ? (
                         <TableCell
                           align='center'
                           key={`${key}-${row.id}`}

@@ -189,7 +189,7 @@ export function ProblemTable({ headCells, tableHeads, getData, filterState }: IP
                   </TableCell>
                   {Object.keys(row).map((key) =>
                     tableHeads.includes(key as keyof ILongProblem) ? (
-                      key === 'title' || key === 'problemTitle' ? (
+                      key === 'title' ? (
                         <TableCell
                           align='center'
                           key={`${key}-${row.id}`}
