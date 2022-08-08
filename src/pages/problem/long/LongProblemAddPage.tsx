@@ -125,7 +125,7 @@ export const LongProblemAddPage = () => {
         />
         <Divider sx={{ my: 2 }} />
         <StandardList
-          type={STANDARD_TYPE.KEYWORD}
+          type={STANDARD_TYPE.CONTENT}
           title='내용 채점 기준'
           standards={contentStandardState}
           handleStandardChange={handleContentStandardChange}
