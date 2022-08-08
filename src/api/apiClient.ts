@@ -4,7 +4,6 @@ import { authApiWrapper } from './wrapper/auth/authApiWrapper';
 const apiClient = axios.create({
   baseURL: 'https://dev.api.csbroker.io/api',
   withCredentials: true,
-  // headers: { 'Access-Control-Allow-Origin': 'https://dev.api.csbroker.io' },
 });
 
 // isLogin? -> localstorage userInfo check -> 아래 로직 세팅
