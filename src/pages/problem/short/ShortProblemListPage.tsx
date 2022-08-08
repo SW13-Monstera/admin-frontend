@@ -11,6 +11,9 @@ import { useState, MouseEvent, useEffect, ChangeEvent, useCallback } from 'react
 import { PROBLEM_FILTER } from '../../../constants/filter';
 import { v4 as uuidv4 } from 'uuid';
 import { shortProblemApiWrapper } from '../../../api/wrapper/problem/shortProblemApiWrapper';
+import { useFilter } from '../../../hooks/useFilter';
+import { ShortProblemTable } from '../../../components/Table/ShortProblemTable';
+import { IShortProblemListElement } from '../../../types/problem/shortApi';
 
 const headCells: readonly HeadCell[] = [
   {
@@ -32,17 +35,12 @@ const headCells: readonly HeadCell[] = [
     label: '제작자',
   },
   {
-    id: 'avgKeywordScore',
+    id: 'answerRate',
     numeric: true,
     disablePadding: false,
-    label: '평균 키워드 점수',
+    label: '정답률',
   },
-  {
-    id: 'avgContentScore',
-    numeric: true,
-    disablePadding: false,
-    label: '평균 내용 점수',
-  },
+
   {
     id: 'ansNum',
     numeric: true,
@@ -57,61 +55,21 @@ const headCells: readonly HeadCell[] = [
   },
 ];
 
-const tableHeads: (keyof ILongProblem)[] = [
+const tableHeads: (keyof IShortProblemListElement)[] = [
   'id',
   'title',
   'creator',
-  'avgKeywordScore',
-  'avgPromptScore',
+  'answerRate',
   'userAnswerCnt',
   'isActive',
 ];
 
 export const ShortProblemListPage = () => {
-  let timer: number | null = null;
-
-  const [filterState, setFilterState] = useState<IFilter[]>([]);
-  const [filterValueState, setFilterValueState] = useState<string>('');
+  const { filterState, addFilter, deletetFilter, updateCondition, updateFilterValue } = useFilter();
 
   function getShortProblemList(page: number, params: object) {
     return shortProblemApiWrapper.getShortProblemList({ ...params, page: page });
   }
-
-  function addFilter() {
-    setFilterState((prev) => [...prev, { id: uuidv4(), condition: 'id', value: '' }]);
-  }
-  function deletetFilter(event: MouseEvent<Element, MouseEvent>) {
-    const id = event.currentTarget.id;
-    setFilterState((prev) => prev.filter((e) => e.id !== id));
-  }
-
-  function updateCondition(newCondition: IProblemCondition, DOMId: string) {
-    setFilterState((prev) =>
-      prev.map(({ id, condition, value }) =>
-        id === DOMId
-          ? ({ id, value, condition: newCondition } as unknown as IFilter)
-          : { id, condition, value },
-      ),
-    );
-  }
-  function updateFilterValue(event: ChangeEvent<HTMLTextAreaElement>) {
-    if (!event.currentTarget) return;
-    if (event && timer) clearTimeout(timer);
-
-    const DOMValue = event.currentTarget.value;
-
-    timer = setTimeout(() => {
-      setFilterValueState(DOMValue);
-    }, 500);
-  }
-
-  useEffect(() => {
-    setFilterState((prev) =>
-      prev.map(({ id, condition }) => {
-        return { id, value: filterValueState, condition };
-      }),
-    );
-  }, [filterValueState]);
 
   return (
     <PageTemplate>
@@ -124,7 +82,7 @@ export const ShortProblemListPage = () => {
           gap: 1,
         }}
       >
-        <Typography>서술형 문제</Typography>
+        <Typography>단답형 문제</Typography>
         <Appbar
           menuItems={PROBLEM_FILTER}
           conditions={filterState}
@@ -141,7 +99,7 @@ export const ShortProblemListPage = () => {
           </Link>
         </Appbar>
       </Box>
-      <ProblemTable
+      <ShortProblemTable
         tableHeads={tableHeads}
         headCells={headCells}
         getData={getShortProblemList}

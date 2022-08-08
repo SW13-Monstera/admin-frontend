@@ -47,12 +47,6 @@ export const LabelingDataListPage = () => {
   const { filterState, addFilter, deletetFilter, updateCondition, updateFilterValue } = useFilter();
 
   function getLabelingDataList(page: number, params: object) {
-    console.log({
-      ...params,
-      page: page,
-      isLabeled: false,
-      isValidated: false,
-    });
     return dataApiWrapper.getDataList({
       ...params,
       page: page,

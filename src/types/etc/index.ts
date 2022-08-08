@@ -1,3 +1,4 @@
+import { IShortProblemListElement } from './../problem/shortApi';
 import { IDataListElement } from '../data/api';
 import { ILongProblem } from '../problem/api';
 
@@ -16,6 +17,10 @@ interface ICustomTable {
 
 interface IProblemTable extends ICustomTable {
   tableHeads: (keyof ILongProblem)[];
+}
+
+interface IShortProblemTable extends ICustomTable {
+  tableHeads: (keyof IShortProblemListElement)[];
 }
 
 interface IDataTable extends ICustomTable {
@@ -57,4 +62,5 @@ export type {
   ICustomTable,
   IProblemTable,
   IDataTable,
+  IShortProblemTable,
 };
