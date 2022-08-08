@@ -5,9 +5,7 @@ import { Link } from 'react-router-dom';
 import { Appbar } from '../../../components/FormGroup/Appbar';
 import { dataApiWrapper } from '../../../api/wrapper/data/dataApiWrapper';
 import { IDataListElement } from '../../../types/data/api';
-import { HeadCell, IFilter } from '../../../types/etc';
-import { useState, MouseEvent, ChangeEvent } from 'react';
-import { v4 as uuidv4 } from 'uuid';
+import { HeadCell } from '../../../types/etc';
 import { DATA_FILTER } from '../../../constants/filter';
 import { useFilter } from '../../../hooks/useFilter';
 
