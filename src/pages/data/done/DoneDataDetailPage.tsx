@@ -1,25 +1,13 @@
 import PageTemplate from '../../../templates/PageTemplate';
-import {
-  Typography,
-  Box,
-  Card,
-  Button,
-  Checkbox,
-  FormControl,
-  FormLabel,
-  FormGroup,
-  FormControlLabel,
-  Divider,
-} from '@mui/material';
+import { Typography, Box, Card, Button, Divider } from '@mui/material';
 import { Link, useParams } from 'react-router-dom';
-import { ChangeEvent, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { dataApiWrapper } from '../../../api/wrapper/data/dataApiWrapper';
 import { IDataDetailResponseData } from '../../../types/data/api';
 import { URL } from '../../../constants/url';
 
 export const DoneDataDetailPage = () => {
   const { id: dataId } = useParams();
-  if (!dataId) return;
 
   const [data, setData] = useState<IDataDetailResponseData>({
     id: 0,
@@ -35,6 +23,8 @@ export const DoneDataDetailPage = () => {
   });
 
   useEffect(() => {
+    if (!dataId) return;
+
     dataApiWrapper
       .getDataDetail({
         user_answer_id: parseInt(dataId),

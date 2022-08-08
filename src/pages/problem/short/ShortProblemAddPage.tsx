@@ -11,34 +11,18 @@ import {
   Checkbox,
 } from '@mui/material';
 import { TAGS } from '../../../constants/tags';
-import { longProblemApiWrapper } from '../../../api/wrapper/problem/longProblemApiWrapper';
-import { IProblemCreateData } from '../../../types/problem/api';
-import { STANDARD_TYPE } from '../../../constants/standard';
 import { useState, ChangeEvent } from 'react';
 import { URL } from '../../../constants/url';
 import { Link } from 'react-router-dom';
-import { StandardList } from '../../../components/FormGroup/StandardList';
-import { useStandard } from '../../../hooks/useStandard';
+import { ICreateShortProblemRequest } from '../../../types/problem/shortApi';
+import { shortProblemApiWrapper } from '../../../api/wrapper/problem/shortProblemApiWrapper';
 
-export const LongProblemAddPage = () => {
+export const ShortProblemAddPage = () => {
   const [tagState, setTagState] = useState(
     TAGS.map((tag) => {
       return { id: tag.id, isChecked: false };
     }),
   );
-  const {
-    standardState: keywordStandardState,
-    addStandard: addKeywordStandard,
-    deleteStandard: deleteKeywordStandard,
-    handleStandardChange: handleKeywordStandardChange,
-  } = useStandard(STANDARD_TYPE.KEYWORD);
-
-  const {
-    standardState: contentStandardState,
-    addStandard: addContentStandard,
-    deleteStandard: deleteContentStandard,
-    handleStandardChange: handleContentStandardChange,
-  } = useStandard(STANDARD_TYPE.CONTENT);
 
   const handleTagChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { id } = event.target;
@@ -48,22 +32,14 @@ export const LongProblemAddPage = () => {
   };
 
   function createProblem() {
-    const data: IProblemCreateData = {
+    const data: ICreateShortProblemRequest = {
       title: (document.getElementById('title') as HTMLTextAreaElement).value || '',
       description: (document.getElementById('desc') as HTMLTextAreaElement).value || '',
-      standardAnswer:
-        (document.getElementById('standardAnswer') as HTMLTextAreaElement).value || '',
       tags: tagState.filter((tag) => tag.isChecked).map((e) => e.id),
-      gradingStandards: [
-        ...keywordStandardState.map(({ content, score, type }) => {
-          return { content, score, type };
-        }),
-        ...contentStandardState.map(({ content, score, type }) => {
-          return { content, score, type };
-        }),
-      ],
+      answer: (document.getElementById('answer') as HTMLTextAreaElement).value || '',
+      score: parseInt((document.getElementById('score') as HTMLTextAreaElement).value) || 0,
     };
-    longProblemApiWrapper.createLongProblem(data);
+    shortProblemApiWrapper.createShortProblem(data);
   }
 
   return (
@@ -74,7 +50,13 @@ export const LongProblemAddPage = () => {
         autoComplete='off'
         sx={{ display: 'flex', flexDirection: 'column' }}
       >
-        <TextField id='title' label='문제 제목' variant='outlined' sx={{ my: 2 }} />
+        <TextField
+          id='title'
+          label='문제 제목'
+          variant='outlined'
+          sx={{ my: 2 }}
+          InputLabelProps={{ shrink: true }}
+        />
         <Card variant='outlined' sx={{ backgroundColor: 'transparent', borderColor: '#0000003B' }}>
           <Box sx={{ display: 'flex' }}>
             <FormControl sx={{ my: 3 }} component='fieldset' variant='standard'>
@@ -107,33 +89,22 @@ export const LongProblemAddPage = () => {
           InputLabelProps={{ shrink: true }}
         />
         <TextField
-          id='standardAnswer'
-          label='모범 답안'
+          id='answer'
+          label='정답'
           multiline
           rows={4}
           sx={{ my: 2 }}
           InputLabelProps={{ shrink: true }}
         />
-        <Divider sx={{ my: 2 }} />
-        <StandardList
-          type={STANDARD_TYPE.KEYWORD}
-          title='키워드 채점 기준'
-          standards={keywordStandardState}
-          handleStandardChange={handleKeywordStandardChange}
-          addStandard={addKeywordStandard}
-          deleteStandard={deleteKeywordStandard}
-        />
-        <Divider sx={{ my: 2 }} />
-        <StandardList
-          type={STANDARD_TYPE.CONTENT}
-          title='내용 채점 기준'
-          standards={contentStandardState}
-          handleStandardChange={handleContentStandardChange}
-          addStandard={addContentStandard}
-          deleteStandard={deleteContentStandard}
+        <TextField
+          id='score'
+          label='점수'
+          type='number'
+          sx={{ my: 2 }}
+          InputLabelProps={{ shrink: true }}
         />
       </Box>
-      <Link to={URL.LONG_PROBLEM_LIST}>
+      <Link to={URL.SHORT_PROBLEM_LIST}>
         <Button variant='contained' sx={{ mt: 2 }} onClick={createProblem}>
           저장
         </Button>

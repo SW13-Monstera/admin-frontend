@@ -13,6 +13,10 @@ import {
   LongProblemListPage,
   LongProblemEditPage,
 } from './pages';
+import { ShortProblemAddPage } from './pages/problem/short/ShortProblemAddPage';
+import { ShortProblemDetailPage } from './pages/problem/short/ShortProblemDetailPage';
+import { ShortProblemEditPage } from './pages/problem/short/ShortProblemEditPage';
+import { ShortProblemListPage } from './pages/problem/short/ShortProblemListPage';
 
 const Router = () => {
   return (
@@ -29,6 +33,10 @@ const Router = () => {
         <Route path={URL.LONG_PROBLEM_DETAIL} element={<LongProblemDetailPage />} />
         <Route path={URL.LONG_PROBLEM_ADD} element={<LongProblemAddPage />} />
         <Route path={URL.LONG_PROBLEM_EDIT} element={<LongProblemEditPage />} />
+        <Route path={URL.SHORT_PROBLEM_LIST} element={<ShortProblemListPage />} />
+        <Route path={URL.SHORT_PROBLEM_DETAIL} element={<ShortProblemDetailPage />} />
+        <Route path={URL.SHORT_PROBLEM_ADD} element={<ShortProblemAddPage />} />
+        <Route path={URL.SHORT_PROBLEM_EDIT} element={<ShortProblemEditPage />} />
       </Routes>
     </BrowserRouter>
   );

@@ -5,10 +5,15 @@ import PageTemplate from '../../../templates/PageTemplate';
 import { URL } from '../../../constants/url';
 import { ProblemTable } from '../../../components/Table/ProblemTable';
 import { ILongProblem } from '../../../types/problem/api';
-import { HeadCell } from '../../../types/etc';
+import { HeadCell, IFilter, IProblemCondition } from '../../../types/etc';
 import { longProblemApiWrapper } from '../../../api/wrapper/problem/longProblemApiWrapper';
+import { useState, MouseEvent, useEffect, ChangeEvent, useCallback } from 'react';
 import { PROBLEM_FILTER } from '../../../constants/filter';
+import { v4 as uuidv4 } from 'uuid';
+import { shortProblemApiWrapper } from '../../../api/wrapper/problem/shortProblemApiWrapper';
 import { useFilter } from '../../../hooks/useFilter';
+import { ShortProblemTable } from '../../../components/Table/ShortProblemTable';
+import { IShortProblemListElement } from '../../../types/problem/shortApi';
 
 const headCells: readonly HeadCell[] = [
   {
@@ -30,17 +35,12 @@ const headCells: readonly HeadCell[] = [
     label: '제작자',
   },
   {
-    id: 'avgKeywordScore',
+    id: 'answerRate',
     numeric: true,
     disablePadding: false,
-    label: '평균 키워드 점수',
+    label: '정답률',
   },
-  {
-    id: 'avgContentScore',
-    numeric: true,
-    disablePadding: false,
-    label: '평균 내용 점수',
-  },
+
   {
     id: 'ansNum',
     numeric: true,
@@ -55,21 +55,20 @@ const headCells: readonly HeadCell[] = [
   },
 ];
 
-const tableHeads: (keyof ILongProblem)[] = [
+const tableHeads: (keyof IShortProblemListElement)[] = [
   'id',
   'title',
   'creator',
-  'avgKeywordScore',
-  'avgPromptScore',
+  'answerRate',
   'userAnswerCnt',
   'isActive',
 ];
 
-export const LongProblemListPage = () => {
+export const ShortProblemListPage = () => {
   const { filterState, addFilter, deletetFilter, updateCondition, updateFilterValue } = useFilter();
 
-  function getLongDataList(page: number, params: object) {
-    return longProblemApiWrapper.getLongProblemList({ ...params, page: page });
+  function getShortProblemList(page: number, params: object) {
+    return shortProblemApiWrapper.getShortProblemList({ ...params, page: page });
   }
 
   return (
@@ -83,7 +82,7 @@ export const LongProblemListPage = () => {
           gap: 1,
         }}
       >
-        <Typography>서술형 문제</Typography>
+        <Typography>단답형 문제</Typography>
         <Appbar
           menuItems={PROBLEM_FILTER}
           conditions={filterState}
@@ -93,17 +92,17 @@ export const LongProblemListPage = () => {
           updateCondition={updateCondition}
           updateFilterValue={updateFilterValue}
         >
-          <Link to={URL.LONG_PROBLEM_ADD}>
+          <Link to={URL.SHORT_PROBLEM_ADD}>
             <Button variant='contained' sx={{ height: '100%' }}>
               문제 추가
             </Button>
           </Link>
         </Appbar>
       </Box>
-      <ProblemTable
+      <ShortProblemTable
         tableHeads={tableHeads}
         headCells={headCells}
-        getData={getLongDataList}
+        getData={getShortProblemList}
         filterState={filterState}
       />
     </PageTemplate>

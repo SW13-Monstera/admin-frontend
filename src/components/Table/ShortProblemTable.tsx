@@ -14,11 +14,11 @@ import {
 } from '@mui/material';
 import { alpha } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
-import { ILongProblem } from '../../types/problem/api';
 import { URL, URLWithParam } from '../../constants/url';
-import { HeadCell, IProblemTable } from '../../types/etc';
+import { HeadCell, IProblemTable, IShortProblemTable } from '../../types/etc';
 import { PROBLEM_FILTER } from '../../constants/filter';
 import { roundToSecondDigit } from '../../utils';
+import { IShortProblemListElement } from '../../types/problem/shortApi';
 
 interface EnhancedTableProps {
   numSelected: number;
@@ -79,7 +79,12 @@ const EnhancedTableToolbar = (props: { numSelected: any }) => {
   );
 };
 
-export function ProblemTable({ headCells, tableHeads, getData, filterState }: IProblemTable) {
+export function ShortProblemTable({
+  headCells,
+  tableHeads,
+  getData,
+  filterState,
+}: IShortProblemTable) {
   const [selected, setSelected] = useState<readonly string[]>([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage] = useState(10);
@@ -103,9 +108,7 @@ export function ProblemTable({ headCells, tableHeads, getData, filterState }: IP
   }, [page, filterState]);
 
   const handleRowClick = (id: string) => {
-    if (location.pathname === URL.LONG_PROBLEM_LIST) {
-      navigate(URLWithParam.LONG_PROBLEM_DETAIL(id));
-    } else if (location.pathname === URL.SHORT_PROBLEM_LIST) {
+    if (location.pathname === URL.SHORT_PROBLEM_LIST) {
       navigate(URLWithParam.SHORT_PROBLEM_DETAIL(id));
     } else {
       navigate(URL.LOGIN);
@@ -188,8 +191,8 @@ export function ProblemTable({ headCells, tableHeads, getData, filterState }: IP
                     />
                   </TableCell>
                   {Object.keys(row).map((key) =>
-                    tableHeads.includes(key as keyof ILongProblem) ? (
-                      key === 'title' || key === 'problemTitle' ? (
+                    tableHeads.includes(key as keyof IShortProblemListElement) ? (
+                      key === 'problemTitle' ? (
                         <TableCell
                           align='center'
                           key={`${key}-${row.id}`}
@@ -201,21 +204,23 @@ export function ProblemTable({ headCells, tableHeads, getData, filterState }: IP
                           }}
                           onClick={() => handleRowClick(row.id.toString())}
                         >
-                          {row[key as keyof ILongProblem] ?? 'N/A'}
+                          {row[key as keyof IShortProblemListElement] ?? 'N/A'}
                         </TableCell>
                       ) : (
                         <TableCell align='center' key={`${key}-${row.id}`}>
-                          {typeof row[key as keyof ILongProblem] === 'boolean' ? (
+                          {typeof row[key as keyof IShortProblemListElement] === 'boolean' ? (
                             <Checkbox
                               disabled
                               checked={
-                                row[key as keyof ILongProblem].toString() === 'true' ? true : false
+                                row[key as keyof IShortProblemListElement].toString() === 'true'
+                                  ? true
+                                  : false
                               }
                             />
-                          ) : typeof row[key as keyof ILongProblem] === 'number' ? (
-                            roundToSecondDigit(row[key as keyof ILongProblem]) ?? 'N/A'
+                          ) : typeof row[key as keyof IShortProblemListElement] === 'number' ? (
+                            roundToSecondDigit(row[key as keyof IShortProblemListElement]) ?? 'N/A'
                           ) : (
-                            row[key as keyof ILongProblem] ?? 'N/A'
+                            row[key as keyof IShortProblemListElement] ?? 'N/A'
                           )}
                         </TableCell>
                       )
