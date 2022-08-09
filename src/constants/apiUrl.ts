@@ -14,6 +14,8 @@ const API_URL = {
   DATA_LABELING: (user_answer_id: number) => `/admin/user-answers/${user_answer_id}/label`,
   DATA_VALIDATING: (user_answer_id: number) => `/admin/user-answers/${user_answer_id}/validate`,
   DATA_LIST_CREATE: '/admin/user-answers',
+  USER_DETAIL: '',
+  USER_LIST: '/v1/users',
 };
 
 export { API_URL };
