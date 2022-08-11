@@ -1,6 +1,5 @@
 import { Typography, Button, Box } from '@mui/material';
-import { ChangeEvent, MouseEvent, useEffect, useState } from 'react';
-import { STANDARD_TYPE } from '../../constants/standard';
+import { ChangeEvent, MouseEvent } from 'react';
 import { IStandardResponse } from '../../types/problem/api';
 import { DeleteButton } from '../Button/DeleteButton';
 import { TextNumberInput } from './TextNumberInput';
