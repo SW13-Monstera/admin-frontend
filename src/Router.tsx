@@ -13,6 +13,10 @@ import {
   LongProblemListPage,
   LongProblemEditPage,
 } from './pages';
+import { MultipleProblemAddPage } from './pages/problem/multiple/MultipleProblemAddPage';
+import { MultipleProblemDetailPage } from './pages/problem/multiple/MultipleProblemDetailPage';
+import { MultipleProblemEditPage } from './pages/problem/multiple/MultipleProblemEditPage';
+import { MultipleProblemListPage } from './pages/problem/multiple/MultipleProblemListPage';
 import { ShortProblemAddPage } from './pages/problem/short/ShortProblemAddPage';
 import { ShortProblemDetailPage } from './pages/problem/short/ShortProblemDetailPage';
 import { ShortProblemEditPage } from './pages/problem/short/ShortProblemEditPage';
@@ -37,6 +41,10 @@ const Router = () => {
         <Route path={URL.SHORT_PROBLEM_DETAIL} element={<ShortProblemDetailPage />} />
         <Route path={URL.SHORT_PROBLEM_ADD} element={<ShortProblemAddPage />} />
         <Route path={URL.SHORT_PROBLEM_EDIT} element={<ShortProblemEditPage />} />
+        <Route path={URL.MUTILPLE_PROBLEM_LIST} element={<MultipleProblemListPage />} />
+        <Route path={URL.MUTIPLE_PROBLEM_DETAIL} element={<MultipleProblemDetailPage />} />
+        <Route path={URL.MUTIPLE_PROBLEM_ADD} element={<MultipleProblemAddPage />} />
+        <Route path={URL.MUTIPLE_PROBLEM_EDIT} element={<MultipleProblemEditPage />} />
       </Routes>
     </BrowserRouter>
   );

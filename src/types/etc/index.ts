@@ -23,6 +23,10 @@ interface IShortProblemTable extends ICustomTable {
   tableHeads: (keyof IShortProblemListElement)[];
 }
 
+interface IShortProblemTable extends ICustomTable {
+  tableHeads: (keyof IShortProblemListElement)[];
+}
+
 interface IDataTable extends ICustomTable {
   tableHeads: (keyof IDataListElement)[];
 }

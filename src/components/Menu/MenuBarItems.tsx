@@ -25,7 +25,11 @@ export const MenuBarItems = () => {
             url={URL.LONG_PROBLEM_LIST}
           />
           <MenuBarListElement text='단답형' icon={<ShortTextIcon />} url={URL.SHORT_PROBLEM_LIST} />
-          <MenuBarListElement text='객관식' icon={<FormatListNumberedIcon />} />
+          <MenuBarListElement
+            text='객관식'
+            icon={<FormatListNumberedIcon />}
+            url={URL.MUTILPLE_PROBLEM_LIST}
+          />
         </List>
       </Collapse>
       <MenuBarTitle text='AI 데이터 관리' open={dataMenuOpen} handleClick={handleDataMenu} />
