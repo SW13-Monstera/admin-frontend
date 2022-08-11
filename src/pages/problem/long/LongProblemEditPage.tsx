@@ -63,7 +63,7 @@ export const LongProblemEditPage = () => {
 
   useEffect(() => {
     if (!id) return;
-    longProblemApiWrapper.getLongProblemDetail({ problem_id: parseInt(id) }).then((res) => {
+    longProblemApiWrapper.getLongProblemDetail({ problem_id: id }).then((res) => {
       setData(res);
     });
   }, []);
@@ -95,7 +95,7 @@ export const LongProblemEditPage = () => {
         }),
       ],
     };
-    longProblemApiWrapper.updateLongProblem(parseInt(id), data);
+    longProblemApiWrapper.updateLongProblem(id, data);
   }
 
   const { isDialogOpen, handleDialogOpen, handleDialogClose } = useDialog();

@@ -22,7 +22,7 @@ export const ShortProblemDetailPage = () => {
 
   useEffect(() => {
     if (!id) return;
-    shortProblemApiWrapper.getShortProblemDetail({ problem_id: parseInt(id) }).then((res) => {
+    shortProblemApiWrapper.getShortProblemDetail({ problem_id: id }).then((res) => {
       setData(res);
     });
   }, []);

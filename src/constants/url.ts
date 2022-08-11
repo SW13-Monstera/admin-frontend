@@ -15,6 +15,9 @@ const URL = {
   SHORT_PROBLEM_DETAIL: `/problem/:id/short`,
   SHORT_PROBLEM_ADD: `/problem/short/add`,
   SHORT_PROBLEM_EDIT: `/problem/:id/short/edit`,
+  MUTIPLE_PROBLEM_DETAIL: `/problem/:id/multiple`,
+  MUTIPLE_PROBLEM_ADD: `/problem/multiple/add`,
+  MUTIPLE_PROBLEM_EDIT: `/problem/:id/multiple/edit`,
   DASHBOARD: '/dashboard',
   USER: '/user',
 };
@@ -27,6 +30,8 @@ const URLWithParam = {
   LONG_PROBLEM_EDIT: (id: string) => `/problem/${id}/long/edit`,
   SHORT_PROBLEM_DETAIL: (id: string) => `/problem/${id}/short`,
   SHORT_PROBLEM_EDIT: (id: string) => `/problem/${id}/short/edit`,
+  MUTIPLE_PROBLEM_DETAIL: (id: string) => `/problem/${id}/multiple`,
+  MUTIPLE_PROBLEM_EDIT: (id: string) => `/problem/${id}/multiple/edit`,
 };
 
 export { URL, URLWithParam };

@@ -23,7 +23,7 @@ interface ILongProblemListData {
 }
 
 interface IProblemDetailRequest {
-  problem_id: number;
+  problem_id: string;
 }
 
 interface IStandardResponse extends IStandard {

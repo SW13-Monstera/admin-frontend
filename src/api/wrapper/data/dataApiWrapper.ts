@@ -5,7 +5,7 @@ import {
   IDataListResponse,
 } from '../../../types/data/api';
 import apiClient from '../../apiClient';
-import { API_URL } from '../../../constants/apiUrl';
+import { API_URL, API_URL_WITH_PARAMS } from '../../../constants/apiUrl';
 import { ILongProblemListData } from '../../../types/problem/api';
 
 export const dataApiWrapper = {
@@ -42,14 +42,16 @@ export const dataApiWrapper = {
     apiClient.post(API_URL.DATA_LIST_CREATE, data).then((response) => response.data);
   },
   getDataDetail: ({ user_answer_id }: IDataDetailRequest) => {
-    return apiClient.get(API_URL.DATA_DETAIL(user_answer_id)).then((response) => response.data);
+    return apiClient
+      .get(API_URL_WITH_PARAMS.DATA_DETAIL(user_answer_id))
+      .then((response) => response.data);
   },
   labelingData: ({ user_answer_id, selectedGradingStandardIds }: IDataDetailRequest) => {
     const data = { selectedGradingStandardIds };
-    apiClient.post(API_URL.DATA_LABELING(user_answer_id), data);
+    apiClient.post(API_URL_WITH_PARAMS.DATA_LABELING(user_answer_id), data);
   },
   validatingData: ({ user_answer_id, selectedGradingStandardIds }: IDataDetailRequest) => {
     const data = { selectedGradingStandardIds };
-    apiClient.post(API_URL.DATA_VALIDATING(user_answer_id), data);
+    apiClient.post(API_URL_WITH_PARAMS.DATA_VALIDATING(user_answer_id), data);
   },
 };

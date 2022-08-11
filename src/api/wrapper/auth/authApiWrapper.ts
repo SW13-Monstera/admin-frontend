@@ -7,14 +7,6 @@ interface ILoginRequest {
   password: string;
 }
 
-interface ILoginResponse {
-  id: string;
-  username: string;
-  email: string;
-  role: string;
-  accessToken: string;
-}
-
 export const authApiWrapper = {
   login: (data: ILoginRequest) => {
     return apiClient.post(API_URL.LOGIN, data).then((response) => {

@@ -46,7 +46,7 @@ export const ShortProblemEditPage = () => {
 
   useEffect(() => {
     if (!id) return;
-    shortProblemApiWrapper.getShortProblemDetail({ problem_id: parseInt(id) }).then((res) => {
+    shortProblemApiWrapper.getShortProblemDetail({ problem_id: id }).then((res) => {
       setData(res);
     });
   }, []);
@@ -68,7 +68,7 @@ export const ShortProblemEditPage = () => {
       answer: (document.getElementById('answer') as HTMLTextAreaElement).value || '',
       score: parseInt((document.getElementById('score') as HTMLTextAreaElement).value) || 0,
     };
-    shortProblemApiWrapper.updateShortProblem(parseInt(id), data);
+    shortProblemApiWrapper.updateShortProblem(id, data);
     navigate(URL.SHORT_PROBLEM_LIST);
   }
 

@@ -35,19 +35,19 @@ export const LongProblemDetailPage = () => {
   function handleProblemGradablility() {
     if (!id) return;
     const newData: IProblemUpdateData = { ...data, isGradable: false, isActive: false };
-    longProblemApiWrapper.updateLongProblem(parseInt(id), newData);
+    longProblemApiWrapper.updateLongProblem(id, newData);
   }
 
   //추후 수정
   function handleProblemActivate() {
     if (!id) return;
     const newData: IProblemUpdateData = { ...data, isGradable: false, isActive: false };
-    longProblemApiWrapper.updateLongProblem(parseInt(id), newData);
+    longProblemApiWrapper.updateLongProblem(id, newData);
   }
 
   useEffect(() => {
     if (!id) return;
-    longProblemApiWrapper.getLongProblemDetail({ problem_id: parseInt(id) }).then((res) => {
+    longProblemApiWrapper.getLongProblemDetail({ problem_id: id }).then((res) => {
       setData(res);
     });
   }, []);
