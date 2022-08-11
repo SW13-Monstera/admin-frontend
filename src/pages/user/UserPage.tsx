@@ -1,5 +1,3 @@
-import { Box, Typography } from '@mui/material';
-import { useEffect, useState } from 'react';
 import { userApiWrapper } from '../../api/wrapper/user/userApiWrapper';
 import { UserTable } from '../../components/Table/UserTable';
 import PageTemplate from '../../templates/PageTemplate';
@@ -36,16 +34,9 @@ const headCells: readonly HeadCell[] = [
 const tableHeads: (keyof IUserListResponseData)[] = ['id', 'email', 'username', 'role'];
 
 export const UserPage = () => {
-  const [users, setUsers] = useState<IUserListResponseData[]>([]);
-
   function getUserList() {
     return userApiWrapper.userList();
   }
-  useEffect(() => {
-    userApiWrapper.userList().then((res) => {
-      setUsers(res.data);
-    });
-  }, []);
 
   return (
     <PageTemplate>
