@@ -1,23 +1,8 @@
 import PageTemplate from '../../../templates/PageTemplate';
-import {
-  Typography,
-  Box,
-  Button,
-  List,
-  ListItem,
-  ListItemText,
-  ListSubheader,
-  Divider,
-  FormGroup,
-  FormControlLabel,
-  Switch,
-} from '@mui/material';
+import { Typography, Box, Button } from '@mui/material';
 import { Link, useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import { longProblemApiWrapper } from '../../../api/wrapper/problem/longProblemApiWrapper';
 import { URLWithParam } from '../../../constants/url';
-import { IProblemDetailResponse, IProblemUpdateData } from '../../../types/problem/api';
-import { STANDARD_TYPE } from '../../../constants/standard';
 import { TAGS } from '../../../constants/tags';
 import { IShortProblemDetailResponse } from '../../../types/problem/shortApi';
 import { shortProblemApiWrapper } from '../../../api/wrapper/problem/shortProblemApiWrapper';

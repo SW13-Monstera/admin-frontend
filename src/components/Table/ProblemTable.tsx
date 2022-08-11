@@ -13,20 +13,13 @@ import {
 import { useNavigate } from 'react-router-dom';
 import { ILongProblem } from '../../types/problem/api';
 import { URL, URLWithParam } from '../../constants/url';
-import { HeadCell, IFilter } from '../../types/etc';
-import { FILTER_PARAMS } from '../../constants/filter';
+import { IProblemTable } from '../../types/etc';
+import { PROBLEM_FILTER } from '../../constants/filter';
 import { roundToSecondDigit } from '../../utils';
 import { EnhancedTableToolbar } from './EnhancedToolbar';
 import { EnhancedTableHead } from './EnhancedTableHead';
 
-interface ICustomTable {
-  tableHeads: (keyof ILongProblem)[];
-  headCells: readonly HeadCell[];
-  getData: (page: number, params: object) => Promise<any>;
-  filterState: IFilter[];
-}
-
-export function ProblemTable({ headCells, tableHeads, getData, filterState }: ICustomTable) {
+export function ProblemTable({ headCells, tableHeads, getData, filterState }: IProblemTable) {
   const [selected, setSelected] = useState<readonly string[]>([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage] = useState(10);
@@ -36,7 +29,12 @@ export function ProblemTable({ headCells, tableHeads, getData, filterState }: IC
 
   useEffect(() => {
     const params = Object.fromEntries(
-      new Map(filterState.map((filter) => [FILTER_PARAMS[filter.condition], filter.value])),
+      new Map(
+        filterState.map((filter) => [
+          PROBLEM_FILTER.find((e) => filter.condition === e.value)?.value,
+          filter.value,
+        ]),
+      ),
     );
     getData(page, params).then((res) => {
       setData(res.problems);
@@ -131,7 +129,7 @@ export function ProblemTable({ headCells, tableHeads, getData, filterState }: IC
                   </TableCell>
                   {Object.keys(row).map((key) =>
                     tableHeads.includes(key as keyof ILongProblem) ? (
-                      key === 'title' || key === 'problemTitle' ? (
+                      key === 'title' ? (
                         <TableCell
                           align='center'
                           key={`${key}-${row.id}`}

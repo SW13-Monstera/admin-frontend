@@ -86,6 +86,7 @@ export const ShortProblemEditPage = () => {
           multiline
           defaultValue={data.title}
           sx={{ my: 2 }}
+          InputLabelProps={{ shrink: true }}
         />
         <Card variant='outlined' sx={{ backgroundColor: 'transparent', borderColor: '#0000003B' }}>
           <Box sx={{ display: 'flex' }}>
@@ -117,6 +118,7 @@ export const ShortProblemEditPage = () => {
           rows={4}
           defaultValue={data.description}
           sx={{ my: 2 }}
+          InputLabelProps={{ shrink: true }}
         />
         <TextField
           id='answer'
@@ -125,8 +127,16 @@ export const ShortProblemEditPage = () => {
           rows={4}
           defaultValue={data.answer}
           sx={{ my: 2 }}
+          InputLabelProps={{ shrink: true }}
         />
-        <TextField id='score' label='점수' type='number' defaultValue={data.score} sx={{ my: 2 }} />
+        <TextField
+          id='score'
+          label='점수'
+          type='number'
+          defaultValue={data.score}
+          sx={{ my: 2 }}
+          InputLabelProps={{ shrink: true }}
+        />
       </Box>
       <Button variant='contained' sx={{ mt: 2 }} onClick={editProblem}>
         수정

@@ -1,18 +1,7 @@
 import PageTemplate from '../../../templates/PageTemplate';
-import {
-  Typography,
-  Box,
-  Card,
-  Button,
-  Checkbox,
-  FormControl,
-  FormLabel,
-  FormGroup,
-  FormControlLabel,
-  Divider,
-} from '@mui/material';
+import { Typography, Box, Card, Button, Divider } from '@mui/material';
 import { Link, useParams } from 'react-router-dom';
-import { ChangeEvent, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { dataApiWrapper } from '../../../api/wrapper/data/dataApiWrapper';
 import { IDataDetailResponseData } from '../../../types/data/api';
 import { URL } from '../../../constants/url';

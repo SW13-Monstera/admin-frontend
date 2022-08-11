@@ -9,14 +9,9 @@ import {
   FormGroup,
   FormControlLabel,
   Checkbox,
-  Typography,
 } from '@mui/material';
-import { TextNumberInput } from '../../../components/FormGroup/TextNumberInput';
 import { TAGS } from '../../../constants/tags';
-import { longProblemApiWrapper } from '../../../api/wrapper/problem/longProblemApiWrapper';
-import { IProblemCreateData, IStandard, IStandardResponse } from '../../../types/problem/api';
-import { STANDARD_TYPE } from '../../../constants/standard';
-import { useState, ChangeEvent, useEffect } from 'react';
+import { useState, ChangeEvent } from 'react';
 import { URL } from '../../../constants/url';
 import { Link } from 'react-router-dom';
 import { ICreateShortProblemRequest } from '../../../types/problem/shortApi';
@@ -55,7 +50,13 @@ export const ShortProblemAddPage = () => {
         autoComplete='off'
         sx={{ display: 'flex', flexDirection: 'column' }}
       >
-        <TextField id='title' label='문제 제목' variant='outlined' sx={{ my: 2 }} />
+        <TextField
+          id='title'
+          label='문제 제목'
+          variant='outlined'
+          sx={{ my: 2 }}
+          InputLabelProps={{ shrink: true }}
+        />
         <Card variant='outlined' sx={{ backgroundColor: 'transparent', borderColor: '#0000003B' }}>
           <Box sx={{ display: 'flex' }}>
             <FormControl sx={{ my: 3 }} component='fieldset' variant='standard'>
@@ -79,9 +80,29 @@ export const ShortProblemAddPage = () => {
             </FormControl>
           </Box>
         </Card>
-        <TextField id='desc' label='문제 설명' multiline rows={4} sx={{ my: 2 }} />
-        <TextField id='answer' label='정답' multiline rows={4} sx={{ my: 2 }} />
-        <TextField id='score' label='점수' type='number' sx={{ my: 2 }} />
+        <TextField
+          id='desc'
+          label='문제 설명'
+          multiline
+          rows={4}
+          sx={{ my: 2 }}
+          InputLabelProps={{ shrink: true }}
+        />
+        <TextField
+          id='answer'
+          label='정답'
+          multiline
+          rows={4}
+          sx={{ my: 2 }}
+          InputLabelProps={{ shrink: true }}
+        />
+        <TextField
+          id='score'
+          label='점수'
+          type='number'
+          sx={{ my: 2 }}
+          InputLabelProps={{ shrink: true }}
+        />
       </Box>
       <Link to={URL.SHORT_PROBLEM_LIST}>
         <Button variant='contained' sx={{ mt: 2 }} onClick={createProblem}>

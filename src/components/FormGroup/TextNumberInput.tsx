@@ -9,7 +9,7 @@ interface ITextNumberInput {
 
 export const TextNumberInput = ({ text, number, id, onChange }: ITextNumberInput) => {
   return (
-    <Box sx={{ display: 'flex', my: 1 }} key={id}>
+    <Box sx={{ display: 'flex', my: 1, width: '100%' }} key={id}>
       <TextField
         id={`text-${id}`}
         label='문자 입력란'
@@ -17,6 +17,7 @@ export const TextNumberInput = ({ text, number, id, onChange }: ITextNumberInput
         defaultValue={text}
         sx={{ mr: 1, width: '90%' }}
         onChange={onChange}
+        InputLabelProps={{ shrink: true }}
       />
       <TextField
         id={`number-${id}`}

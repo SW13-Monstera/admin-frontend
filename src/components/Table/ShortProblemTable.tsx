@@ -5,25 +5,90 @@ import {
   TableBody,
   TableCell,
   TableContainer,
+  TableHead,
   TablePagination,
   TableRow,
+  Toolbar,
   Typography,
   Checkbox,
 } from '@mui/material';
+import { alpha } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
-import { IDataListElement } from '../../types/data/api';
 import { URL, URLWithParam } from '../../constants/url';
-import { IDataTable } from '../../types/etc';
-import { parseDateTime } from '../../utils';
-import { EnhancedTableToolbar } from './EnhancedToolbar';
-import { EnhancedTableHead } from './EnhancedTableHead';
-import { DATA_FILTER } from '../../constants/filter';
+import { HeadCell, IShortProblemTable } from '../../types/etc';
+import { PROBLEM_FILTER } from '../../constants/filter';
+import { roundToSecondDigit } from '../../utils';
+import { IShortProblemListElement } from '../../types/problem/shortApi';
 
-export function DataTable({ headCells, tableHeads, getData, filterState }: IDataTable) {
+interface EnhancedTableProps {
+  numSelected: number;
+  rowCount: number;
+  headCells: readonly HeadCell[];
+  onSelectAllClick: (event: ChangeEvent<HTMLInputElement>) => void;
+}
+
+function EnhancedTableHead(props: EnhancedTableProps) {
+  const { onSelectAllClick, numSelected, rowCount, headCells } = props;
+
+  return (
+    <TableHead>
+      <TableRow>
+        <TableCell padding='checkbox'>
+          <Checkbox
+            color='primary'
+            indeterminate={numSelected > 0 && numSelected < rowCount}
+            checked={rowCount > 0 && numSelected === rowCount}
+            onChange={onSelectAllClick}
+            inputProps={{
+              'aria-label': 'select all items',
+            }}
+          />
+        </TableCell>
+        {headCells.map((headCell) => (
+          <TableCell
+            key={headCell.id}
+            align='center'
+            padding={headCell.disablePadding ? 'none' : 'normal'}
+          >
+            {headCell.label}
+          </TableCell>
+        ))}
+      </TableRow>
+    </TableHead>
+  );
+}
+
+const EnhancedTableToolbar = (props: { numSelected: any }) => {
+  const { numSelected } = props;
+
+  return (
+    <Toolbar
+      sx={{
+        pl: { sm: 2 },
+        pr: { xs: 1, sm: 1 },
+        ...(numSelected > 0 && {
+          bgcolor: (theme) =>
+            alpha(theme.palette.primary.main, theme.palette.action.activatedOpacity),
+        }),
+      }}
+    >
+      <Typography sx={{ flex: '1 1 100%' }} color='inherit' variant='subtitle1' component='div'>
+        {numSelected} selected
+      </Typography>
+    </Toolbar>
+  );
+};
+
+export function ShortProblemTable({
+  headCells,
+  tableHeads,
+  getData,
+  filterState,
+}: IShortProblemTable) {
   const [selected, setSelected] = useState<readonly string[]>([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage] = useState(10);
-  const [data, setData] = useState<IDataListElement[]>([]);
+  const [data, setData] = useState<any[]>([]);
   const [totalElements, setTotalElements] = useState(0);
   const navigate = useNavigate();
 
@@ -31,24 +96,20 @@ export function DataTable({ headCells, tableHeads, getData, filterState }: IData
     const params = Object.fromEntries(
       new Map(
         filterState.map((filter) => [
-          DATA_FILTER.find((e) => filter.condition === e.value)?.value,
+          PROBLEM_FILTER.find((e) => filter.condition === e.value)?.value,
           filter.value,
         ]),
       ),
     );
     getData(page, params).then((res) => {
-      setData(res.userAnswers);
+      setData(res.problems);
       setTotalElements(res.totalElements);
     });
   }, [page, filterState]);
 
   const handleRowClick = (id: string) => {
-    if (location.pathname === URL.LABELING_DATA_LIST) {
-      navigate(URLWithParam.DATA_LABELING(id));
-    } else if (location.pathname === URL.VALIDATING_DATA_LIST) {
-      navigate(URLWithParam.DATA_VALIDATING(id));
-    } else if (location.pathname === URL.DONE_DATA_LIST) {
-      navigate(URLWithParam.DATA_DONE(id));
+    if (location.pathname === URL.SHORT_PROBLEM_LIST) {
+      navigate(URLWithParam.SHORT_PROBLEM_DETAIL(id));
     } else {
       navigate(URL.LOGIN);
     }
@@ -130,8 +191,8 @@ export function DataTable({ headCells, tableHeads, getData, filterState }: IData
                     />
                   </TableCell>
                   {Object.keys(row).map((key) =>
-                    tableHeads.includes(key as keyof IDataListElement) ? (
-                      key === 'problemTitle' ? (
+                    tableHeads.includes(key as keyof IShortProblemListElement) ? (
+                      key === 'title' ? (
                         <TableCell
                           align='center'
                           key={`${key}-${row.id}`}
@@ -143,23 +204,23 @@ export function DataTable({ headCells, tableHeads, getData, filterState }: IData
                           }}
                           onClick={() => handleRowClick(row.id.toString())}
                         >
-                          {row[key as keyof IDataListElement] ?? 'N/A'}
+                          {row[key as keyof IShortProblemListElement] ?? 'N/A'}
                         </TableCell>
                       ) : (
                         <TableCell align='center' key={`${key}-${row.id}`}>
-                          {typeof row[key as keyof IDataListElement] === 'boolean' ? (
+                          {typeof row[key as keyof IShortProblemListElement] === 'boolean' ? (
                             <Checkbox
                               disabled
                               checked={
-                                row[key as keyof IDataListElement].toString() === 'true'
+                                row[key as keyof IShortProblemListElement].toString() === 'true'
                                   ? true
                                   : false
                               }
                             />
-                          ) : key === 'updatedAt' ? (
-                            parseDateTime(row[key as keyof IDataListElement].toString())
+                          ) : typeof row[key as keyof IShortProblemListElement] === 'number' ? (
+                            roundToSecondDigit(row[key as keyof IShortProblemListElement]) ?? 'N/A'
                           ) : (
-                            row[key as keyof IDataListElement].toString() ?? 'N/A'
+                            row[key as keyof IShortProblemListElement] ?? 'N/A'
                           )}
                         </TableCell>
                       )

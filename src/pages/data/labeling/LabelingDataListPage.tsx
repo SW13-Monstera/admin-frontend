@@ -5,10 +5,9 @@ import { Link } from 'react-router-dom';
 import { Appbar } from '../../../components/FormGroup/Appbar';
 import { dataApiWrapper } from '../../../api/wrapper/data/dataApiWrapper';
 import { IDataListElement } from '../../../types/data/api';
-import { HeadCell, IFilter } from '../../../types/etc';
-import { useState, MouseEvent, ChangeEvent } from 'react';
-import { v4 as uuidv4 } from 'uuid';
+import { HeadCell } from '../../../types/etc';
 import { DATA_FILTER } from '../../../constants/filter';
+import { useFilter } from '../../../hooks/useFilter';
 
 const headCells: readonly HeadCell[] = [
   {
@@ -45,37 +44,17 @@ const tableHeads: (keyof IDataListElement)[] = [
 ];
 
 export const LabelingDataListPage = () => {
-  const [filterState, setFilterState] = useState<IFilter[]>([]);
-  function getLabelingDataList(page: number) {
-    return dataApiWrapper.getDataList({ page: page, isLabeled: false, isValidated: false });
+  const { filterState, addFilter, deletetFilter, updateCondition, updateFilterValue } = useFilter();
+
+  function getLabelingDataList(page: number, params: object) {
+    return dataApiWrapper.getDataList({
+      ...params,
+      page: page,
+      isLabeled: false,
+      isValidated: false,
+    });
   }
 
-  function addFilter() {
-    setFilterState((prev) => [...prev, { id: uuidv4(), condition: 'id', value: '' }]);
-  }
-  function deletetFilter(event: MouseEvent<Element, MouseEvent>) {
-    const id = event.currentTarget.id;
-    setFilterState((prev) => prev.filter((e) => e.id !== id));
-  }
-  function updateCondition(newCondition: string, DOMId: string) {
-    setFilterState((prev) =>
-      prev.map(({ id, condition, value }) =>
-        id === DOMId
-          ? ({ id, value, condition: newCondition } as unknown as IFilter)
-          : { id, condition, value },
-      ),
-    );
-  }
-  function updateFilterValue(event: ChangeEvent<HTMLTextAreaElement>) {
-    if (!event.currentTarget) return;
-    const DOMId = event.currentTarget.id;
-    const DOMValue = event.currentTarget.value;
-    setFilterState((prev) =>
-      prev.map(({ id, condition, value }) =>
-        id === DOMId ? { id, value: DOMValue, condition } : { id, condition, value },
-      ),
-    );
-  }
   return (
     <PageTemplate>
       <Box
@@ -109,7 +88,12 @@ export const LabelingDataListPage = () => {
           </>
         </Appbar>
       </Box>
-      <DataTable tableHeads={tableHeads} headCells={headCells} getData={getLabelingDataList} />
+      <DataTable
+        tableHeads={tableHeads}
+        headCells={headCells}
+        getData={getLabelingDataList}
+        filterState={filterState}
+      />
     </PageTemplate>
   );
 };
