@@ -13,20 +13,19 @@ import {
 import { useNavigate } from 'react-router-dom';
 import { ILongProblem } from '../../types/problem/api';
 import { URL, URLWithParam } from '../../constants/url';
-import { HeadCell, IFilter } from '../../types/etc';
-import { FILTER_PARAMS } from '../../constants/filter';
+import { HeadCell } from '../../types/etc';
 import { roundToSecondDigit } from '../../utils';
 import { EnhancedTableToolbar } from './EnhancedToolbar';
 import { EnhancedTableHead } from './EnhancedTableHead';
+import { IUserListResponseData } from '../../types/user/api';
 
 interface ICustomTable {
-  tableHeads: (keyof ILongProblem)[];
+  tableHeads: (keyof IUserListResponseData)[];
   headCells: readonly HeadCell[];
-  getData: (page: number, params: object) => Promise<any>;
-  filterState: IFilter[];
+  getData: (page: number) => Promise<any>;
 }
 
-export function ProblemTable({ headCells, tableHeads, getData, filterState }: ICustomTable) {
+export function UserTable({ headCells, tableHeads, getData }: ICustomTable) {
   const [selected, setSelected] = useState<readonly string[]>([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage] = useState(10);
@@ -35,14 +34,11 @@ export function ProblemTable({ headCells, tableHeads, getData, filterState }: IC
   const navigate = useNavigate();
 
   useEffect(() => {
-    const params = Object.fromEntries(
-      new Map(filterState.map((filter) => [FILTER_PARAMS[filter.condition], filter.value])),
-    );
-    getData(page, params).then((res) => {
-      setData(res.problems);
-      setTotalElements(res.totalElements);
+    getData(page).then((res) => {
+      setData(res.data);
+      setTotalElements(res.data.length);
     });
-  }, [page, filterState]);
+  }, [page]);
 
   const handleRowClick = (id: string) => {
     if (location.pathname === URL.LONG_PROBLEM_LIST) {
@@ -130,7 +126,7 @@ export function ProblemTable({ headCells, tableHeads, getData, filterState }: IC
                     />
                   </TableCell>
                   {Object.keys(row).map((key) =>
-                    tableHeads.includes(key as keyof ILongProblem) ? (
+                    tableHeads.includes(key as keyof IUserListResponseData) ? (
                       key === 'title' || key === 'problemTitle' ? (
                         <TableCell
                           align='center'

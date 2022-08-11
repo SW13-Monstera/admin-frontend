@@ -1,16 +1,46 @@
 import { Box, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { userApiWrapper } from '../../api/wrapper/user/userApiWrapper';
+import { UserTable } from '../../components/Table/UserTable';
+import PageTemplate from '../../templates/PageTemplate';
+import { HeadCell } from '../../types/etc';
+import { IUserListResponseData } from '../../types/user/api';
 
-interface IUserListResponseData {
-  id: string;
-  email: string;
-  username: string;
-  role: string;
-}
+const headCells: readonly HeadCell[] = [
+  {
+    id: 'id',
+    numeric: false,
+    disablePadding: true,
+    label: 'User ID',
+  },
+  {
+    id: 'email',
+    numeric: false,
+    disablePadding: false,
+    label: '이메일',
+  },
+  {
+    id: 'username',
+    numeric: false,
+    disablePadding: false,
+    label: '닉네임',
+  },
+  {
+    id: 'role',
+    numeric: false,
+    disablePadding: false,
+    label: '권한',
+  },
+];
+
+const tableHeads: (keyof IUserListResponseData)[] = ['id', 'email', 'username', 'role'];
 
 export const UserPage = () => {
   const [users, setUsers] = useState<IUserListResponseData[]>([]);
+
+  function getUserList() {
+    return userApiWrapper.userList();
+  }
   useEffect(() => {
     userApiWrapper.userList().then((res) => {
       setUsers(res.data);
@@ -18,15 +48,8 @@ export const UserPage = () => {
   }, []);
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-      {users.map(({ id, email, username, role }) => (
-        <Box sx={{ display: 'flex', gap: 1 }} key={id}>
-          <Typography>{id}</Typography>
-          <Typography>{email}</Typography>
-          <Typography>{username}</Typography>
-          <Typography>{role}</Typography>
-        </Box>
-      ))}
-    </Box>
+    <PageTemplate>
+      <UserTable tableHeads={tableHeads} headCells={headCells} getData={getUserList} />
+    </PageTemplate>
   );
 };
