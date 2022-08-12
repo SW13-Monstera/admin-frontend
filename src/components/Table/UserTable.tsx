@@ -11,15 +11,21 @@ import {
   Checkbox,
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import { ILongProblem } from '../../types/problem/api';
 import { URL, URLWithParam } from '../../constants/url';
-import { ICustomTable } from '../../types/etc';
-import { PROBLEM_FILTER } from '../../constants/filter';
+import { HeadCell } from '../../types/etc';
 import { roundToSecondDigit } from '../../utils';
 import { CustomTableToolbar } from './CustomToolbar';
 import { CustomTableHead } from './CustomTableHead';
-import { IProblemListElement } from '../../types/problem/api';
+import { IUserListResponseData } from '../../types/user/api';
 
-export function CustomTable({ headCells, tableHeads, getData, filterState }: ICustomTable) {
+interface ICustomTable {
+  tableHeads: (keyof IUserListResponseData)[];
+  headCells: readonly HeadCell[];
+  getData: (page: number) => Promise<any>;
+}
+
+export function UserTable({ headCells, tableHeads, getData }: ICustomTable) {
   const [selected, setSelected] = useState<readonly string[]>([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage] = useState(10);
@@ -28,27 +34,17 @@ export function CustomTable({ headCells, tableHeads, getData, filterState }: ICu
   const navigate = useNavigate();
 
   useEffect(() => {
-    const params = Object.fromEntries(
-      new Map(
-        filterState.map((filter) => [
-          PROBLEM_FILTER.find((e) => filter.condition === e.value)?.value,
-          filter.value,
-        ]),
-      ),
-    );
-    getData(page, params).then((res) => {
-      setData(res.problems);
-      setTotalElements(res.totalElements);
+    getData(page).then((res) => {
+      setData(res.data);
+      setTotalElements(res.data.length);
     });
-  }, [page, filterState]);
+  }, [page]);
 
   const handleRowClick = (id: string) => {
     if (location.pathname === URL.LONG_PROBLEM_LIST) {
       navigate(URLWithParam.LONG_PROBLEM_DETAIL(id));
     } else if (location.pathname === URL.SHORT_PROBLEM_LIST) {
       navigate(URLWithParam.SHORT_PROBLEM_DETAIL(id));
-    } else if (location.pathname === URL.MULTIPLE_PROBLEM_LIST) {
-      navigate(URLWithParam.MULTIPLE_PROBLEM_DETAIL(id));
     } else {
       navigate(URL.LOGIN);
     }
@@ -79,6 +75,7 @@ export function CustomTable({ headCells, tableHeads, getData, filterState }: ICu
         selected.slice(selectedIndex + 1),
       );
     }
+
     setSelected(newSelected);
   };
 
@@ -129,7 +126,7 @@ export function CustomTable({ headCells, tableHeads, getData, filterState }: ICu
                     />
                   </TableCell>
                   {Object.keys(row).map((key) =>
-                    tableHeads.includes(key as keyof IProblemListElement) ? (
+                    tableHeads.includes(key as keyof IUserListResponseData) ? (
                       key === 'title' || key === 'problemTitle' ? (
                         <TableCell
                           align='center'
@@ -142,23 +139,21 @@ export function CustomTable({ headCells, tableHeads, getData, filterState }: ICu
                           }}
                           onClick={() => handleRowClick(row.id.toString())}
                         >
-                          {row[key as keyof IProblemListElement] ?? 'N/A'}
+                          {row[key as keyof ILongProblem] ?? 'N/A'}
                         </TableCell>
                       ) : (
                         <TableCell align='center' key={`${key}-${row.id}`}>
-                          {typeof row[key as keyof IProblemListElement] === 'boolean' ? (
+                          {typeof row[key as keyof ILongProblem] === 'boolean' ? (
                             <Checkbox
                               disabled
                               checked={
-                                row[key as keyof IProblemListElement].toString() === 'true'
-                                  ? true
-                                  : false
+                                row[key as keyof ILongProblem].toString() === 'true' ? true : false
                               }
                             />
-                          ) : typeof row[key as keyof IProblemListElement] === 'number' ? (
-                            roundToSecondDigit(row[key as keyof IProblemListElement]) ?? 'N/A'
+                          ) : typeof row[key as keyof ILongProblem] === 'number' ? (
+                            roundToSecondDigit(row[key as keyof ILongProblem]) ?? 'N/A'
                           ) : (
-                            row[key as keyof IProblemListElement] ?? 'N/A'
+                            row[key as keyof ILongProblem] ?? 'N/A'
                           )}
                         </TableCell>
                       )

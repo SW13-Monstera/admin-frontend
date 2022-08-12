@@ -5,79 +5,19 @@ import {
   TableBody,
   TableCell,
   TableContainer,
-  TableHead,
   TablePagination,
   TableRow,
-  Toolbar,
   Typography,
   Checkbox,
 } from '@mui/material';
-import { alpha } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import { IDataListElement } from '../../types/data/api';
 import { URL, URLWithParam } from '../../constants/url';
-import { HeadCell, IDataTable } from '../../types/etc';
+import { IDataTable } from '../../types/etc';
 import { parseDateTime } from '../../utils';
+import { CustomTableToolbar } from './CustomToolbar';
+import { CustomTableHead } from './CustomTableHead';
 import { DATA_FILTER } from '../../constants/filter';
-
-interface EnhancedTableProps {
-  numSelected: number;
-  rowCount: number;
-  headCells: readonly HeadCell[];
-  onSelectAllClick: (event: ChangeEvent<HTMLInputElement>) => void;
-}
-
-function EnhancedTableHead(props: EnhancedTableProps) {
-  const { onSelectAllClick, numSelected, rowCount, headCells } = props;
-
-  return (
-    <TableHead>
-      <TableRow>
-        <TableCell padding='checkbox'>
-          <Checkbox
-            color='primary'
-            indeterminate={numSelected > 0 && numSelected < rowCount}
-            checked={rowCount > 0 && numSelected === rowCount}
-            onChange={onSelectAllClick}
-            inputProps={{
-              'aria-label': 'select all items',
-            }}
-          />
-        </TableCell>
-        {headCells.map((headCell) => (
-          <TableCell
-            key={headCell.id}
-            align='center'
-            padding={headCell.disablePadding ? 'none' : 'normal'}
-          >
-            {headCell.label}
-          </TableCell>
-        ))}
-      </TableRow>
-    </TableHead>
-  );
-}
-
-const EnhancedTableToolbar = (props: { numSelected: any }) => {
-  const { numSelected } = props;
-
-  return (
-    <Toolbar
-      sx={{
-        pl: { sm: 2 },
-        pr: { xs: 1, sm: 1 },
-        ...(numSelected > 0 && {
-          bgcolor: (theme) =>
-            alpha(theme.palette.primary.main, theme.palette.action.activatedOpacity),
-        }),
-      }}
-    >
-      <Typography sx={{ flex: '1 1 100%' }} color='inherit' variant='subtitle1' component='div'>
-        {numSelected} selected
-      </Typography>
-    </Toolbar>
-  );
-};
 
 export function DataTable({ headCells, tableHeads, getData, filterState }: IDataTable) {
   const [selected, setSelected] = useState<readonly string[]>([]);
@@ -154,10 +94,10 @@ export function DataTable({ headCells, tableHeads, getData, filterState }: IData
   return (
     <Box sx={{ width: '100%' }}>
       <Typography>총 개수 {totalElements}개</Typography>
-      <EnhancedTableToolbar numSelected={selected.length} />
+      <CustomTableToolbar numSelected={selected.length} />
       <TableContainer>
         <Table sx={{ minWidth: 750 }} aria-labelledby='tableTitle' size='small'>
-          <EnhancedTableHead
+          <CustomTableHead
             numSelected={selected.length}
             onSelectAllClick={handleSelectAllClick}
             rowCount={data.length}
@@ -166,7 +106,7 @@ export function DataTable({ headCells, tableHeads, getData, filterState }: IData
           <TableBody>
             {data.map((row, index) => {
               const isItemSelected = isSelected(row.id.toString());
-              const labelId = `enhanced-table-checkbox-${index}`;
+              const labelId = `Custom-table-checkbox-${index}`;
 
               return (
                 <TableRow

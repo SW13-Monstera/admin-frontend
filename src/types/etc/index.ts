@@ -14,18 +14,11 @@ interface ICustomTable {
   headCells: readonly HeadCell[];
   getData: (page: number, params: any) => Promise<any>;
   filterState: IFilter[];
+  tableHeads: any[];
 }
 
 interface IProblemTable extends ICustomTable {
   tableHeads: (keyof IProblemListElement)[];
-}
-
-interface IShortProblemTable extends ICustomTable {
-  tableHeads: (keyof IShortProblemListElement)[];
-}
-
-interface IShortProblemTable extends ICustomTable {
-  tableHeads: (keyof IShortProblemListElement)[];
 }
 
 interface IDataTable extends ICustomTable {
@@ -67,5 +60,4 @@ export type {
   ICustomTable,
   IProblemTable,
   IDataTable,
-  IShortProblemTable,
 };

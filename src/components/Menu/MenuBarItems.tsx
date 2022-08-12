@@ -4,6 +4,7 @@ import FormatListNumberedIcon from '@mui/icons-material/FormatListNumbered';
 import LabelIcon from '@mui/icons-material/Label';
 import SearchIcon from '@mui/icons-material/Search';
 import DoneAllIcon from '@mui/icons-material/DoneAll';
+import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import { URL } from '../../constants/url';
 import { List, Collapse } from '@mui/material';
 import { MenuBarListElement } from './MenuBarListElement';
@@ -13,6 +14,7 @@ import { useNestedMenu } from '../../hooks/useNestedMenu';
 export const MenuBarItems = () => {
   const { open: problemMenuOpen, handleClick: handleProblemMenu } = useNestedMenu();
   const { open: dataMenuOpen, handleClick: handleDataMenu } = useNestedMenu();
+  const { open: userMenuOpen, handleClick: handleUserMenu } = useNestedMenu();
 
   return (
     <>
@@ -38,6 +40,12 @@ export const MenuBarItems = () => {
           <MenuBarListElement text='라벨링' icon={<LabelIcon />} url={URL.LABELING_DATA_LIST} />
           <MenuBarListElement text='검수' icon={<SearchIcon />} url={URL.VALIDATING_DATA_LIST} />
           <MenuBarListElement text='완료' icon={<DoneAllIcon />} url={URL.DONE_DATA_LIST} />
+        </List>
+      </Collapse>
+      <MenuBarTitle text='사용자 관리' open={userMenuOpen} handleClick={handleUserMenu} />
+      <Collapse in={userMenuOpen} timeout='auto' unmountOnExit>
+        <List component='div' disablePadding>
+          <MenuBarListElement text='전체 사용자' icon={<PeopleAltIcon />} url={URL.USER} />
         </List>
       </Collapse>
     </>
