@@ -27,6 +27,7 @@ export const MultipleProblemEditPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [data, setData] = useState<IMultipleDetailResponseData | null>(null);
+  const [score, setScore] = useState<number | null>(0);
 
   const [tagState, setTagState] = useState(
     TAGS.map((tag) => {
@@ -65,6 +66,7 @@ export const MultipleProblemEditPage = () => {
         return { ...choice, id: idx };
       }),
     );
+    setScore(data.score);
   }, [data]);
 
   function editProblem() {
@@ -167,16 +169,17 @@ export const MultipleProblemEditPage = () => {
           id='score'
           label='점수'
           type='number'
-          value={data?.score.toString() ?? 0}
+          value={score ?? ''}
           sx={{ my: 2 }}
           InputLabelProps={{ shrink: true }}
+          inputProps={{
+            min: '0',
+            max: '5',
+            step: '0.5',
+          }}
           onChange={(event) => {
-            setData((prev) => {
-              return {
-                ...prev,
-                score: parseInt(event.target.value) ?? 0,
-              } as IMultipleDetailResponseData;
-            });
+            const value = event.target.value;
+            setScore(value ? parseFloat(value) : null);
           }}
         />
       </Box>
