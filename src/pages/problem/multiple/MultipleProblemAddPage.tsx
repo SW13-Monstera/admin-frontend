@@ -26,7 +26,7 @@ export const MultipleProblemAddPage = () => {
       return { id: tag.id, isChecked: false };
     }),
   );
-  const { choiceState, addChoice, deleteChoice } = useChoice();
+  const { choiceState, addChoice, deleteChoice, handleChoiceChange } = useChoice();
 
   const handleTagChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { id } = event.target;
@@ -36,14 +36,12 @@ export const MultipleProblemAddPage = () => {
   };
 
   function getChoicesValue() {
-    const choiceElement: IChoiceElement = { isAnswer: false, content: '' };
     const choiceInputs = document.querySelectorAll('#choices input');
 
     const choices: IChoiceElement[] = [];
     choiceInputs.forEach((input, idx) => {
       if (idx % 2 === 0) {
         choices.push({ isAnswer: (input as HTMLInputElement).checked, content: '' });
-        console.log(choices);
       } else {
         choices[choices.length - 1].content = (input as HTMLInputElement).value;
       }
@@ -59,7 +57,6 @@ export const MultipleProblemAddPage = () => {
       choices: getChoicesValue(),
       score: parseInt((document.getElementById('score') as HTMLTextAreaElement).value) || 0,
     };
-    console.log(getChoicesValue());
     multipleProblemApiWrapper.createMultipleProblem(data);
   }
 
@@ -129,7 +126,7 @@ export const MultipleProblemAddPage = () => {
                 px: 1,
               }}
             >
-              <CheckboxFormGroup />
+              <CheckboxFormGroup handleChoiceChange={handleChoiceChange} />
               <DeleteButton id={choice.id.toString()} onClick={deleteChoice} />
             </Box>
           ))}
