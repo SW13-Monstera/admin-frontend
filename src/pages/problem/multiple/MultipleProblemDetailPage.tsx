@@ -33,15 +33,15 @@ export const MultipleProblemDetailPage = () => {
 
       <Box sx={{ mt: 2 }}>{data?.description}</Box>
       <Box sx={{ mt: 2 }}>
-        {data?.choiceData.map((choice) => (
-          <Box>
+        {data?.choiceData.map((choice, idx) => (
+          <Box key={choice.content + idx} sx={{ display: 'flex', alignItems: 'center' }}>
             {choice.isAnswer ? <CheckBoxIcon /> : <CheckBoxOutlineBlankIcon />}
             {choice.content}
           </Box>
         ))}
       </Box>
       <Box sx={{ mt: 2 }}>{data?.score}</Box>
-      <Link to={URLWithParam.MUTIPLE_PROBLEM_EDIT(id!)}>
+      <Link to={URLWithParam.MULTIPLE_PROBLEM_EDIT(id!)}>
         <Button variant='contained'>수정</Button>
       </Link>
     </PageTemplate>

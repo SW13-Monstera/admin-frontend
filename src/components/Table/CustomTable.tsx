@@ -15,10 +15,10 @@ import {
 import { alpha } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import { URL, URLWithParam } from '../../constants/url';
-import { HeadCell, IShortProblemTable } from '../../types/etc';
+import { HeadCell, IProblemTable } from '../../types/etc';
 import { PROBLEM_FILTER } from '../../constants/filter';
 import { roundToSecondDigit } from '../../utils';
-import { IShortProblemListElement } from '../../types/problem/shortApi';
+import { IProblemListElement } from '../../types/problem/api';
 
 interface EnhancedTableProps {
   numSelected: number;
@@ -79,12 +79,7 @@ const EnhancedTableToolbar = (props: { numSelected: any }) => {
   );
 };
 
-export function MultipleProblemTable({
-  headCells,
-  tableHeads,
-  getData,
-  filterState,
-}: IShortProblemTable) {
+export function CustomTable({ headCells, tableHeads, getData, filterState }: IProblemTable) {
   const [selected, setSelected] = useState<readonly string[]>([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage] = useState(10);
@@ -108,8 +103,12 @@ export function MultipleProblemTable({
   }, [page, filterState]);
 
   const handleRowClick = (id: string) => {
-    if (location.pathname === URL.MUTIPLE_PROBLEM_DETAIL) {
-      navigate(URLWithParam.MUTIPLE_PROBLEM_DETAIL(id));
+    if (location.pathname === URL.LONG_PROBLEM_LIST) {
+      navigate(URLWithParam.LONG_PROBLEM_DETAIL(id));
+    } else if (location.pathname === URL.SHORT_PROBLEM_LIST) {
+      navigate(URLWithParam.SHORT_PROBLEM_DETAIL(id));
+    } else if (location.pathname === URL.MULTIPLE_PROBLEM_LIST) {
+      navigate(URLWithParam.MULTIPLE_PROBLEM_DETAIL(id));
     } else {
       navigate(URL.LOGIN);
     }
@@ -140,7 +139,6 @@ export function MultipleProblemTable({
         selected.slice(selectedIndex + 1),
       );
     }
-
     setSelected(newSelected);
   };
 
@@ -191,8 +189,8 @@ export function MultipleProblemTable({
                     />
                   </TableCell>
                   {Object.keys(row).map((key) =>
-                    tableHeads.includes(key as keyof IShortProblemListElement) ? (
-                      key === 'title' ? (
+                    tableHeads.includes(key as keyof IProblemListElement) ? (
+                      key === 'title' || key === 'problemTitle' ? (
                         <TableCell
                           align='center'
                           key={`${key}-${row.id}`}
@@ -204,23 +202,23 @@ export function MultipleProblemTable({
                           }}
                           onClick={() => handleRowClick(row.id.toString())}
                         >
-                          {row[key as keyof IShortProblemListElement] ?? 'N/A'}
+                          {row[key as keyof IProblemListElement] ?? 'N/A'}
                         </TableCell>
                       ) : (
                         <TableCell align='center' key={`${key}-${row.id}`}>
-                          {typeof row[key as keyof IShortProblemListElement] === 'boolean' ? (
+                          {typeof row[key as keyof IProblemListElement] === 'boolean' ? (
                             <Checkbox
                               disabled
                               checked={
-                                row[key as keyof IShortProblemListElement].toString() === 'true'
+                                row[key as keyof IProblemListElement].toString() === 'true'
                                   ? true
                                   : false
                               }
                             />
-                          ) : typeof row[key as keyof IShortProblemListElement] === 'number' ? (
-                            roundToSecondDigit(row[key as keyof IShortProblemListElement]) ?? 'N/A'
+                          ) : typeof row[key as keyof IProblemListElement] === 'number' ? (
+                            roundToSecondDigit(row[key as keyof IProblemListElement]) ?? 'N/A'
                           ) : (
-                            row[key as keyof IShortProblemListElement] ?? 'N/A'
+                            row[key as keyof IProblemListElement] ?? 'N/A'
                           )}
                         </TableCell>
                       )

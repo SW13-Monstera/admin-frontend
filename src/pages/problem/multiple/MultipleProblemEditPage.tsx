@@ -64,7 +64,7 @@ export const MultipleProblemEditPage = () => {
       score: parseInt((document.getElementById('score') as HTMLTextAreaElement).value) || 0,
     };
     multipleProblemApiWrapper.updateMultipleProblem(id, data);
-    navigate(URL.MUTILPLE_PROBLEM_LIST);
+    navigate(URL.MULTIPLE_PROBLEM_LIST);
   }
 
   return (

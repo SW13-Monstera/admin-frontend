@@ -22,3 +22,12 @@ export interface IShortProblemListElement {
   userAnswerCnt: number;
   isActive: boolean;
 }
+
+export interface IMultipleProblemListElement {
+  id: number;
+  title: string;
+  creator: string;
+  answerRate: number | null;
+  userAnswerCnt: number;
+  isActive: boolean;
+}

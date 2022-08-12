@@ -28,7 +28,7 @@ export const MenuBarItems = () => {
           <MenuBarListElement
             text='객관식'
             icon={<FormatListNumberedIcon />}
-            url={URL.MUTILPLE_PROBLEM_LIST}
+            url={URL.MULTIPLE_PROBLEM_LIST}
           />
         </List>
       </Collapse>

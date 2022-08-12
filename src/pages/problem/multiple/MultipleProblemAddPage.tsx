@@ -175,7 +175,7 @@ export const MultipleProblemAddPage = () => {
           InputLabelProps={{ shrink: true }}
         />
       </Box>
-      <Link to={URL.MUTILPLE_PROBLEM_LIST}>
+      <Link to={URL.MULTIPLE_PROBLEM_LIST}>
         <Button variant='contained' sx={{ mt: 2 }} onClick={createProblem}>
           저장
         </Button>

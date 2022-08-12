@@ -7,8 +7,8 @@ import { HeadCell } from '../../../types/etc';
 import { PROBLEM_FILTER } from '../../../constants/filter';
 import { shortProblemApiWrapper } from '../../../api/wrapper/problem/shortProblemApiWrapper';
 import { useFilter } from '../../../hooks/useFilter';
-import { ShortProblemTable } from '../../../components/Table/ShortProblemTable';
 import { IShortProblemListElement } from '../../../types/problem/shortApi';
+import { CustomTable } from '../../../components/Table/CustomTable';
 
 const headCells: readonly HeadCell[] = [
   {
@@ -94,7 +94,7 @@ export const ShortProblemListPage = () => {
           </Link>
         </Appbar>
       </Box>
-      <ShortProblemTable
+      <CustomTable
         tableHeads={tableHeads}
         headCells={headCells}
         getData={getShortProblemList}

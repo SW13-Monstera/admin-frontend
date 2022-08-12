@@ -41,10 +41,10 @@ const Router = () => {
         <Route path={URL.SHORT_PROBLEM_DETAIL} element={<ShortProblemDetailPage />} />
         <Route path={URL.SHORT_PROBLEM_ADD} element={<ShortProblemAddPage />} />
         <Route path={URL.SHORT_PROBLEM_EDIT} element={<ShortProblemEditPage />} />
-        <Route path={URL.MUTILPLE_PROBLEM_LIST} element={<MultipleProblemListPage />} />
-        <Route path={URL.MUTIPLE_PROBLEM_DETAIL} element={<MultipleProblemDetailPage />} />
-        <Route path={URL.MUTIPLE_PROBLEM_ADD} element={<MultipleProblemAddPage />} />
-        <Route path={URL.MUTIPLE_PROBLEM_EDIT} element={<MultipleProblemEditPage />} />
+        <Route path={URL.MULTIPLE_PROBLEM_LIST} element={<MultipleProblemListPage />} />
+        <Route path={URL.MULTIPLE_PROBLEM_DETAIL} element={<MultipleProblemDetailPage />} />
+        <Route path={URL.MULTIPLE_PROBLEM_ADD} element={<MultipleProblemAddPage />} />
+        <Route path={URL.MULTIPLE_PROBLEM_EDIT} element={<MultipleProblemEditPage />} />
       </Routes>
     </BrowserRouter>
   );
