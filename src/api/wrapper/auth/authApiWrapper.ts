@@ -26,7 +26,10 @@ export const authApiWrapper = {
       .then((response) => {
         apiClient.defaults.headers.common['Authorization'] = `Bearer ${response.data.accessToken}`;
         const json = JSON.parse(localStorage.getItem(USER_INFO)!);
-        localStorage.setItem(USER_INFO, { ...json, accessToken: response.data.accessToken });
+        localStorage.setItem(
+          USER_INFO,
+          JSON.stringify({ ...json, accessToken: response.data.accessToken }),
+        );
       });
   },
 };
