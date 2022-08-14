@@ -5,86 +5,27 @@ import {
   TableBody,
   TableCell,
   TableContainer,
-  TableHead,
   TablePagination,
   TableRow,
-  Toolbar,
   Typography,
   Checkbox,
 } from '@mui/material';
-import { alpha } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
+import { ILongProblem } from '../../types/problem/api';
 import { URL, URLWithParam } from '../../constants/url';
-import { HeadCell, IShortProblemTable } from '../../types/etc';
-import { PROBLEM_FILTER } from '../../constants/filter';
+import { HeadCell } from '../../types/etc';
 import { roundToSecondDigit } from '../../utils';
-import { IShortProblemListElement } from '../../types/problem/shortApi';
+import { CustomTableToolbar } from './CustomToolbar';
+import { CustomTableHead } from './CustomTableHead';
+import { IUserListResponseData } from '../../types/user/api';
 
-interface EnhancedTableProps {
-  numSelected: number;
-  rowCount: number;
+interface ICustomTable {
+  tableHeads: (keyof IUserListResponseData)[];
   headCells: readonly HeadCell[];
-  onSelectAllClick: (event: ChangeEvent<HTMLInputElement>) => void;
+  getData: (page: number) => Promise<any>;
 }
 
-function EnhancedTableHead(props: EnhancedTableProps) {
-  const { onSelectAllClick, numSelected, rowCount, headCells } = props;
-
-  return (
-    <TableHead>
-      <TableRow>
-        <TableCell padding='checkbox'>
-          <Checkbox
-            color='primary'
-            indeterminate={numSelected > 0 && numSelected < rowCount}
-            checked={rowCount > 0 && numSelected === rowCount}
-            onChange={onSelectAllClick}
-            inputProps={{
-              'aria-label': 'select all items',
-            }}
-          />
-        </TableCell>
-        {headCells.map((headCell) => (
-          <TableCell
-            key={headCell.id}
-            align='center'
-            padding={headCell.disablePadding ? 'none' : 'normal'}
-          >
-            {headCell.label}
-          </TableCell>
-        ))}
-      </TableRow>
-    </TableHead>
-  );
-}
-
-const EnhancedTableToolbar = (props: { numSelected: any }) => {
-  const { numSelected } = props;
-
-  return (
-    <Toolbar
-      sx={{
-        pl: { sm: 2 },
-        pr: { xs: 1, sm: 1 },
-        ...(numSelected > 0 && {
-          bgcolor: (theme) =>
-            alpha(theme.palette.primary.main, theme.palette.action.activatedOpacity),
-        }),
-      }}
-    >
-      <Typography sx={{ flex: '1 1 100%' }} color='inherit' variant='subtitle1' component='div'>
-        {numSelected} selected
-      </Typography>
-    </Toolbar>
-  );
-};
-
-export function ShortProblemTable({
-  headCells,
-  tableHeads,
-  getData,
-  filterState,
-}: IShortProblemTable) {
+export function UserTable({ headCells, tableHeads, getData }: ICustomTable) {
   const [selected, setSelected] = useState<readonly string[]>([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage] = useState(10);
@@ -93,22 +34,16 @@ export function ShortProblemTable({
   const navigate = useNavigate();
 
   useEffect(() => {
-    const params = Object.fromEntries(
-      new Map(
-        filterState.map((filter) => [
-          PROBLEM_FILTER.find((e) => filter.condition === e.value)?.value,
-          filter.value,
-        ]),
-      ),
-    );
-    getData(page, params).then((res) => {
-      setData(res.problems);
-      setTotalElements(res.totalElements);
+    getData(page).then((res) => {
+      setData(res.data);
+      setTotalElements(res.data.length);
     });
-  }, [page, filterState]);
+  }, [page]);
 
   const handleRowClick = (id: string) => {
-    if (location.pathname === URL.SHORT_PROBLEM_LIST) {
+    if (location.pathname === URL.LONG_PROBLEM_LIST) {
+      navigate(URLWithParam.LONG_PROBLEM_DETAIL(id));
+    } else if (location.pathname === URL.SHORT_PROBLEM_LIST) {
       navigate(URLWithParam.SHORT_PROBLEM_DETAIL(id));
     } else {
       navigate(URL.LOGIN);
@@ -155,10 +90,10 @@ export function ShortProblemTable({
   return (
     <Box sx={{ width: '100%' }}>
       <Typography>총 개수 {totalElements}개</Typography>
-      <EnhancedTableToolbar numSelected={selected.length} />
+      <CustomTableToolbar numSelected={selected.length} />
       <TableContainer>
         <Table sx={{ minWidth: 750 }} aria-labelledby='tableTitle' size='small'>
-          <EnhancedTableHead
+          <CustomTableHead
             numSelected={selected.length}
             onSelectAllClick={handleSelectAllClick}
             rowCount={data.length}
@@ -167,7 +102,7 @@ export function ShortProblemTable({
           <TableBody>
             {data.map((row, index) => {
               const isItemSelected = isSelected(row.id.toString());
-              const labelId = `enhanced-table-checkbox-${index}`;
+              const labelId = `Custom-table-checkbox-${index}`;
 
               return (
                 <TableRow
@@ -191,8 +126,8 @@ export function ShortProblemTable({
                     />
                   </TableCell>
                   {Object.keys(row).map((key) =>
-                    tableHeads.includes(key as keyof IShortProblemListElement) ? (
-                      key === 'title' ? (
+                    tableHeads.includes(key as keyof IUserListResponseData) ? (
+                      key === 'title' || key === 'problemTitle' ? (
                         <TableCell
                           align='center'
                           key={`${key}-${row.id}`}
@@ -204,23 +139,21 @@ export function ShortProblemTable({
                           }}
                           onClick={() => handleRowClick(row.id.toString())}
                         >
-                          {row[key as keyof IShortProblemListElement] ?? 'N/A'}
+                          {row[key as keyof ILongProblem] ?? 'N/A'}
                         </TableCell>
                       ) : (
                         <TableCell align='center' key={`${key}-${row.id}`}>
-                          {typeof row[key as keyof IShortProblemListElement] === 'boolean' ? (
+                          {typeof row[key as keyof ILongProblem] === 'boolean' ? (
                             <Checkbox
                               disabled
                               checked={
-                                row[key as keyof IShortProblemListElement].toString() === 'true'
-                                  ? true
-                                  : false
+                                row[key as keyof ILongProblem].toString() === 'true' ? true : false
                               }
                             />
-                          ) : typeof row[key as keyof IShortProblemListElement] === 'number' ? (
-                            roundToSecondDigit(row[key as keyof IShortProblemListElement]) ?? 'N/A'
+                          ) : typeof row[key as keyof ILongProblem] === 'number' ? (
+                            roundToSecondDigit(row[key as keyof ILongProblem]) ?? 'N/A'
                           ) : (
-                            row[key as keyof IShortProblemListElement] ?? 'N/A'
+                            row[key as keyof ILongProblem] ?? 'N/A'
                           )}
                         </TableCell>
                       )

@@ -8,7 +8,7 @@ import { PROBLEM_FILTER } from '../../../constants/filter';
 import { useFilter } from '../../../hooks/useFilter';
 import { IShortProblemListElement } from '../../../types/problem/shortApi';
 import { multipleProblemApiWrapper } from '../../../api/wrapper/problem/multipleProblemApiWrapper';
-import { MultipleProblemTable } from '../../../components/Table/MultipleProblemTable';
+import { CustomTable } from '../../../components/Table/CustomTable';
 
 const headCells: readonly HeadCell[] = [
   {
@@ -87,14 +87,14 @@ export const MultipleProblemListPage = () => {
           updateCondition={updateCondition}
           updateFilterValue={updateFilterValue}
         >
-          <Link to={URL.MUTIPLE_PROBLEM_ADD}>
+          <Link to={URL.MULTIPLE_PROBLEM_ADD}>
             <Button variant='contained' sx={{ height: '100%' }}>
               문제 추가
             </Button>
           </Link>
         </Appbar>
       </Box>
-      <MultipleProblemTable
+      <CustomTable
         tableHeads={tableHeads}
         headCells={headCells}
         getData={getMultipleProblemList}

@@ -3,12 +3,12 @@ import { Link } from 'react-router-dom';
 import { Appbar } from '../../../components/FormGroup/Appbar';
 import PageTemplate from '../../../templates/PageTemplate';
 import { URL } from '../../../constants/url';
-import { ProblemTable } from '../../../components/Table/ProblemTable';
 import { ILongProblem } from '../../../types/problem/api';
 import { HeadCell } from '../../../types/etc';
 import { longProblemApiWrapper } from '../../../api/wrapper/problem/longProblemApiWrapper';
 import { PROBLEM_FILTER } from '../../../constants/filter';
 import { useFilter } from '../../../hooks/useFilter';
+import { CustomTable } from '../../../components/Table/CustomTable';
 
 const headCells: readonly HeadCell[] = [
   {
@@ -100,7 +100,7 @@ export const LongProblemListPage = () => {
           </Link>
         </Appbar>
       </Box>
-      <ProblemTable
+      <CustomTable
         tableHeads={tableHeads}
         headCells={headCells}
         getData={getLongDataList}

@@ -9,6 +9,8 @@ const API_URL = {
   MULTIPLE_PROBLEM_CREATE: '/admin/problems/multiple',
   DATA_LIST: '/admin/user-answers',
   DATA_LIST_CREATE: '/admin/user-answers',
+  USER_DETAIL: '',
+  USER_LIST: '/v1/users',
 };
 
 const API_URL_WITH_PARAMS = {

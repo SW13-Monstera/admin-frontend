@@ -18,10 +18,7 @@ import { multipleProblemApiWrapper } from '../../../api/wrapper/problem/multiple
 import { IChoiceElement, IMultipleCreateRequest } from '../../../types/problem/multipleApi';
 import { CheckboxFormGroup } from '../../../components/FormGroup/CheckboxFormGroup';
 import { DeleteButton } from '../../../components/Button/DeleteButton';
-
-interface IChoiceElementWithId extends IChoiceElement {
-  id: number;
-}
+import { useChoice } from '../../../hooks/useChoice';
 
 export const MultipleProblemAddPage = () => {
   const [tagState, setTagState] = useState(
@@ -29,21 +26,7 @@ export const MultipleProblemAddPage = () => {
       return { id: tag.id, isChecked: false };
     }),
   );
-  const initialChoice: IChoiceElement = { isAnswer: false, content: '' };
-  const [choiceState, setChoiceState] = useState<IChoiceElementWithId[]>([]);
-  const [choiceId, setChoiceId] = useState(0);
-
-  function addChoice() {
-    setChoiceState((prev) => [...prev, { ...initialChoice, id: choiceId }]);
-    setChoiceId((prev) => prev + 1);
-  }
-  function deleteChoice(event: MouseEvent) {
-    const targetId = event.currentTarget.id;
-    setChoiceState((prev) => prev.filter((e) => e.id.toString() !== targetId));
-  }
-  function handleChoiceChange(event: ChangeEvent<HTMLInputElement>) {
-    const { id } = event.target;
-  }
+  const { choiceState, addChoice, deleteChoice, handleChoiceChange } = useChoice();
 
   const handleTagChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { id } = event.target;
@@ -52,31 +35,15 @@ export const MultipleProblemAddPage = () => {
     ]);
   };
 
-  useEffect(() => {
-    const choiceInputs = document.querySelectorAll('#choices input');
-    choiceInputs.forEach((input, idx) => {
-      let inputValue = null;
-      if (idx % 2 === 1) {
-        inputValue = (input as HTMLInputElement).checked;
-      } else {
-        inputValue = (input as HTMLInputElement).value;
-      }
-    });
-  }, [choiceState]);
-
   function getChoicesValue() {
-    const choices: IChoiceElement[] = [];
-    const choiceElement: IChoiceElement = { isAnswer: false, content: '' };
     const choiceInputs = document.querySelectorAll('#choices input');
+
+    const choices: IChoiceElement[] = [];
     choiceInputs.forEach((input, idx) => {
-      let inputValue = null;
       if (idx % 2 === 0) {
-        inputValue = (input as HTMLInputElement).checked;
-        choiceElement.isAnswer = inputValue;
+        choices.push({ isAnswer: (input as HTMLInputElement).checked, content: '' });
       } else {
-        inputValue = (input as HTMLInputElement).value;
-        choiceElement.content = inputValue;
-        choices.push(choiceElement);
+        choices[choices.length - 1].content = (input as HTMLInputElement).value;
       }
     });
     return choices;
@@ -159,7 +126,7 @@ export const MultipleProblemAddPage = () => {
                 px: 1,
               }}
             >
-              <CheckboxFormGroup />
+              <CheckboxFormGroup handleChoiceChange={handleChoiceChange} />
               <DeleteButton id={choice.id.toString()} onClick={deleteChoice} />
             </Box>
           ))}
@@ -175,7 +142,7 @@ export const MultipleProblemAddPage = () => {
           InputLabelProps={{ shrink: true }}
         />
       </Box>
-      <Link to={URL.MUTILPLE_PROBLEM_LIST}>
+      <Link to={URL.MULTIPLE_PROBLEM_LIST}>
         <Button variant='contained' sx={{ mt: 2 }} onClick={createProblem}>
           저장
         </Button>
