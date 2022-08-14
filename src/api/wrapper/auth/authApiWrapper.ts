@@ -10,6 +10,7 @@ interface ILoginRequest {
 export const authApiWrapper = {
   login: (data: ILoginRequest) => {
     return apiClient.post(API_URL.LOGIN, data).then((response) => {
+      if (response.data.role !== 'ROLE_ADMIN') return new Error('관리자 권한이 없습니다.');
       apiClient.defaults.headers.common['Authorization'] = `Bearer ${response.data.accessToken}`;
       return response.data;
     });
