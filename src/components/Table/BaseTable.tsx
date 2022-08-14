@@ -40,10 +40,6 @@ export const BaseTable = ({
 }: IBaseTable) => {
   const emptyRows = page > 0 ? Math.max(0, ROWS_PER_PAGE - data.length) : 0;
 
-  useEffect(() => {
-    console.log(data);
-  }, [data]);
-
   return (
     <Box sx={{ width: '100%' }}>
       <Typography>총 개수 {totalElements}개</Typography>
