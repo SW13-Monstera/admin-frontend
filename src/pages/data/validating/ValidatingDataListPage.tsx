@@ -1,53 +1,44 @@
 import PageTemplate from '../../../templates/PageTemplate';
-import { DataTable } from '../../../components/Table/DataTable';
 import { Button, Box, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { Appbar } from '../../../components/FormGroup/Appbar';
 import { dataApiWrapper } from '../../../api/wrapper/data/dataApiWrapper';
-import { IDataListElement } from '../../../types/data/api';
-import { HeadCell } from '../../../types/etc';
+import { ITableHead } from '../../../types/etc';
 import { DATA_FILTER } from '../../../constants/filter';
 import { useFilter } from '../../../hooks/useFilter';
+import { useTable } from '../../../hooks/useTable';
+import { BaseTable } from '../../../components/Table/BaseTable';
+import { URLWithParam } from '../../../constants/url';
 
-const headCells: readonly HeadCell[] = [
+const tableHeads: ITableHead[] = [
   {
     id: 'id',
-    numeric: false,
-    disablePadding: true,
-    label: 'Data ID',
+    name: 'Data ID',
   },
   {
     id: 'problemTitle',
-    numeric: false,
-    disablePadding: false,
-    label: '문제 제목',
+    name: '문제 제목',
   },
   {
     id: 'assignedUsername',
-    numeric: false,
-    disablePadding: false,
-    label: '담당자',
+    name: '담당자',
   },
   {
     id: 'updatedAt',
-    numeric: false,
-    disablePadding: false,
-    label: '완료된 시간',
+    name: '완료된 시간',
   },
-];
-
-const tableHeads: (keyof IDataListElement)[] = [
-  'id',
-  'problemTitle',
-  'assignedUsername',
-  'updatedAt',
 ];
 
 export const ValidatingDataListPage = () => {
   const { filterState, addFilter, deletetFilter, updateCondition, updateFilterValue } = useFilter();
+  const { page, data, setData, totalElements, setTotalElements, handleChangePage, handleRowClick } =
+    useTable(getValidatingDataList, filterState, URLWithParam.DATA_VALIDATING);
 
-  function getValidatingDataList(page: number) {
-    return dataApiWrapper.getDataList({ page: page, isLabeled: true, isValidated: false });
+  function getValidatingDataList(page?: number) {
+    dataApiWrapper.getDataList({ page: page, isLabeled: true, isValidated: false }).then((res) => {
+      setData(res.userAnswers);
+      setTotalElements(res.totalElements);
+    });
   }
 
   return (
@@ -75,11 +66,13 @@ export const ValidatingDataListPage = () => {
           </Link>
         </Appbar>
       </Box>
-      <DataTable
+      <BaseTable
         tableHeads={tableHeads}
-        headCells={headCells}
-        getData={getValidatingDataList}
-        filterState={filterState}
+        data={data}
+        page={page}
+        handleChangePage={handleChangePage}
+        totalElements={totalElements}
+        handleRowClick={handleRowClick}
       />
     </PageTemplate>
   );

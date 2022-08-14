@@ -1,47 +1,50 @@
+import { Typography } from '@mui/material';
 import { userApiWrapper } from '../../api/wrapper/user/userApiWrapper';
-import { CustomTable } from '../../components/Table/CustomTable';
-import { UserTable } from '../../components/Table/UserTable';
+import { BaseTable } from '../../components/Table/BaseTable';
+import { useTable } from '../../hooks/useTable';
 import PageTemplate from '../../templates/PageTemplate';
-import { HeadCell } from '../../types/etc';
-import { IUserListResponseData } from '../../types/user/api';
+import { ITableHead } from '../../types/etc';
 
-const headCells: readonly HeadCell[] = [
+const tableHeads: ITableHead[] = [
   {
     id: 'id',
-    numeric: false,
-    disablePadding: true,
-    label: 'User ID',
+    name: 'User ID',
   },
   {
     id: 'email',
-    numeric: false,
-    disablePadding: false,
-    label: '이메일',
+    name: '이메일',
   },
   {
     id: 'username',
-    numeric: false,
-    disablePadding: false,
-    label: '닉네임',
+    name: '닉네임',
   },
   {
     id: 'role',
-    numeric: false,
-    disablePadding: false,
-    label: '권한',
+    name: '권한',
   },
 ];
 
-const tableHeads: (keyof IUserListResponseData)[] = ['id', 'email', 'username', 'role'];
-
 export const UserPage = () => {
+  const { page, data, setData, totalElements, setTotalElements, handleChangePage } =
+    useTable(getUserList);
+
   function getUserList() {
-    return userApiWrapper.userList();
+    userApiWrapper.userList().then((res) => {
+      setData(res.data);
+      setTotalElements(res.data.length);
+    });
   }
 
   return (
     <PageTemplate>
-      <UserTable tableHeads={tableHeads} headCells={headCells} getData={getUserList} />
+      <Typography sx={{ mb: 2 }}>전체 사용자</Typography>
+      <BaseTable
+        tableHeads={tableHeads}
+        data={data}
+        page={page}
+        handleChangePage={handleChangePage}
+        totalElements={totalElements}
+      />
     </PageTemplate>
   );
 };

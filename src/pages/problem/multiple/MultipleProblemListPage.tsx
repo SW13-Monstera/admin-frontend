@@ -2,68 +2,54 @@ import { Typography, Box, Button } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { Appbar } from '../../../components/FormGroup/Appbar';
 import PageTemplate from '../../../templates/PageTemplate';
-import { URL } from '../../../constants/url';
-import { HeadCell } from '../../../types/etc';
+import { URL, URLWithParam } from '../../../constants/url';
+import { ITableHead } from '../../../types/etc';
 import { PROBLEM_FILTER } from '../../../constants/filter';
 import { useFilter } from '../../../hooks/useFilter';
-import { IShortProblemListElement } from '../../../types/problem/shortApi';
 import { multipleProblemApiWrapper } from '../../../api/wrapper/problem/multipleProblemApiWrapper';
-import { CustomTable } from '../../../components/Table/CustomTable';
+import { BaseTable } from '../../../components/Table/BaseTable';
+import { useTable } from '../../../hooks/useTable';
 
-const headCells: readonly HeadCell[] = [
+const tableHeads: ITableHead[] = [
   {
     id: 'id',
-    numeric: false,
-    disablePadding: true,
-    label: 'Problem ID',
+    name: 'Problem ID',
   },
   {
     id: 'title',
-    numeric: false,
-    disablePadding: false,
-    label: '문제 제목',
+    name: '문제 제목',
   },
   {
     id: 'creator',
-    numeric: false,
-    disablePadding: false,
-    label: '제작자',
+    name: '제작자',
   },
   {
     id: 'answerRate',
-    numeric: true,
-    disablePadding: false,
-    label: '정답률',
+    name: '정답률',
   },
 
   {
-    id: 'ansNum',
-    numeric: true,
-    disablePadding: false,
-    label: '답변 수',
+    id: 'userAnswerCnt',
+    name: '답변 수',
   },
   {
     id: 'isActive',
-    numeric: true,
-    disablePadding: false,
-    label: '활성화 여부',
+    name: '활성화 여부',
   },
-];
-
-const tableHeads: (keyof IShortProblemListElement)[] = [
-  'id',
-  'title',
-  'creator',
-  'answerRate',
-  'userAnswerCnt',
-  'isActive',
 ];
 
 export const MultipleProblemListPage = () => {
   const { filterState, addFilter, deletetFilter, updateCondition, updateFilterValue } = useFilter();
+  const { page, data, setData, totalElements, setTotalElements, handleChangePage, handleRowClick } =
+    useTable(getMultipleProblemList, filterState, URLWithParam.MULTIPLE_PROBLEM_DETAIL);
 
-  function getMultipleProblemList(page: number, params: object) {
-    return multipleProblemApiWrapper.getMultipleProblemList({ ...params, page: page });
+  function getMultipleProblemList(page?: number, params?: object) {
+    return multipleProblemApiWrapper
+      .getMultipleProblemList({ ...params, page: page })
+      .then((res) => {
+        setData(res.problems);
+        setTotalElements(res.totalElements);
+      });
   }
 
   return (
@@ -94,11 +80,13 @@ export const MultipleProblemListPage = () => {
           </Link>
         </Appbar>
       </Box>
-      <CustomTable
+      <BaseTable
         tableHeads={tableHeads}
-        headCells={headCells}
-        getData={getMultipleProblemList}
-        filterState={filterState}
+        data={data}
+        page={page}
+        handleChangePage={handleChangePage}
+        totalElements={totalElements}
+        handleRowClick={handleRowClick}
       />
     </PageTemplate>
   );

@@ -1,13 +1,16 @@
 import { IProblemListElement } from './../problem/api';
-import { IShortProblemListElement } from './../problem/shortApi';
 import { IDataListElement } from '../data/api';
-import { ILongProblem } from '../problem/api';
 
 interface HeadCell {
   disablePadding: boolean;
   id: string;
   label: string;
   numeric: boolean;
+}
+
+interface ITableHead {
+  id: string;
+  name: string;
 }
 
 interface ICustomTable {
@@ -53,6 +56,7 @@ interface IChoice {
 
 export type {
   HeadCell,
+  ITableHead,
   IFilter,
   IProblemCondition,
   IDataCondition,

@@ -12,6 +12,7 @@ export interface IShortProblemDetailResponse extends ICreateShortProblemRequest 
 
 export interface IShortProblemListResponse {
   problems: IShortProblemListElement[];
+  totalElements: number;
 }
 
 export interface IShortProblemListElement {

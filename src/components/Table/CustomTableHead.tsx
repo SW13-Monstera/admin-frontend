@@ -1,16 +1,16 @@
 import { ChangeEvent } from 'react';
 import { TableCell, TableHead, TableRow, Checkbox } from '@mui/material';
-import { HeadCell } from '../../types/etc';
+import { ITableHead } from '../../types/etc';
 
 interface CustomTableProps {
-  numSelected: number;
+  numSelected?: number;
   rowCount: number;
-  headCells: readonly HeadCell[];
+  tableHeads: ITableHead[];
   onSelectAllClick: (event: ChangeEvent<HTMLInputElement>) => void;
 }
 
 export function CustomTableHead(props: CustomTableProps) {
-  const { onSelectAllClick, numSelected, rowCount, headCells } = props;
+  const { onSelectAllClick, numSelected, rowCount, tableHeads } = props;
 
   return (
     <TableHead>
@@ -18,7 +18,7 @@ export function CustomTableHead(props: CustomTableProps) {
         <TableCell padding='checkbox'>
           <Checkbox
             color='primary'
-            indeterminate={numSelected > 0 && numSelected < rowCount}
+            indeterminate={numSelected ? numSelected > 0 && numSelected < rowCount : false}
             checked={rowCount > 0 && numSelected === rowCount}
             onChange={onSelectAllClick}
             inputProps={{
@@ -26,13 +26,9 @@ export function CustomTableHead(props: CustomTableProps) {
             }}
           />
         </TableCell>
-        {headCells.map((headCell) => (
-          <TableCell
-            key={headCell.id}
-            align='center'
-            padding={headCell.disablePadding ? 'none' : 'normal'}
-          >
-            {headCell.label}
+        {tableHeads.map((tableHead) => (
+          <TableCell key={tableHead.id} align='center'>
+            {tableHead.name}
           </TableCell>
         ))}
       </TableRow>
