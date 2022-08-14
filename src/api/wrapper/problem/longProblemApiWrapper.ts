@@ -36,6 +36,6 @@ export const longProblemApiWrapper = {
     apiClient.post(API_URL.LONG_PROBLEM_CREATE, data);
   },
   updateLongProblem: (problem_id: string, data: IProblemCreateData) => {
-    apiClient.put(API_URL_WITH_PARAMS.LONG_PROBLEM_UPDATE(problem_id), data);
+    return apiClient.put(API_URL_WITH_PARAMS.LONG_PROBLEM_UPDATE(problem_id), data);
   },
 };

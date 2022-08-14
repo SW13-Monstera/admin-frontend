@@ -43,6 +43,8 @@ export interface IProblemDetailResponse {
   standardAnswer: string;
   tags: string[];
   gradingStandards: IStandardResponse[];
+  isActive: boolean;
+  isGradable: boolean;
 }
 
 export interface IProblemCreateData {

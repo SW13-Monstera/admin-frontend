@@ -13,56 +13,56 @@ import {
   Switch,
 } from '@mui/material';
 import { Link, useParams } from 'react-router-dom';
-import { useState, useEffect } from 'react';
 import { longProblemApiWrapper } from '../../../api/wrapper/problem/longProblemApiWrapper';
 import { URLWithParam } from '../../../constants/url';
-import { IProblemDetailResponse, IProblemUpdateData } from '../../../types/problem/api';
+import { IProblemUpdateData } from '../../../types/problem/api';
 import { STANDARD_TYPE } from '../../../constants/standard';
 import { TAGS } from '../../../constants/tags';
+import { useQuery } from 'react-query';
 
 export const LongProblemDetailPage = () => {
   const { id } = useParams();
-  const [data, setData] = useState<IProblemDetailResponse>({
-    id: 0,
-    title: '',
-    description: '',
-    standardAnswer: '',
-    tags: [],
-    gradingStandards: [],
+  const { data, refetch } = useQuery(['long-problems'], getLongProblemDetailData, {
+    refetchOnWindowFocus: false,
+    enabled: true,
+    onError: (e: Error) => {
+      throw new Error(e.message);
+    },
   });
 
-  //추후 수정
-  function handleProblemGradablility() {
+  function getLongProblemDetailData() {
     if (!id) return;
-    const newData: IProblemUpdateData = { ...data, isGradable: false, isActive: false };
-    longProblemApiWrapper.updateLongProblem(id, newData);
-  }
-
-  //추후 수정
-  function handleProblemActivate() {
-    if (!id) return;
-    const newData: IProblemUpdateData = { ...data, isGradable: false, isActive: false };
-    longProblemApiWrapper.updateLongProblem(id, newData);
-  }
-
-  useEffect(() => {
-    if (!id) return;
-    longProblemApiWrapper.getLongProblemDetail({ problem_id: id }).then((res) => {
-      setData(res);
+    return longProblemApiWrapper.getLongProblemDetail({ problem_id: id }).then((res) => {
+      return res;
     });
-  }, []);
+  }
+
+  async function handleProblemGradablility() {
+    if (!id || !data) return;
+    if (!data.isGradable) return;
+    const newData: IProblemUpdateData = { ...data, isGradable: !data.isGradable };
+    await longProblemApiWrapper.updateLongProblem(id, newData);
+    refetch();
+  }
+
+  async function handleProblemActivate() {
+    if (!id || !data) return;
+    const newData: IProblemUpdateData = { ...data, isActive: !data.isActive };
+    await longProblemApiWrapper.updateLongProblem(id, newData);
+    refetch();
+  }
 
   return (
     <PageTemplate>
-      <Typography variant='h4'>{data.title}</Typography>
+      <Typography variant='h4'>{data?.title}</Typography>
       <Box sx={{ display: 'flex', gap: 1, my: 1 }}>
-        {data.tags.map((id) => (
+        {data?.tags.map((id) => (
           <Box key={id}>{TAGS.find((e) => e.id === id)?.name}</Box>
         ))}
       </Box>
 
-      <Box sx={{ mt: 2 }}>{data.description}</Box>
-      <Box sx={{ mt: 2 }}>{data.standardAnswer}</Box>
+      <Box sx={{ mt: 2 }}>{data?.description}</Box>
+      <Box sx={{ mt: 2 }}>{data?.standardAnswer}</Box>
       <List>
         <ListSubheader
           component='div'
@@ -71,7 +71,7 @@ export const LongProblemDetailPage = () => {
         >
           키워드 채점 기준
         </ListSubheader>
-        {data.gradingStandards
+        {data?.gradingStandards
           .filter((e) => e.type === STANDARD_TYPE.KEYWORD)
           .map((keyword) => (
             <ListItem key={keyword.content} disablePadding>
@@ -89,7 +89,7 @@ export const LongProblemDetailPage = () => {
         >
           내용 채점 기준
         </ListSubheader>
-        {data.gradingStandards
+        {data?.gradingStandards
           .filter((e) => e.type === STANDARD_TYPE.CONTENT)
           .map((keyword) => (
             <ListItem key={keyword.content} disablePadding>
@@ -102,13 +102,15 @@ export const LongProblemDetailPage = () => {
       <Box sx={{ display: 'flex', gap: 1, justifyContent: 'space-between' }}>
         <FormGroup>
           <FormControlLabel
-            disabled
-            control={<Switch />}
+            disabled={!data?.isGradable}
+            checked={data?.isGradable}
+            control={<Switch checked={data?.isGradable ?? false} />}
             label='채점 가능 여부'
             onClick={handleProblemGradablility}
           />
           <FormControlLabel
-            control={<Switch defaultChecked />}
+            checked={data?.isActive}
+            control={<Switch checked={data?.isActive ?? false} />}
             label='활성화 여부'
             onClick={handleProblemActivate}
           />
