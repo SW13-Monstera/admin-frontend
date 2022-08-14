@@ -29,19 +29,22 @@ export const LongProblemDetailPage = () => {
     standardAnswer: '',
     tags: [],
     gradingStandards: [],
+    isActive: false,
+    isGradable: false,
   });
 
   //추후 수정
   function handleProblemGradablility() {
     if (!id) return;
-    const newData: IProblemUpdateData = { ...data, isGradable: false, isActive: false };
+    if (!data.isGradable) return;
+    const newData: IProblemUpdateData = { ...data, isGradable: !data.isGradable };
     longProblemApiWrapper.updateLongProblem(id, newData);
   }
 
   //추후 수정
   function handleProblemActivate() {
     if (!id) return;
-    const newData: IProblemUpdateData = { ...data, isGradable: false, isActive: false };
+    const newData: IProblemUpdateData = { ...data, isActive: !data.isActive };
     longProblemApiWrapper.updateLongProblem(id, newData);
   }
 
@@ -103,12 +106,12 @@ export const LongProblemDetailPage = () => {
         <FormGroup>
           <FormControlLabel
             disabled
-            control={<Switch />}
+            control={<Switch checked={data.isActive} />}
             label='채점 가능 여부'
             onClick={handleProblemGradablility}
           />
           <FormControlLabel
-            control={<Switch defaultChecked />}
+            control={<Switch checked={data.isActive} />}
             label='활성화 여부'
             onClick={handleProblemActivate}
           />
