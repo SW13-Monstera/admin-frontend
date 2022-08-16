@@ -20,3 +20,17 @@ export interface IMultipleDetailResponseData {
   choiceData: IChoiceElement[];
   score: number;
 }
+
+export interface IMultipleListResponseData {
+  id: number;
+  title: string;
+  creator: string;
+  answerRate: number | null;
+  userAnswerCnt: number;
+  isActive: boolean;
+}
+
+export interface IMultipleUpdateRequest extends IMultipleCreateRequest {
+  isGradable?: boolean;
+  isActive?: boolean;
+}

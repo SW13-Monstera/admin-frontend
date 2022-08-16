@@ -6,7 +6,6 @@ import {
 } from '../../../types/data/api';
 import apiClient from '../../apiClient';
 import { API_URL, API_URL_WITH_PARAMS } from '../../../constants/apiUrl';
-import { ILongProblemListData } from '../../../types/problem/api';
 
 export const dataApiWrapper = {
   getDataList: ({

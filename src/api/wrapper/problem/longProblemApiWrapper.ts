@@ -1,9 +1,9 @@
 import {
   IProblemListRequest,
-  ILongProblemListData,
   IProblemDetailRequest,
   IProblemDetailResponse,
   IProblemCreateData,
+  IProblemListData,
 } from '../../../types/problem/api';
 import apiClient from '../../apiClient';
 import { API_URL, API_URL_WITH_PARAMS } from '../../../constants/apiUrl';
@@ -21,7 +21,7 @@ export const longProblemApiWrapper = {
       .get(API_URL.LONG_PROBLEM_LIST, {
         params: params,
       })
-      .then((response: { data: ILongProblemListData }) => {
+      .then((response: { data: IProblemListData }) => {
         return response.data;
       });
   },

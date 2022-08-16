@@ -16,7 +16,7 @@ export interface ILongProblem {
   isActive: boolean;
 }
 
-export interface ILongProblemListData {
+export interface IProblemListData {
   problems: ILongProblem[];
   totalPages: number;
   totalElements: number;
