@@ -37,19 +37,21 @@ export const LongProblemDetailPage = () => {
     });
   }
 
-  async function handleProblemGradablility() {
+  function handleProblemGradablility() {
     if (!id || !data) return;
     if (!data.isGradable) return;
     const newData: IProblemUpdateData = { ...data, isGradable: !data.isGradable };
-    await longProblemApiWrapper.updateLongProblem(id, newData);
-    refetch();
+    longProblemApiWrapper.updateLongProblem(id, newData).then(() => {
+      refetch();
+    });
   }
 
-  async function handleProblemActivate() {
+  function handleProblemActivate() {
     if (!id || !data) return;
     const newData: IProblemUpdateData = { ...data, isActive: !data.isActive };
-    await longProblemApiWrapper.updateLongProblem(id, newData);
-    refetch();
+    longProblemApiWrapper.updateLongProblem(id, newData).then(() => {
+      refetch();
+    });
   }
 
   return (

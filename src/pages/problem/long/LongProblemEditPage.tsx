@@ -23,14 +23,7 @@ import { StandardList } from '../../../components/FormGroup/StandardList';
 
 export const LongProblemEditPage = () => {
   const { id } = useParams();
-  const [data, setData] = useState<IProblemDetailResponse>({
-    id: 0,
-    title: '',
-    description: '',
-    standardAnswer: '',
-    tags: [],
-    gradingStandards: [],
-  });
+  const [data, setData] = useState<IProblemDetailResponse | null>(null);
 
   const [tagState, setTagState] = useState(
     TAGS.map((tag) => {
@@ -69,6 +62,7 @@ export const LongProblemEditPage = () => {
   }, []);
 
   useEffect(() => {
+    if (!data) return;
     setTagState(
       TAGS.map((tag) => {
         return { id: tag.id, isChecked: data.tags.includes(tag.id) };
@@ -112,7 +106,7 @@ export const LongProblemEditPage = () => {
           id='title'
           label='문제 제목'
           multiline
-          defaultValue={data.title}
+          defaultValue={data?.title}
           sx={{ my: 2 }}
           InputLabelProps={{ shrink: true }}
         />
@@ -143,7 +137,7 @@ export const LongProblemEditPage = () => {
           id='desc'
           label='문제 설명'
           multiline
-          defaultValue={data.description}
+          defaultValue={data?.description}
           sx={{ my: 2 }}
           InputLabelProps={{ shrink: true }}
         />
@@ -151,7 +145,7 @@ export const LongProblemEditPage = () => {
           id='standardAnswer'
           label='모범 답안'
           multiline
-          defaultValue={data.standardAnswer}
+          defaultValue={data?.standardAnswer}
           sx={{ my: 2 }}
           InputLabelProps={{ shrink: true }}
         />

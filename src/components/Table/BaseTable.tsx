@@ -1,5 +1,4 @@
-import { MouseEvent, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { MouseEvent } from 'react';
 import { ITableHead } from '../../types/etc';
 import {
   Box,
