@@ -46,9 +46,9 @@ export const MultipleProblemListPage = () => {
   function getMultipleProblemList(page?: number, params?: object) {
     return multipleProblemApiWrapper
       .getMultipleProblemList({ ...params, page: page })
-      .then((res) => {
-        setData(res.problems);
-        setTotalElements(res.totalElements);
+      .then(({problems, totalElements}) => {
+        setData(problems);
+        setTotalElements(totalElements);
       });
   }
 
