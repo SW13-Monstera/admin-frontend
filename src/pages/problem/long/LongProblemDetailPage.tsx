@@ -77,7 +77,7 @@ export const LongProblemDetailPage = () => {
           .filter((e) => e.type === STANDARD_TYPE.KEYWORD)
           .map((keyword) => (
             <ListItem key={keyword.content} disablePadding>
-              <ListItemText primary={keyword.content} />
+              <ListItemText primary={keyword.content} sx={{ width: '30%' }} />
               <ListItemText primary={keyword.score} />
             </ListItem>
           ))}
@@ -95,7 +95,7 @@ export const LongProblemDetailPage = () => {
           .filter((e) => e.type === STANDARD_TYPE.CONTENT)
           .map((keyword) => (
             <ListItem key={keyword.content} disablePadding>
-              <ListItemText primary={keyword.content} />
+              <ListItemText primary={keyword.content} sx={{ width: '30%' }} />
               <ListItemText primary={keyword.score} />
             </ListItem>
           ))}
