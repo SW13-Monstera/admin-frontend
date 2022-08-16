@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { AUTHORIZTION, BEARER_TOKEN } from '../constants';
 import { authApiWrapper } from './wrapper/auth/authApiWrapper';
 
 const apiClient = axios.create({
@@ -13,7 +14,7 @@ try {
     const userInfo = JSON.parse(userInfoString);
     const token: string | null | undefined = userInfo.accessToken;
     if (typeof token === 'string') {
-      apiClient.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      apiClient.defaults.headers.common[AUTHORIZTION] = BEARER_TOKEN(token);
     }
   }
 } catch (e) {}

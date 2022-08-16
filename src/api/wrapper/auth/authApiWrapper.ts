@@ -1,6 +1,7 @@
 import apiClient from '../../apiClient';
 import { API_URL } from '../../../constants/apiUrl';
 import { USER_INFO } from '../../../constants/localStorage';
+import { AUTHORIZTION, BEARER_TOKEN, ROLES } from '../../../constants';
 
 interface ILoginRequest {
   email: string;
@@ -10,11 +11,11 @@ interface ILoginRequest {
 export const authApiWrapper = {
   login: (data: ILoginRequest) => {
     return apiClient.post(API_URL.LOGIN, data).then((response) => {
-      if (response.data.role !== 'ROLE_ADMIN') {
+      if (response.data.role !== ROLES.ROLE_ADMIN) {
         alert('권한 없음');
         throw new Error('권한 없음');
       }
-      apiClient.defaults.headers.common['Authorization'] = `Bearer ${response.data.accessToken}`;
+      apiClient.defaults.headers.common[AUTHORIZTION] = BEARER_TOKEN(response.data.token);
       return response.data;
     });
   },
@@ -28,7 +29,7 @@ export const authApiWrapper = {
         },
       })
       .then((response) => {
-        apiClient.defaults.headers.common['Authorization'] = `Bearer ${response.data.accessToken}`;
+        apiClient.defaults.headers.common[AUTHORIZTION] = `Bearer ${response.data.accessToken}`;
         const json = JSON.parse(localStorage.getItem(USER_INFO)!);
         localStorage.setItem(
           USER_INFO,
