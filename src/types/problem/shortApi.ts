@@ -12,9 +12,19 @@ export interface IShortProblemDetailResponse extends ICreateShortProblemRequest 
 
 export interface IShortProblemListResponse {
   problems: IShortProblemListElement[];
+  totalElements: number;
 }
 
 export interface IShortProblemListElement {
+  id: number;
+  title: string;
+  creator: string;
+  answerRate: number | null;
+  userAnswerCnt: number;
+  isActive: boolean;
+}
+
+export interface IMultipleProblemListElement {
   id: number;
   title: string;
   creator: string;

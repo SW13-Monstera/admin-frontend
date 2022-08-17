@@ -34,13 +34,9 @@ export function CheckboxesGroup({ title, choices }: ICheckboxesGroup) {
           {choices.map((choice) => (
             <FormControlLabel
               control={
-                <Checkbox
-                  checked={choicesState.get(choice.value)}
-                  onChange={handleChange}
-                  name={choice.value}
-                />
+                <Checkbox checked={choice.isChecked} onChange={handleChange} name={choice.value} />
               }
-              label={`${choice.value}  |  ${choice.score}점`}
+              label={`${choice.value}  |  ${choice.value}점`}
               key={choice.id}
             />
           ))}

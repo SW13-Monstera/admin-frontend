@@ -1,4 +1,4 @@
-interface IProblemListRequest {
+export interface IProblemListRequest {
   id?: number;
   title?: string;
   description?: string;
@@ -6,7 +6,7 @@ interface IProblemListRequest {
   size?: number;
 }
 
-interface ILongProblem {
+export interface ILongProblem {
   id: number;
   title: string;
   creator: string;
@@ -16,36 +16,38 @@ interface ILongProblem {
   isActive: boolean;
 }
 
-interface ILongProblemListData {
+export interface IProblemListData {
   problems: ILongProblem[];
   totalPages: number;
   totalElements: number;
 }
 
-interface IProblemDetailRequest {
-  problem_id: number;
+export interface IProblemDetailRequest {
+  problem_id: string;
 }
 
-interface IStandardResponse extends IStandard {
+export interface IStandardResponse extends IStandard {
   id: number;
 }
 
-interface IStandard {
+export interface IStandard {
   content: string;
   score: number;
   type: string;
 }
 
-interface IProblemDetailResponse {
+export interface IProblemDetailResponse {
   id: number;
   title: string;
   description: string;
   standardAnswer: string;
   tags: string[];
   gradingStandards: IStandardResponse[];
+  isActive: boolean;
+  isGradable: boolean;
 }
 
-interface IProblemCreateData {
+export interface IProblemCreateData {
   title: string;
   description: string;
   standardAnswer: string;
@@ -53,19 +55,18 @@ interface IProblemCreateData {
   gradingStandards: IStandard[];
 }
 
-interface IProblemUpdateData extends IProblemCreateData {
+export interface IProblemUpdateData extends IProblemCreateData {
   isActive: boolean;
   isGradable: boolean;
 }
 
-export type {
-  IProblemListRequest,
-  ILongProblem,
-  ILongProblemListData,
-  IProblemDetailRequest,
-  IStandardResponse,
-  IStandard,
-  IProblemDetailResponse,
-  IProblemCreateData,
-  IProblemUpdateData,
-};
+export interface IProblemListElement {
+  id: number;
+  title: string;
+  creator: string;
+  userAnswerCnt: number;
+  isActive: boolean;
+  answerRate?: number | null;
+  avgKeywordScore?: number | null;
+  avgPromptScore?: number | null;
+}

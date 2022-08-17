@@ -27,7 +27,7 @@ export const DoneDataDetailPage = () => {
 
     dataApiWrapper
       .getDataDetail({
-        user_answer_id: parseInt(dataId),
+        user_answer_id: dataId,
       })
       .then((res) => {
         setData(res);

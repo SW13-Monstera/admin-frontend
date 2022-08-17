@@ -1,6 +1,5 @@
-import { IShortProblemListElement } from './../problem/shortApi';
+import { IProblemListElement } from './../problem/api';
 import { IDataListElement } from '../data/api';
-import { ILongProblem } from '../problem/api';
 
 interface HeadCell {
   disablePadding: boolean;
@@ -9,18 +8,20 @@ interface HeadCell {
   numeric: boolean;
 }
 
+interface ITableHead {
+  id: string;
+  name: string;
+}
+
 interface ICustomTable {
   headCells: readonly HeadCell[];
   getData: (page: number, params: any) => Promise<any>;
   filterState: IFilter[];
+  tableHeads: any[];
 }
 
 interface IProblemTable extends ICustomTable {
-  tableHeads: (keyof ILongProblem)[];
-}
-
-interface IShortProblemTable extends ICustomTable {
-  tableHeads: (keyof IShortProblemListElement)[];
+  tableHeads: (keyof IProblemListElement)[];
 }
 
 interface IDataTable extends ICustomTable {
@@ -55,6 +56,7 @@ interface IChoice {
 
 export type {
   HeadCell,
+  ITableHead,
   IFilter,
   IProblemCondition,
   IDataCondition,
@@ -62,5 +64,4 @@ export type {
   ICustomTable,
   IProblemTable,
   IDataTable,
-  IShortProblemTable,
 };

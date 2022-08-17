@@ -8,34 +8,25 @@ import {
   FormGroup,
   FormControlLabel,
   Checkbox,
+  Typography,
 } from '@mui/material';
-import { useNavigate, useParams } from 'react-router-dom';
 import { TAGS } from '../../../constants/tags';
-import { useState, useEffect, ChangeEvent } from 'react';
+import { useState, ChangeEvent, MouseEvent, useEffect } from 'react';
 import { URL } from '../../../constants/url';
-import { shortProblemApiWrapper } from '../../../api/wrapper/problem/shortProblemApiWrapper';
-import {
-  ICreateShortProblemRequest,
-  IShortProblemDetailResponse,
-} from '../../../types/problem/shortApi';
+import { Link } from 'react-router-dom';
+import { multipleProblemApiWrapper } from '../../../api/wrapper/problem/multipleProblemApiWrapper';
+import { IChoiceElement, IMultipleCreateRequest } from '../../../types/problem/multipleApi';
+import { CheckboxFormGroup } from '../../../components/FormGroup/CheckboxFormGroup';
+import { DeleteButton } from '../../../components/Button/DeleteButton';
+import { useChoice } from '../../../hooks/useChoice';
 
-export const ShortProblemEditPage = () => {
-  const { id } = useParams();
-  const navigate = useNavigate();
-  const [data, setData] = useState<IShortProblemDetailResponse>({
-    id: 0,
-    title: '',
-    description: '',
-    answer: '',
-    tags: [],
-    score: 0,
-  });
-
+export const MultipleProblemAddPage = () => {
   const [tagState, setTagState] = useState(
     TAGS.map((tag) => {
       return { id: tag.id, isChecked: false };
     }),
   );
+  const { choiceState, addChoice, deleteChoice, handleChoiceChange } = useChoice();
 
   const handleTagChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { id } = event.target;
@@ -44,32 +35,29 @@ export const ShortProblemEditPage = () => {
     ]);
   };
 
-  useEffect(() => {
-    if (!id) return;
-    shortProblemApiWrapper.getShortProblemDetail({ problem_id: id }).then((res) => {
-      setData(res);
+  function getChoicesValue() {
+    const choiceInputs = document.querySelectorAll('#choices input');
+
+    const choices: IChoiceElement[] = [];
+    choiceInputs.forEach((input, idx) => {
+      if (idx % 2 === 0) {
+        choices.push({ isAnswer: (input as HTMLInputElement).checked, content: '' });
+      } else {
+        choices[choices.length - 1].content = (input as HTMLInputElement).value;
+      }
     });
-  }, []);
+    return choices;
+  }
 
-  useEffect(() => {
-    setTagState(
-      TAGS.map((tag) => {
-        return { id: tag.id, isChecked: data.tags.includes(tag.id) };
-      }),
-    );
-  }, [data]);
-
-  function editProblem() {
-    if (!id) return;
-    const data: ICreateShortProblemRequest = {
+  function createProblem() {
+    const data: IMultipleCreateRequest = {
       title: (document.getElementById('title') as HTMLTextAreaElement).value || '',
       description: (document.getElementById('desc') as HTMLTextAreaElement).value || '',
       tags: tagState.filter((tag) => tag.isChecked).map((e) => e.id),
-      answer: (document.getElementById('answer') as HTMLTextAreaElement).value || '',
+      choices: getChoicesValue(),
       score: parseInt((document.getElementById('score') as HTMLTextAreaElement).value) || 0,
     };
-    shortProblemApiWrapper.updateShortProblem(id, data);
-    navigate(URL.SHORT_PROBLEM_LIST);
+    multipleProblemApiWrapper.createMultipleProblem(data);
   }
 
   return (
@@ -83,8 +71,7 @@ export const ShortProblemEditPage = () => {
         <TextField
           id='title'
           label='문제 제목'
-          multiline
-          defaultValue={data.title}
+          variant='outlined'
           sx={{ my: 2 }}
           InputLabelProps={{ shrink: true }}
         />
@@ -116,31 +103,50 @@ export const ShortProblemEditPage = () => {
           label='문제 설명'
           multiline
           rows={4}
-          defaultValue={data.description}
           sx={{ my: 2 }}
           InputLabelProps={{ shrink: true }}
         />
-        <TextField
-          id='answer'
-          label='정답'
-          multiline
-          rows={4}
-          defaultValue={data.answer}
-          sx={{ my: 2 }}
-          InputLabelProps={{ shrink: true }}
-        />
+        <Typography sx={{ fontSize: '1rem' }}>선택지</Typography>
+        <Card
+          id='choices'
+          variant='outlined'
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            backgroundColor: 'transparent',
+            borderColor: '#0000003B',
+            width: '100%',
+          }}
+        >
+          {choiceState.map((choice) => (
+            <Box
+              key={choice.id}
+              sx={{
+                display: 'flex',
+                px: 1,
+              }}
+            >
+              <CheckboxFormGroup handleChoiceChange={handleChoiceChange} />
+              <DeleteButton id={choice.id.toString()} onClick={deleteChoice} />
+            </Box>
+          ))}
+          <Button variant='contained' sx={{ m: 2 }} onClick={addChoice}>
+            추가
+          </Button>
+        </Card>
         <TextField
           id='score'
           label='점수'
           type='number'
-          defaultValue={data.score}
           sx={{ my: 2 }}
           InputLabelProps={{ shrink: true }}
         />
       </Box>
-      <Button variant='contained' sx={{ mt: 2 }} onClick={editProblem}>
-        수정
-      </Button>
+      <Link to={URL.MULTIPLE_PROBLEM_LIST}>
+        <Button variant='contained' sx={{ mt: 2 }} onClick={createProblem}>
+          저장
+        </Button>
+      </Link>
     </PageTemplate>
   );
 };

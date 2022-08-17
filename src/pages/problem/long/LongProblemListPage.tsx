@@ -2,74 +2,55 @@ import { Typography, Box, Button } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { Appbar } from '../../../components/FormGroup/Appbar';
 import PageTemplate from '../../../templates/PageTemplate';
-import { URL } from '../../../constants/url';
-import { ProblemTable } from '../../../components/Table/ProblemTable';
-import { ILongProblem } from '../../../types/problem/api';
-import { HeadCell } from '../../../types/etc';
+import { URL, URLWithParam } from '../../../constants/url';
 import { longProblemApiWrapper } from '../../../api/wrapper/problem/longProblemApiWrapper';
 import { PROBLEM_FILTER } from '../../../constants/filter';
 import { useFilter } from '../../../hooks/useFilter';
+import { BaseTable } from '../../../components/Table/BaseTable';
+import { ITableHead } from '../../../types/etc';
+import { useTable } from '../../../hooks/useTable';
 
-const headCells: readonly HeadCell[] = [
+const tableHeads: ITableHead[] = [
   {
     id: 'id',
-    numeric: false,
-    disablePadding: true,
-    label: 'Problem ID',
+    name: 'Problem ID',
   },
   {
     id: 'title',
-    numeric: false,
-    disablePadding: false,
-    label: '문제 제목',
+    name: '문제 제목',
   },
   {
     id: 'creator',
-    numeric: false,
-    disablePadding: false,
-    label: '제작자',
+    name: '제작자',
   },
   {
     id: 'avgKeywordScore',
-    numeric: true,
-    disablePadding: false,
-    label: '평균 키워드 점수',
+    name: '평균 키워드 점수',
   },
   {
-    id: 'avgContentScore',
-    numeric: true,
-    disablePadding: false,
-    label: '평균 내용 점수',
+    id: 'avgPromptScore',
+    name: '평균 내용 점수',
   },
   {
-    id: 'ansNum',
-    numeric: true,
-    disablePadding: false,
-    label: '답변 수',
+    id: 'userAnswerCnt',
+    name: '답변 수',
   },
   {
     id: 'isActive',
-    numeric: true,
-    disablePadding: false,
-    label: '활성화 여부',
+    name: '활성화 여부',
   },
-];
-
-const tableHeads: (keyof ILongProblem)[] = [
-  'id',
-  'title',
-  'creator',
-  'avgKeywordScore',
-  'avgPromptScore',
-  'userAnswerCnt',
-  'isActive',
 ];
 
 export const LongProblemListPage = () => {
   const { filterState, addFilter, deletetFilter, updateCondition, updateFilterValue } = useFilter();
+  const { page, data, setData, totalElements, setTotalElements, handleChangePage, handleRowClick } =
+    useTable(getLongDataList, filterState, URLWithParam.LONG_PROBLEM_DETAIL);
 
-  function getLongDataList(page: number, params: object) {
-    return longProblemApiWrapper.getLongProblemList({ ...params, page: page });
+  function getLongDataList(page?: number, params?: object) {
+    longProblemApiWrapper.getLongProblemList({ ...params, page: page }).then((res) => {
+      setData(res.problems);
+      setTotalElements(res.totalElements);
+    });
   }
 
   return (
@@ -100,11 +81,13 @@ export const LongProblemListPage = () => {
           </Link>
         </Appbar>
       </Box>
-      <ProblemTable
+      <BaseTable
         tableHeads={tableHeads}
-        headCells={headCells}
-        getData={getLongDataList}
-        filterState={filterState}
+        data={data}
+        page={page}
+        handleChangePage={handleChangePage}
+        totalElements={totalElements}
+        handleRowClick={handleRowClick}
       />
     </PageTemplate>
   );

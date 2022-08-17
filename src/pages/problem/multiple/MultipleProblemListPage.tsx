@@ -5,8 +5,8 @@ import PageTemplate from '../../../templates/PageTemplate';
 import { URL, URLWithParam } from '../../../constants/url';
 import { ITableHead } from '../../../types/etc';
 import { PROBLEM_FILTER } from '../../../constants/filter';
-import { shortProblemApiWrapper } from '../../../api/wrapper/problem/shortProblemApiWrapper';
 import { useFilter } from '../../../hooks/useFilter';
+import { multipleProblemApiWrapper } from '../../../api/wrapper/problem/multipleProblemApiWrapper';
 import { BaseTable } from '../../../components/Table/BaseTable';
 import { useTable } from '../../../hooks/useTable';
 
@@ -38,16 +38,18 @@ const tableHeads: ITableHead[] = [
   },
 ];
 
-export const ShortProblemListPage = () => {
+export const MultipleProblemListPage = () => {
   const { filterState, addFilter, deletetFilter, updateCondition, updateFilterValue } = useFilter();
   const { page, data, setData, totalElements, setTotalElements, handleChangePage, handleRowClick } =
-    useTable(getShortProblemList, filterState, URLWithParam.SHORT_PROBLEM_DETAIL);
+    useTable(getMultipleProblemList, filterState, URLWithParam.MULTIPLE_PROBLEM_DETAIL);
 
-  function getShortProblemList(page?: number, params?: object) {
-    shortProblemApiWrapper.getShortProblemList({ ...params, page: page }).then((res) => {
-      setData(res.problems);
-      setTotalElements(res.totalElements);
-    });
+  function getMultipleProblemList(page?: number, params?: object) {
+    return multipleProblemApiWrapper
+      .getMultipleProblemList({ ...params, page: page })
+      .then(({problems, totalElements}) => {
+        setData(problems);
+        setTotalElements(totalElements);
+      });
   }
 
   return (
@@ -61,7 +63,7 @@ export const ShortProblemListPage = () => {
           gap: 1,
         }}
       >
-        <Typography>단답형 문제</Typography>
+        <Typography>객관식 문제</Typography>
         <Appbar
           menuItems={PROBLEM_FILTER}
           conditions={filterState}
@@ -71,7 +73,7 @@ export const ShortProblemListPage = () => {
           updateCondition={updateCondition}
           updateFilterValue={updateFilterValue}
         >
-          <Link to={URL.SHORT_PROBLEM_ADD}>
+          <Link to={URL.MULTIPLE_PROBLEM_ADD}>
             <Button variant='contained' sx={{ height: '100%' }}>
               문제 추가
             </Button>

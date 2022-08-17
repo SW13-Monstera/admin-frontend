@@ -1,10 +1,6 @@
 import apiClient from '../../apiClient';
-import { API_URL } from '../../../constants/apiUrl';
-import {
-  IProblemDetailRequest,
-  IProblemDetailResponse,
-  IProblemListRequest,
-} from '../../../types/problem/api';
+import { API_URL, API_URL_WITH_PARAMS } from '../../../constants/apiUrl';
+import { IProblemDetailRequest, IProblemListRequest } from '../../../types/problem/api';
 import {
   ICreateShortProblemRequest,
   IShortProblemDetailResponse,
@@ -30,7 +26,7 @@ export const shortProblemApiWrapper = {
   },
   getShortProblemDetail: ({ problem_id }: IProblemDetailRequest) => {
     return apiClient
-      .get(API_URL.SHORT_PROBLEM_DETAIL(problem_id))
+      .get(API_URL_WITH_PARAMS.SHORT_PROBLEM_DETAIL(problem_id))
       .then((response: { data: IShortProblemDetailResponse }) => {
         return response.data;
       });
@@ -38,7 +34,7 @@ export const shortProblemApiWrapper = {
   createShortProblem: (data: ICreateShortProblemRequest) => {
     apiClient.post(API_URL.SHORT_PROBLEM_CREATE, data);
   },
-  updateShortProblem: (problem_id: number, data: ICreateShortProblemRequest) => {
-    apiClient.put(API_URL.SHORT_PROBLEM_UPDATE(problem_id), data);
+  updateShortProblem: (problem_id: string, data: ICreateShortProblemRequest) => {
+    apiClient.put(API_URL_WITH_PARAMS.SHORT_PROBLEM_UPDATE(problem_id), data);
   },
 };

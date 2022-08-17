@@ -1,61 +1,47 @@
 import PageTemplate from '../../../templates/PageTemplate';
-import { DataTable } from '../../../components/Table/DataTable';
 import { Box, Typography } from '@mui/material';
 import { Appbar } from '../../../components/FormGroup/Appbar';
 import { dataApiWrapper } from '../../../api/wrapper/data/dataApiWrapper';
-import { IDataListElement } from '../../../types/data/api';
-import { HeadCell, IFilter } from '../../../types/etc';
+import { ITableHead } from '../../../types/etc';
 import { DATA_FILTER } from '../../../constants/filter';
-import { useState, MouseEvent, ChangeEvent } from 'react';
-import { v4 as uuidv4 } from 'uuid';
 import { useFilter } from '../../../hooks/useFilter';
+import { BaseTable } from '../../../components/Table/BaseTable';
+import { useTable } from '../../../hooks/useTable';
+import { URLWithParam } from '../../../constants/url';
 
-const headCells: readonly HeadCell[] = [
+const tableHeads: ITableHead[] = [
   {
     id: 'id',
-    numeric: false,
-    disablePadding: true,
-    label: 'Data ID',
+    name: 'Data ID',
   },
   {
     id: 'problemTitle',
-    numeric: false,
-    disablePadding: false,
-    label: '문제 제목',
+    name: '문제 제목',
   },
   {
     id: 'validatingUsername',
-    numeric: false,
-    disablePadding: false,
-    label: '검수자',
+    name: '검수자',
   },
   {
     id: 'assignedUsername',
-    numeric: false,
-    disablePadding: false,
-    label: '담당자',
+    name: '담당자',
   },
   {
     id: 'updatedAt',
-    numeric: false,
-    disablePadding: false,
-    label: '완료된 시간',
+    name: '완료된 시간',
   },
-];
-
-const tableHeads: (keyof IDataListElement)[] = [
-  'id',
-  'problemTitle',
-  'validatingUsername',
-  'assignedUsername',
-  'updatedAt',
 ];
 
 export const DoneDataListPage = () => {
   const { filterState, addFilter, deletetFilter, updateCondition, updateFilterValue } = useFilter();
+  const { page, data, setData, totalElements, setTotalElements, handleChangePage, handleRowClick } =
+    useTable(getDoneDataList, filterState, URLWithParam.DATA_DONE);
 
-  function getLabelingDataList(page: number) {
-    return dataApiWrapper.getDataList({ page: page, isLabeled: true, isValidated: true });
+  function getDoneDataList(page?: number) {
+    dataApiWrapper.getDataList({ page: page, isLabeled: true, isValidated: true }).then((res) => {
+      setData(res.userAnswers);
+      setTotalElements(res.totalElements);
+    });
   }
 
   return (
@@ -79,11 +65,13 @@ export const DoneDataListPage = () => {
           updateFilterValue={updateFilterValue}
         ></Appbar>
       </Box>
-      <DataTable
+      <BaseTable
         tableHeads={tableHeads}
-        headCells={headCells}
-        getData={getLabelingDataList}
-        filterState={filterState}
+        data={data}
+        page={page}
+        handleChangePage={handleChangePage}
+        totalElements={totalElements}
+        handleRowClick={handleRowClick}
       />
     </PageTemplate>
   );

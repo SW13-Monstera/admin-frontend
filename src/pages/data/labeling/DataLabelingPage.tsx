@@ -56,7 +56,7 @@ export const DataLabelingPage = () => {
 
   function postLabelingData() {
     const postData = {
-      user_answer_id: data.id,
+      user_answer_id: data.id.toString(),
       selectedGradingStandardIds: [
         ...keywordStandards.map((e) => (e.checked ? e.id : -1)),
         ...contentStandards.map((e) => (e.checked ? e.id : -1)),
@@ -70,7 +70,7 @@ export const DataLabelingPage = () => {
 
     dataApiWrapper
       .getDataDetail({
-        user_answer_id: parseInt(dataId),
+        user_answer_id: dataId,
       })
       .then((res: any) => {
         setData(res);

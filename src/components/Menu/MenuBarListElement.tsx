@@ -1,11 +1,6 @@
 import { ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
 import { Link } from 'react-router-dom';
-
-interface IMenuBarListElement {
-  text: string;
-  icon?: JSX.Element;
-  url?: string;
-}
+import { IMenuBarListElement } from '../../types/etc/menu';
 
 export const MenuBarListElement = ({ text, icon, url = '/' }: IMenuBarListElement) =>
   url === '/' ? (

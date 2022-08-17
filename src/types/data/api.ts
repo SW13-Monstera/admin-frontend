@@ -29,7 +29,7 @@ interface IDataListResponse {
 }
 
 interface IDataDetailRequest {
-  user_answer_id: number;
+  user_answer_id: string;
   selectedGradingStandardIds?: number[];
 }
 
