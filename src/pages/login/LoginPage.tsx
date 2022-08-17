@@ -6,7 +6,7 @@ import { Avatar, Button, CssBaseline, TextField, Box } from '@mui/material';
 import { authApiWrapper } from '../../api/wrapper/auth/authApiWrapper';
 import { useNavigate } from 'react-router-dom';
 import { URL } from '../../constants/url';
-import { USER_INFO } from '../../constants/localStorage';
+import { setUserInfo } from '../../utils';
 
 const theme = createTheme();
 
@@ -22,7 +22,7 @@ export const LoginPage = () => {
         password: data.get('password')?.toString() || '',
       })
       .then((response) => {
-        localStorage.setItem(USER_INFO, JSON.stringify(response));
+        setUserInfo(response);
         navigate(URL.LONG_PROBLEM_LIST);
       });
   };
