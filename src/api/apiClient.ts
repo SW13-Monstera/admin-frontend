@@ -20,12 +20,18 @@ try {
 } catch (e) {}
 
 apiClient.interceptors.response.use(
-  (res) => res.data,
+  (res) => {
+    const userInfo = getUserInfo();
+    if (userInfo) {
+      authApiWrapper.refresh();
+    }
+    return res.data;
+  },
   (err) => {
-    const { status } = err.response;
+    const { status, data } = err.response;
 
     if (status === 401) {
-      authApiWrapper.refresh();
+      // authApiWrapper.refresh();
     } else if (status === 400) {
       // location.reload();
     } else if (status !== 200) {
