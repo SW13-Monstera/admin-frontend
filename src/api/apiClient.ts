@@ -1,4 +1,4 @@
-import { getUserInfo } from './../utils/index';
+import { getUserInfo, parseJwt } from './../utils/index';
 import axios from 'axios';
 import { AUTHORIZTION, BEARER_TOKEN } from '../constants';
 import { authApiWrapper } from './wrapper/auth/authApiWrapper';
@@ -23,7 +23,10 @@ apiClient.interceptors.response.use(
   (res) => {
     const userInfo = getUserInfo();
     if (userInfo) {
-      authApiWrapper.refresh();
+      const { exp } = parseJwt(userInfo.accessToken);
+      if (Date.now() >= exp * 1000) {
+        authApiWrapper.refresh();
+      }
     }
     return res.data;
   },
