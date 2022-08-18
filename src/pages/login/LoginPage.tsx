@@ -22,6 +22,7 @@ export const LoginPage = () => {
         password: data.get('password')?.toString() || '',
       })
       .then((response) => {
+        if (!response) return;
         setUserInfo(response);
         navigate(URL.LONG_PROBLEM_LIST);
       });

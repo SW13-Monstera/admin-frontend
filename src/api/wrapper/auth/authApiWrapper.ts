@@ -1,4 +1,5 @@
-import { getUserInfo, setUserInfo } from './../../../utils/index';
+import { IUserInfo } from './../../../types/auth/index';
+import { getUserInfo, setUserInfo, parseJwt } from './../../../utils/index';
 import apiClient from '../../apiClient';
 import { API_URL } from '../../../constants/apiUrl';
 import { AUTHORIZTION, BEARER_TOKEN, ROLES } from '../../../constants';
@@ -8,18 +9,10 @@ interface ILoginRequest {
   password: string;
 }
 
-interface ILoginResponse {
-  id: string;
-  username: string;
-  email: string;
-  role: string;
-  accessToken: string;
-}
-
 export const authApiWrapper = {
   login: (data: ILoginRequest) => {
     return apiClient.post(API_URL.LOGIN, data).then(
-      (res: { data: ILoginResponse }) => {
+      (res: { data: IUserInfo }) => {
         if (res.data.role !== ROLES.ROLE_ADMIN) {
           alert('권한 없음');
           throw new Error('권한 없음');
@@ -29,7 +22,7 @@ export const authApiWrapper = {
       },
       (err) => {
         alert('로그인 실패');
-        console.log(err);
+        throw new Error('로그인 실패');
       },
     );
   },
