@@ -16,7 +16,7 @@ const tableHeads: ITableHead[] = [
     name: 'Data ID',
   },
   {
-    id: 'title',
+    id: 'problemTitle',
     name: '문제 제목',
   },
   {
