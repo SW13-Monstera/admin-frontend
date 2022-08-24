@@ -10,7 +10,7 @@ import {
   FormGroup,
   FormControlLabel,
 } from '@mui/material';
-import { Link, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { ChangeEvent, useEffect, useState } from 'react';
 import { dataApiWrapper } from '../../../api/wrapper/data/dataApiWrapper';
 import { IDataDetailResponseData } from '../../../types/data/api';
@@ -22,6 +22,7 @@ interface ICheckedState {
 }
 
 export const ValidatingDataPage = () => {
+  const navigate = useNavigate();
   const [data, setData] = useState<IDataDetailResponseData>({
     id: 0,
     answer: '',
@@ -62,7 +63,11 @@ export const ValidatingDataPage = () => {
         ...contentStandards.map((e) => (e.checked ? e.id : -1)),
       ].filter((e) => e !== -1),
     };
-    dataApiWrapper.validatingData(postData);
+    const result = confirm('검수 데이터를 제출하시겠습니까?');
+    if (result) {
+      dataApiWrapper.validatingData(postData);
+      navigate(URL.VALIDATING_DATA_LIST);
+    }
   }
 
   useEffect(() => {
@@ -139,11 +144,9 @@ export const ValidatingDataPage = () => {
           </FormGroup>
         </FormControl>
       </Box>
-      <Link to={URL.VALIDATING_DATA_LIST}>
-        <Button variant='contained' onClick={postValidatedData}>
-          제출
-        </Button>
-      </Link>
+      <Button variant='contained' onClick={postValidatedData}>
+        제출
+      </Button>
     </PageTemplate>
   );
 };

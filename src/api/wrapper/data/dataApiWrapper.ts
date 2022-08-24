@@ -47,10 +47,10 @@ export const dataApiWrapper = {
   },
   labelingData: ({ user_answer_id, selectedGradingStandardIds }: IDataDetailRequest) => {
     const data = { selectedGradingStandardIds };
-    apiClient.post(API_URL_WITH_PARAMS.DATA_LABELING(user_answer_id), data);
+    return apiClient.post(API_URL_WITH_PARAMS.DATA_LABELING(user_answer_id), data);
   },
   validatingData: ({ user_answer_id, selectedGradingStandardIds }: IDataDetailRequest) => {
     const data = { selectedGradingStandardIds };
-    apiClient.post(API_URL_WITH_PARAMS.DATA_VALIDATING(user_answer_id), data);
+    return apiClient.post(API_URL_WITH_PARAMS.DATA_VALIDATING(user_answer_id), data);
   },
 };
