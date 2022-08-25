@@ -1,15 +1,14 @@
+import { useQuery } from 'react-query';
 import { useEffect, useState, MouseEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { PROBLEM_FILTER } from '../constants/filter';
 import { IFilter } from '../types/etc';
+import { IProblemListRequest } from '../types/problem/api';
 
-export const useTable = (
-  getData: (page?: number, params?: object) => void,
-  filterState?: IFilter[],
-  url?: (id: string) => string,
-) => {
+export const useTable = (filterState?: IFilter[], url?: (id: string) => string) => {
   const navigate = useNavigate();
 
+  const [params, setParams] = useState<IProblemListRequest>();
   const [page, setPage] = useState(0);
   const [data, setData] = useState<any[]>([]);
   const [totalElements, setTotalElements] = useState(0);
@@ -37,11 +36,22 @@ export const useTable = (
           ]),
         ),
       );
-      getData(page, params);
+      // getData(page, params);
+      setParams({ ...params, page: page });
     } else {
-      getData();
+      // getData(;
+      setParams({});
     }
   }, [page, filterState]);
 
-  return { page, data, setData, totalElements, setTotalElements, handleChangePage, handleRowClick };
+  return {
+    page,
+    data,
+    setData,
+    totalElements,
+    setTotalElements,
+    handleChangePage,
+    handleRowClick,
+    params,
+  };
 };

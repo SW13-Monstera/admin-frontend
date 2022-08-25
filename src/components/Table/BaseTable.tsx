@@ -17,7 +17,7 @@ import { CustomTableCell } from './CustomTableCell';
 
 interface IBaseTable {
   tableHeads: ITableHead[];
-  data: any[];
+  data: any[] | undefined;
   page: number;
   handleChangePage: (
     event: MouseEvent<HTMLButtonElement, globalThis.MouseEvent> | null,
@@ -37,7 +37,7 @@ export const BaseTable = ({
   totalElements,
   handleRowClick,
 }: IBaseTable) => {
-  const emptyRows = page > 0 ? Math.max(0, ROWS_PER_PAGE - data.length) : 0;
+  const emptyRows = page > 0 ? Math.max(0, ROWS_PER_PAGE - (data?.length ?? 0)) : 0;
 
   return (
     <Box sx={{ width: '100%' }}>
@@ -47,11 +47,11 @@ export const BaseTable = ({
         <Table sx={{ minWidth: 750 }} aria-labelledby='tableTitle' size='small'>
           <CustomTableHead
             onSelectAllClick={() => {}}
-            rowCount={data.length}
+            rowCount={data?.length ?? 0}
             tableHeads={tableHeads}
           />
           <TableBody>
-            {data.map((row) => {
+            {data?.map((row) => {
               return (
                 <TableRow hover tabIndex={-1} key={row.id}>
                   <TableCell padding='checkbox'>

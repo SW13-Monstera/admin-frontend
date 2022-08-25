@@ -9,6 +9,8 @@ import { useFilter } from '../../../hooks/useFilter';
 import { BaseTable } from '../../../components/Table/BaseTable';
 import { ITableHead } from '../../../types/etc';
 import { useTable } from '../../../hooks/useTable';
+import { useQuery } from 'react-query';
+import { IProblemListData } from '../../../types/problem/api';
 
 const tableHeads: ITableHead[] = [
   {
@@ -43,8 +45,20 @@ const tableHeads: ITableHead[] = [
 
 export const LongProblemListPage = () => {
   const { filterState, addFilter, deletetFilter, updateCondition, updateFilterValue } = useFilter();
-  const { page, data, setData, totalElements, setTotalElements, handleChangePage, handleRowClick } =
-    useTable(getLongDataList, filterState, URLWithParam.LONG_PROBLEM_DETAIL);
+  const {
+    page,
+    setData,
+    totalElements,
+    setTotalElements,
+    handleChangePage,
+    handleRowClick,
+    params,
+  } = useTable(filterState, URLWithParam.LONG_PROBLEM_DETAIL);
+  const { data } = useQuery<IProblemListData>(
+    ['longProblemList', params],
+    () => longProblemApiWrapper.getLongProblemList(params),
+    { enabled: !!params },
+  );
 
   function getLongDataList(page?: number, params?: object) {
     longProblemApiWrapper.getLongProblemList({ ...params, page: page }).then((res) => {
@@ -83,7 +97,7 @@ export const LongProblemListPage = () => {
       </Box>
       <BaseTable
         tableHeads={tableHeads}
-        data={data}
+        data={data?.problems}
         page={page}
         handleChangePage={handleChangePage}
         totalElements={totalElements}
