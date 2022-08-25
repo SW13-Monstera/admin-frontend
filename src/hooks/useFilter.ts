@@ -44,18 +44,6 @@ export const useFilter = () => {
     }, 500);
   }
 
-  function getParams() {
-    const params = Object.fromEntries(
-      new Map(
-        filterState.map((filter) => [
-          PROBLEM_FILTER.find((e) => filter.condition === e.value && filter.value)?.value,
-          filter.value,
-        ]),
-      ),
-    );
-    return params;
-  }
-
   useEffect(() => {
     setFilterState((prev) =>
       prev.map(({ id, condition }) => {
@@ -64,5 +52,5 @@ export const useFilter = () => {
     );
   }, [filterValueState]);
 
-  return { filterState, addFilter, deleteFilter, updateCondition, updateFilterValue, getParams };
+  return { filterState, addFilter, deleteFilter, updateCondition, updateFilterValue };
 };
