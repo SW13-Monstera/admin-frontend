@@ -8,14 +8,7 @@ import {
 } from './../../../types/problem/shortApi';
 
 export const shortProblemApiWrapper = {
-  getShortProblemList: ({ id, title, description, page, size = 10 }: IProblemListRequest) => {
-    const params = {
-      id,
-      title,
-      description,
-      page,
-      size,
-    };
+  getShortProblemList: (params?: IProblemListRequest) => {
     return apiClient
       .get(API_URL.SHORT_PROBLEM_LIST, {
         params: { ...params, size: 10 },

@@ -7,12 +7,13 @@ import { BaseTable } from '../../components/Table/BaseTable';
 import { IProblemListData } from '../../types/problem/api';
 import { ITableHead } from '../../types/etc';
 import { IFilterStateHandler, IPageHandler } from '../../types/etc/list';
+import { IShortProblemListResponse } from '../../types/problem/shortApi';
 
 interface IProblemListPage {
   title: string;
   tableHeads: ITableHead[];
   addUrl: string;
-  data: IProblemListData | undefined;
+  data: IProblemListData | IShortProblemListResponse | undefined;
   filterStateHandler: IFilterStateHandler;
   pageHandler: IPageHandler;
   handleRowClick: (id: string) => void;

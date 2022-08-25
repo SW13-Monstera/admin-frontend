@@ -14,7 +14,7 @@ export const MultipleProblemListPage = () => {
     URLWithParam.MULTIPLE_PROBLEM_DETAIL,
   );
   const { data } = useQuery<IProblemListData>(
-    ['longProblemList', params],
+    ['multipleProblemList', params],
     () => multipleProblemApiWrapper.getMultipleProblemList(params),
     { enabled: !!params },
   );
