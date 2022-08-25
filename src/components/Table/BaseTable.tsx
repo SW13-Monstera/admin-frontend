@@ -23,7 +23,7 @@ interface IBaseTable {
     event: MouseEvent<HTMLButtonElement, globalThis.MouseEvent> | null,
     newPage: number,
   ) => void;
-  totalElements: number;
+  totalElements: number | undefined;
   handleRowClick?: (id: string) => void;
 }
 
@@ -84,7 +84,7 @@ export const BaseTable = ({
       </TableContainer>
       <TablePagination
         component='div'
-        count={totalElements}
+        count={totalElements ?? 0}
         rowsPerPage={ROWS_PER_PAGE}
         rowsPerPageOptions={[ROWS_PER_PAGE]}
         page={page}
