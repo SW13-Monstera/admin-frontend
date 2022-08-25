@@ -18,7 +18,7 @@ export const shortProblemApiWrapper = {
     };
     return apiClient
       .get(API_URL.SHORT_PROBLEM_LIST, {
-        params: params,
+        params: { ...params, size: 10 },
       })
       .then((response: { data: IShortProblemListResponse }) => {
         return response.data;

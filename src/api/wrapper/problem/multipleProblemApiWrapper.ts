@@ -15,7 +15,7 @@ export const multipleProblemApiWrapper = {
   getMultipleProblemList: (params?: IProblemListRequest) => {
     return apiClient
       .get(API_URL.MULTIPLE_PROBLEM_LIST, {
-        params: params,
+        params: { ...params, size: 10 },
       })
       .then((response: { data: IProblemListData }) => {
         return response.data;
