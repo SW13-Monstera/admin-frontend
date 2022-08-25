@@ -3,16 +3,15 @@ import { useFilter } from '../../../hooks/useFilter';
 import { multipleProblemApiWrapper } from '../../../api/wrapper/problem/multipleProblemApiWrapper';
 import { useTable } from '../../../hooks/useTable';
 import { useQuery } from 'react-query';
-import { IProblemListData } from '../../../types/problem/api';
+import { IProblemListData, IProblemListRequest } from '../../../types/problem/api';
 import { ProblemListPageTemplate } from '../ProblemListPageTemplate';
 import { multipleTableHeads } from '../../../constants/tableHeads';
+import { useTableParams } from '../../../hooks/useTableParams';
 
 export const MultipleProblemListPage = () => {
   const filterHandler = useFilter();
-  const { page, handleChangePage, handleRowClick, params } = useTable(
-    filterHandler.filterState,
-    URLWithParam.MULTIPLE_PROBLEM_DETAIL,
-  );
+  const { page, handleChangePage, handleRowClick } = useTable(URLWithParam.MULTIPLE_PROBLEM_DETAIL);
+  const { params } = useTableParams<IProblemListRequest>(page, filterHandler.filterState);
   const { data } = useQuery<IProblemListData>(
     ['multipleProblemList', params],
     () => multipleProblemApiWrapper.getMultipleProblemList(params),

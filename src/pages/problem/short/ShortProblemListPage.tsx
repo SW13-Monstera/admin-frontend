@@ -6,13 +6,13 @@ import { ProblemListPageTemplate } from '../ProblemListPageTemplate';
 import { shortTableHeads } from '../../../constants/tableHeads';
 import { useQuery } from 'react-query';
 import { IShortProblemListResponse } from '../../../types/problem/shortApi';
+import { useTableParams } from '../../../hooks/useTableParams';
+import { IProblemListRequest } from '../../../types/problem/api';
 
 export const ShortProblemListPage = () => {
   const filterHandler = useFilter();
-  const { page, handleChangePage, handleRowClick, params } = useTable(
-    filterHandler.filterState,
-    URLWithParam.SHORT_PROBLEM_DETAIL,
-  );
+  const { page, handleChangePage, handleRowClick } = useTable(URLWithParam.SHORT_PROBLEM_DETAIL);
+  const { params } = useTableParams<IProblemListRequest>(page, filterHandler.filterState);
   const { data } = useQuery<IShortProblemListResponse>(
     ['shortProblemList', params],
     () => shortProblemApiWrapper.getShortProblemList(params),

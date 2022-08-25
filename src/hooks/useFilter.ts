@@ -57,7 +57,6 @@ export const useFilter = () => {
   }
 
   useEffect(() => {
-    console.log(filterState);
     setFilterState((prev) =>
       prev.map(({ id, condition }) => {
         return { id, value: filterValueState, condition };
