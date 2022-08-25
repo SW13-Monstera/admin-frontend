@@ -1,4 +1,5 @@
 import { useState, MouseEvent, ChangeEvent, useEffect } from 'react';
+import { PROBLEM_FILTER } from '../constants/filter';
 import { IFilter, IProblemCondition } from '../types/etc';
 
 export const useFilter = () => {
@@ -43,7 +44,20 @@ export const useFilter = () => {
     }, 500);
   }
 
+  function getParams() {
+    const params = Object.fromEntries(
+      new Map(
+        filterState.map((filter) => [
+          PROBLEM_FILTER.find((e) => filter.condition === e.value && filter.value)?.value,
+          filter.value,
+        ]),
+      ),
+    );
+    return params;
+  }
+
   useEffect(() => {
+    console.log(filterState);
     setFilterState((prev) =>
       prev.map(({ id, condition }) => {
         return { id, value: filterValueState, condition };
@@ -51,5 +65,5 @@ export const useFilter = () => {
     );
   }, [filterValueState]);
 
-  return { filterState, addFilter, deleteFilter, updateCondition, updateFilterValue };
+  return { filterState, addFilter, deleteFilter, updateCondition, updateFilterValue, getParams };
 };

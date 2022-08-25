@@ -4,10 +4,9 @@ import { PROBLEM_FILTER } from '../constants/filter';
 import { IFilter } from '../types/etc';
 import { IProblemListRequest } from '../types/problem/api';
 
-export const useTable = (filterState?: IFilter[], url?: (id: string) => string) => {
+export const useTable = (url?: (id: string) => string) => {
   const navigate = useNavigate();
 
-  const [params, setParams] = useState<IProblemListRequest>();
   const [page, setPage] = useState(0);
 
   const handleChangePage = (
@@ -23,26 +22,9 @@ export const useTable = (filterState?: IFilter[], url?: (id: string) => string) 
     }
   }
 
-  useEffect(() => {
-    if (filterState) {
-      const params = Object.fromEntries(
-        new Map(
-          filterState.map((filter) => [
-            PROBLEM_FILTER.find((e) => filter.condition === e.value)?.value,
-            filter.value,
-          ]),
-        ),
-      );
-      setParams({ ...params, page: page });
-    } else {
-      setParams({});
-    }
-  }, [page, filterState]);
-
   return {
     page,
     handleChangePage,
     handleRowClick,
-    params,
   };
 };
