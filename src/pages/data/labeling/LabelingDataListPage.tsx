@@ -4,17 +4,16 @@ import { dataApiWrapper } from '../../../api/wrapper/data/dataApiWrapper';
 import { useFilter } from '../../../hooks/useFilter';
 import { useTable } from '../../../hooks/useTable';
 import { URLWithParam } from '../../../constants/url';
-import { IDataListResponse } from '../../../types/data/api';
+import { IDataListRequest, IDataListResponse } from '../../../types/data/api';
 import { useQuery } from 'react-query';
 import { DataListPageTemplate } from '../DataListPageTemplate';
 import { labelingDataTableHeads } from '../../../constants/tableHeads';
+import { useTableParams } from '../../../hooks/useTableParams';
 
 export const LabelingDataListPage = () => {
   const filterHandler = useFilter();
-  const { page, handleChangePage, handleRowClick, params } = useTable(
-    filterHandler.filterState,
-    URLWithParam.DATA_LABELING,
-  );
+  const { page, handleChangePage, handleRowClick } = useTable(URLWithParam.DATA_LABELING);
+  const { params } = useTableParams<IDataListRequest>(page, filterHandler.filterState);
   const { data } = useQuery<IDataListResponse>(
     ['labelingData', params],
     () => dataApiWrapper.getDataList({ ...params, isLabeled: false, isValidated: false }),

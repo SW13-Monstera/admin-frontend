@@ -5,16 +5,15 @@ import { useFilter } from '../../../hooks/useFilter';
 import { useTable } from '../../../hooks/useTable';
 import { URL, URLWithParam } from '../../../constants/url';
 import { useQuery } from 'react-query';
-import { IDataListResponse } from '../../../types/data/api';
+import { IDataListRequest, IDataListResponse } from '../../../types/data/api';
 import { DataListPageTemplate } from '../DataListPageTemplate';
 import { validatingDataTableHeads } from '../../../constants/tableHeads';
+import { useTableParams } from '../../../hooks/useTableParams';
 
 export const ValidatingDataListPage = () => {
   const filterHandler = useFilter();
-  const { page, handleChangePage, handleRowClick, params } = useTable(
-    filterHandler.filterState,
-    URLWithParam.DATA_VALIDATING,
-  );
+  const { page, handleChangePage, handleRowClick } = useTable(URLWithParam.DATA_VALIDATING);
+  const { params } = useTableParams<IDataListRequest>(page, filterHandler.filterState);
   const { data } = useQuery<IDataListResponse>(
     ['validatingData', params],
     () => dataApiWrapper.getDataList({ ...params, isLabeled: true, isValidated: false }),
