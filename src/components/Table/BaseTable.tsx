@@ -25,6 +25,7 @@ interface IBaseTable {
   ) => void;
   totalElements: number | undefined;
   handleRowClick?: (id: string) => void;
+  rowsPerPage?: number;
 }
 
 const ROWS_PER_PAGE = 10;
@@ -36,8 +37,9 @@ export const BaseTable = ({
   handleChangePage,
   totalElements,
   handleRowClick,
+  rowsPerPage = ROWS_PER_PAGE,
 }: IBaseTable) => {
-  const emptyRows = page > 0 ? Math.max(0, ROWS_PER_PAGE - (data?.length ?? 0)) : 0;
+  const emptyRows = page > 0 ? Math.max(0, rowsPerPage - (data?.length ?? 0)) : 0;
 
   return (
     <Box sx={{ width: '100%' }}>
@@ -85,8 +87,8 @@ export const BaseTable = ({
       <TablePagination
         component='div'
         count={totalElements ?? 0}
-        rowsPerPage={ROWS_PER_PAGE}
-        rowsPerPageOptions={[ROWS_PER_PAGE]}
+        rowsPerPage={rowsPerPage}
+        rowsPerPageOptions={[rowsPerPage]}
         page={page}
         onPageChange={handleChangePage}
       />

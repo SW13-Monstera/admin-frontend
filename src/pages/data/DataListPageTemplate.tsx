@@ -1,20 +1,18 @@
-import { Typography, Box, Button } from '@mui/material';
-import { Link } from 'react-router-dom';
-import { Appbar } from '../../components/FormGroup/Appbar';
 import PageTemplate from '../../templates/PageTemplate';
-import { PROBLEM_FILTER } from '../../constants/filter';
+import { Box, Typography } from '@mui/material';
+import { Appbar } from '../../components/FormGroup/Appbar';
+import { DATA_FILTER } from '../../constants/filter';
 import { BaseTable } from '../../components/Table/BaseTable';
 import { IListPageTemplate } from '../../types/etc/template';
-import { URL } from '../../constants/url';
 
-export const ProblemListPageTemplate = ({
+export const DataListPageTemplate = ({
   title,
   tableHeads,
-  addUrl,
   data,
   filterStateHandler,
   pageHandler,
   handleRowClick,
+  children,
 }: IListPageTemplate) => {
   const { filterState, addFilter, deleteFilter, updateCondition, updateFilterValue } =
     filterStateHandler;
@@ -22,7 +20,6 @@ export const ProblemListPageTemplate = ({
 
   return (
     <PageTemplate>
-      <Typography>문제 관리</Typography>
       <Box
         sx={{
           display: 'flex',
@@ -33,7 +30,7 @@ export const ProblemListPageTemplate = ({
       >
         <Typography>{title}</Typography>
         <Appbar
-          menuItems={PROBLEM_FILTER}
+          menuItems={DATA_FILTER}
           conditions={filterState}
           filterCount={filterState.length}
           addFilter={addFilter}
@@ -41,16 +38,12 @@ export const ProblemListPageTemplate = ({
           updateCondition={updateCondition}
           updateFilterValue={updateFilterValue}
         >
-          <Link to={addUrl ?? URL.LONG_PROBLEM_LIST}>
-            <Button variant='contained' sx={{ height: '100%' }}>
-              문제 추가
-            </Button>
-          </Link>
+          {children}
         </Appbar>
       </Box>
       <BaseTable
         tableHeads={tableHeads}
-        data={data?.problems}
+        data={data?.userAnswers}
         page={page}
         handleChangePage={handleChangePage}
         totalElements={data?.totalElements}
