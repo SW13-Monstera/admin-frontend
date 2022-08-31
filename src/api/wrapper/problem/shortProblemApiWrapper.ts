@@ -28,6 +28,6 @@ export const shortProblemApiWrapper = {
     apiClient.post(API_URL.SHORT_PROBLEM_CREATE, data);
   },
   updateShortProblem: (problem_id: string, data: ICreateShortProblemRequest) => {
-    apiClient.put(API_URL_WITH_PARAMS.SHORT_PROBLEM_UPDATE(problem_id), data);
+    return apiClient.put(API_URL_WITH_PARAMS.SHORT_PROBLEM_UPDATE(problem_id), data);
   },
 };

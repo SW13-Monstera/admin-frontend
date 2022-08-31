@@ -22,14 +22,7 @@ import {
 export const ShortProblemEditPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [data, setData] = useState<IShortProblemDetailResponse>({
-    id: 0,
-    title: '',
-    description: '',
-    answer: '',
-    tags: [],
-    score: 0,
-  });
+  const [data, setData] = useState<IShortProblemDetailResponse | null>(null);
 
   const [tagState, setTagState] = useState(
     TAGS.map((tag) => {
@@ -54,7 +47,7 @@ export const ShortProblemEditPage = () => {
   useEffect(() => {
     setTagState(
       TAGS.map((tag) => {
-        return { id: tag.id, isChecked: data.tags.includes(tag.id) };
+        return { id: tag.id, isChecked: data?.tags.includes(tag.id) ?? false };
       }),
     );
   }, [data]);
@@ -84,7 +77,7 @@ export const ShortProblemEditPage = () => {
           id='title'
           label='문제 제목'
           multiline
-          defaultValue={data.title}
+          defaultValue={data?.title}
           sx={{ my: 2 }}
           InputLabelProps={{ shrink: true }}
         />
@@ -116,7 +109,7 @@ export const ShortProblemEditPage = () => {
           label='문제 설명'
           multiline
           rows={4}
-          defaultValue={data.description}
+          defaultValue={data?.description}
           sx={{ my: 2 }}
           InputLabelProps={{ shrink: true }}
         />
@@ -125,7 +118,7 @@ export const ShortProblemEditPage = () => {
           label='정답'
           multiline
           rows={4}
-          defaultValue={data.answer}
+          defaultValue={data?.answer}
           sx={{ my: 2 }}
           InputLabelProps={{ shrink: true }}
         />
@@ -133,7 +126,7 @@ export const ShortProblemEditPage = () => {
           id='score'
           label='점수'
           type='number'
-          defaultValue={data.score}
+          defaultValue={data?.score}
           sx={{ my: 2 }}
           InputLabelProps={{ shrink: true }}
         />
