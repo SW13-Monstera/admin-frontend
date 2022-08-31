@@ -19,6 +19,8 @@ export interface IMultipleDetailResponseData {
   isMultiple: boolean;
   choiceData: IChoiceElement[];
   score: number;
+  isActive: boolean;
+  isGradable: boolean;
 }
 
 export interface IMultipleListResponseData {
@@ -33,4 +35,13 @@ export interface IMultipleListResponseData {
 export interface IMultipleUpdateRequest extends IMultipleCreateRequest {
   isGradable?: boolean;
   isActive?: boolean;
+}
+
+export interface IMultipleProblemListElement {
+  id: number;
+  title: string;
+  creator: string;
+  answerRate: number | null;
+  userAnswerCnt: number;
+  isActive: boolean;
 }
