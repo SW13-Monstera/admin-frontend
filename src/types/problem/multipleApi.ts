@@ -1,3 +1,5 @@
+import { IChoice } from '../etc';
+
 export interface IMultipleCreateRequest {
   title: string;
   description: string;
@@ -35,6 +37,7 @@ export interface IMultipleListResponseData {
 export interface IMultipleUpdateRequest extends IMultipleCreateRequest {
   isGradable?: boolean;
   isActive?: boolean;
+  choiceData?: IChoiceElement[];
 }
 
 export interface IMultipleProblemListElement {

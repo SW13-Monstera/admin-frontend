@@ -33,15 +33,21 @@ export const MultipleProblemDetailPage = () => {
   function handleProblemActivate() {
     if (!id || !data) return;
 
-    const newData: IMultipleUpdateRequest | IMultipleDetailResponseData = {
+    const newData: IMultipleUpdateRequest = {
       ...data,
       isActive: !data.isActive,
       choices: data.choiceData,
     };
-    delete newData.choiceData;
-    multipleProblemApiWrapper.updateMultipleProblem(id, newData).then(() => {
-      refetch();
-    });
+
+    if (newData.hasOwnProperty('choiceData')) {
+      delete newData.choiceData;
+    }
+
+    multipleProblemApiWrapper
+      .updateMultipleProblem(id, newData as IMultipleUpdateRequest)
+      .then(() => {
+        refetch();
+      });
   }
 
   return (
