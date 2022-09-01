@@ -17,14 +17,15 @@ import { CustomTableCell } from './CustomTableCell';
 
 interface IBaseTable {
   tableHeads: ITableHead[];
-  data: any[];
+  data: any[] | undefined;
   page: number;
   handleChangePage: (
     event: MouseEvent<HTMLButtonElement, globalThis.MouseEvent> | null,
     newPage: number,
   ) => void;
-  totalElements: number;
+  totalElements: number | undefined;
   handleRowClick?: (id: string) => void;
+  rowsPerPage?: number;
 }
 
 const ROWS_PER_PAGE = 10;
@@ -36,8 +37,9 @@ export const BaseTable = ({
   handleChangePage,
   totalElements,
   handleRowClick,
+  rowsPerPage = ROWS_PER_PAGE,
 }: IBaseTable) => {
-  const emptyRows = page > 0 ? Math.max(0, ROWS_PER_PAGE - data.length) : 0;
+  const emptyRows = page > 0 ? Math.max(0, rowsPerPage - (data?.length ?? 0)) : 0;
 
   return (
     <Box sx={{ width: '100%' }}>
@@ -47,11 +49,11 @@ export const BaseTable = ({
         <Table sx={{ minWidth: 750 }} aria-labelledby='tableTitle' size='small'>
           <CustomTableHead
             onSelectAllClick={() => {}}
-            rowCount={data.length}
+            rowCount={data?.length ?? 0}
             tableHeads={tableHeads}
           />
           <TableBody>
-            {data.map((row) => {
+            {data?.map((row) => {
               return (
                 <TableRow hover tabIndex={-1} key={row.id}>
                   <TableCell padding='checkbox'>
@@ -84,9 +86,9 @@ export const BaseTable = ({
       </TableContainer>
       <TablePagination
         component='div'
-        count={totalElements}
-        rowsPerPage={ROWS_PER_PAGE}
-        rowsPerPageOptions={[ROWS_PER_PAGE]}
+        count={totalElements ?? 0}
+        rowsPerPage={rowsPerPage}
+        rowsPerPageOptions={[rowsPerPage]}
         page={page}
         onPageChange={handleChangePage}
       />

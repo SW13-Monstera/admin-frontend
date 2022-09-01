@@ -1,4 +1,5 @@
 import { useState, MouseEvent, ChangeEvent, useEffect } from 'react';
+import { PROBLEM_FILTER } from '../constants/filter';
 import { IFilter, IProblemCondition } from '../types/etc';
 
 export const useFilter = () => {
@@ -17,7 +18,7 @@ export const useFilter = () => {
     addFilterId();
   }
 
-  function deletetFilter(event: MouseEvent<Element, MouseEvent>) {
+  function deleteFilter(event: MouseEvent<Element, MouseEvent>) {
     const id = event.currentTarget.id;
     setFilterState((prev) => prev.filter((e) => e.id.toString() !== id));
   }
@@ -51,5 +52,5 @@ export const useFilter = () => {
     );
   }, [filterValueState]);
 
-  return { filterState, addFilter, deletetFilter, updateCondition, updateFilterValue };
+  return { filterState, addFilter, deleteFilter, updateCondition, updateFilterValue };
 };

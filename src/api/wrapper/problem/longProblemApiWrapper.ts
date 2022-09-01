@@ -9,17 +9,10 @@ import apiClient from '../../apiClient';
 import { API_URL, API_URL_WITH_PARAMS } from '../../../constants/apiUrl';
 
 export const longProblemApiWrapper = {
-  getLongProblemList: ({ id, title, description, page, size = 10 }: IProblemListRequest) => {
-    const params = {
-      id,
-      title,
-      description,
-      page,
-      size,
-    };
+  getLongProblemList: (params?: IProblemListRequest) => {
     return apiClient
       .get(API_URL.LONG_PROBLEM_LIST, {
-        params: params,
+        params: { ...params, size: 10 },
       })
       .then((response: { data: IProblemListData }) => {
         return response.data;

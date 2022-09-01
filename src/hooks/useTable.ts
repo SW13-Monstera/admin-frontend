@@ -2,17 +2,12 @@ import { useEffect, useState, MouseEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { PROBLEM_FILTER } from '../constants/filter';
 import { IFilter } from '../types/etc';
+import { IProblemListRequest } from '../types/problem/api';
 
-export const useTable = (
-  getData: (page?: number, params?: object) => void,
-  filterState?: IFilter[],
-  url?: (id: string) => string,
-) => {
+export const useTable = (url?: (id: string) => string) => {
   const navigate = useNavigate();
 
   const [page, setPage] = useState(0);
-  const [data, setData] = useState<any[]>([]);
-  const [totalElements, setTotalElements] = useState(0);
 
   const handleChangePage = (
     event: MouseEvent<HTMLButtonElement, globalThis.MouseEvent> | null,
@@ -27,21 +22,9 @@ export const useTable = (
     }
   }
 
-  useEffect(() => {
-    if (filterState) {
-      const params = Object.fromEntries(
-        new Map(
-          filterState.map((filter) => [
-            PROBLEM_FILTER.find((e) => filter.condition === e.value)?.value,
-            filter.value,
-          ]),
-        ),
-      );
-      getData(page, params);
-    } else {
-      getData();
-    }
-  }, [page, filterState]);
-
-  return { page, data, setData, totalElements, setTotalElements, handleChangePage, handleRowClick };
+  return {
+    page,
+    handleChangePage,
+    handleRowClick,
+  };
 };

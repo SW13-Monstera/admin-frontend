@@ -12,17 +12,10 @@ import {
 import { IMultipleDetailResponseData } from '../../../types/problem/multipleApi';
 
 export const multipleProblemApiWrapper = {
-  getMultipleProblemList: ({ id, title, description, page, size = 10 }: IProblemListRequest) => {
-    const params = {
-      id,
-      title,
-      description,
-      page,
-      size,
-    };
+  getMultipleProblemList: (params?: IProblemListRequest) => {
     return apiClient
       .get(API_URL.MULTIPLE_PROBLEM_LIST, {
-        params: params,
+        params: { ...params, size: 10 },
       })
       .then((response: { data: IProblemListData }) => {
         return response.data;
