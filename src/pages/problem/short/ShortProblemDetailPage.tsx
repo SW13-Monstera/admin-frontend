@@ -6,7 +6,12 @@ import { TAGS } from '../../../constants/tags';
 import { IShortProblemDetailResponse } from '../../../types/problem/shortApi';
 import { shortProblemApiWrapper } from '../../../api/wrapper/problem/shortProblemApiWrapper';
 import { ToggleButton } from '../../../components/Button/ToggleButton';
-import { useQuery } from 'react-query';
+import { useMutation, useQuery } from 'react-query';
+
+interface IUpdateShortProblemDetail {
+  id: string;
+  data: IShortProblemDetailResponse;
+}
 
 export const ShortProblemDetailPage = () => {
   const { id } = useParams();
@@ -18,6 +23,17 @@ export const ShortProblemDetailPage = () => {
     },
   });
 
+  const { mutate } = useMutation(
+    ({ id, data }: IUpdateShortProblemDetail) => {
+      return shortProblemApiWrapper.updateShortProblem(id, data);
+    },
+    {
+      onSuccess: () => {
+        refetch();
+      },
+    },
+  );
+
   function getShortProblemDetailData() {
     if (!id) return;
     return shortProblemApiWrapper.getShortProblemDetail({ problem_id: id }).then((res) => {
@@ -28,9 +44,7 @@ export const ShortProblemDetailPage = () => {
   function handleProblemActivate() {
     if (!id || !data) return;
     const newData: IShortProblemDetailResponse = { ...data, isActive: !data.isActive };
-    shortProblemApiWrapper.updateShortProblem(id, newData).then(() => {
-      refetch();
-    });
+    mutate({ id, data: newData });
   }
 
   return (

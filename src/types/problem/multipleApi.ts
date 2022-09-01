@@ -38,6 +38,8 @@ export interface IMultipleUpdateRequest extends IMultipleCreateRequest {
   isGradable?: boolean;
   isActive?: boolean;
   choiceData?: IChoiceElement[];
+  isMultiple?: boolean;
+  id?: number;
 }
 
 export interface IMultipleProblemListElement {

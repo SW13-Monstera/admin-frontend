@@ -3,15 +3,17 @@ import { Typography, Box, Button } from '@mui/material';
 import { Link, useParams } from 'react-router-dom';
 import { URLWithParam } from '../../../constants/url';
 import { TAGS } from '../../../constants/tags';
-import {
-  IMultipleDetailResponseData,
-  IMultipleUpdateRequest,
-} from '../../../types/problem/multipleApi';
+import { IMultipleUpdateRequest } from '../../../types/problem/multipleApi';
 import { multipleProblemApiWrapper } from '../../../api/wrapper/problem/multipleProblemApiWrapper';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
-import { useQuery } from 'react-query';
+import { useMutation, useQuery } from 'react-query';
 import { ToggleButton } from '../../../components/Button/ToggleButton';
+
+interface IUpdateMultipleProblemDetail {
+  id: string;
+  data: IMultipleUpdateRequest;
+}
 
 export const MultipleProblemDetailPage = () => {
   const { id } = useParams();
@@ -22,6 +24,16 @@ export const MultipleProblemDetailPage = () => {
       throw new Error(e.message);
     },
   });
+  const { mutate } = useMutation(
+    ({ id, data }: IUpdateMultipleProblemDetail) => {
+      return multipleProblemApiWrapper.updateMultipleProblem(id, data);
+    },
+    {
+      onSuccess: () => {
+        refetch();
+      },
+    },
+  );
 
   function getMultipleProblemDetailData() {
     if (!id) return;
@@ -39,15 +51,11 @@ export const MultipleProblemDetailPage = () => {
       choices: data.choiceData,
     };
 
-    if (newData.hasOwnProperty('choiceData')) {
-      delete newData.choiceData;
-    }
+    delete newData.choiceData;
+    delete newData.id;
+    delete newData.isMultiple;
 
-    multipleProblemApiWrapper
-      .updateMultipleProblem(id, newData as IMultipleUpdateRequest)
-      .then(() => {
-        refetch();
-      });
+    mutate({ id, data: newData });
   }
 
   return (
