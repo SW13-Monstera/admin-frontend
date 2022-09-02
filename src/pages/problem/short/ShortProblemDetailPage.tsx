@@ -1,47 +1,70 @@
 import PageTemplate from '../../../templates/PageTemplate';
 import { Typography, Box, Button } from '@mui/material';
 import { Link, useParams } from 'react-router-dom';
-import { useState, useEffect } from 'react';
 import { URLWithParam } from '../../../constants/url';
 import { TAGS } from '../../../constants/tags';
 import { IShortProblemDetailResponse } from '../../../types/problem/shortApi';
 import { shortProblemApiWrapper } from '../../../api/wrapper/problem/shortProblemApiWrapper';
+import { ToggleButton } from '../../../components/Button/ToggleButton';
+import { useMutation, useQuery } from 'react-query';
+
+interface IUpdateShortProblemDetail {
+  id: string;
+  data: IShortProblemDetailResponse;
+}
 
 export const ShortProblemDetailPage = () => {
   const { id } = useParams();
-  const [data, setData] = useState<IShortProblemDetailResponse>({
-    id: 0,
-    title: '',
-    description: '',
-    answer: '',
-    tags: [],
-    score: 0,
+  const { data, refetch } = useQuery(['short-problems'], getShortProblemDetailData, {
+    refetchOnWindowFocus: false,
+    enabled: true,
+    onError: (e: Error) => {
+      throw new Error(e.message);
+    },
   });
 
-  function editProblem() {}
+  const { mutate } = useMutation(
+    ({ id, data }: IUpdateShortProblemDetail) => {
+      return shortProblemApiWrapper.updateShortProblem(id, data);
+    },
+    {
+      onSuccess: () => {
+        refetch();
+      },
+    },
+  );
 
-  useEffect(() => {
+  function getShortProblemDetailData() {
     if (!id) return;
-    shortProblemApiWrapper.getShortProblemDetail({ problem_id: id }).then((res) => {
-      setData(res);
+    return shortProblemApiWrapper.getShortProblemDetail({ problem_id: id }).then((res) => {
+      return res;
     });
-  }, []);
+  }
+
+  function handleProblemActivate() {
+    if (!id || !data) return;
+    const newData: IShortProblemDetailResponse = { ...data, isActive: !data.isActive };
+    mutate({ id, data: newData });
+  }
 
   return (
     <PageTemplate>
-      <Typography variant='h4'>{data.title}</Typography>
+      <Typography variant='h4'>{data?.title}</Typography>
       <Box sx={{ display: 'flex', gap: 1, my: 1 }}>
-        {data.tags.map((id) => (
+        {data?.tags.map((id) => (
           <Box key={id}>{TAGS.find((e) => e.id === id)?.name}</Box>
         ))}
       </Box>
 
-      <Box sx={{ mt: 2 }}>{data.description}</Box>
-      <Box sx={{ mt: 2 }}>{data.answer}</Box>
-      <Box sx={{ mt: 2 }}>{data.score}</Box>
-      <Link to={URLWithParam.SHORT_PROBLEM_EDIT(id!)}>
-        <Button variant='contained'>수정</Button>
-      </Link>
+      <Box sx={{ mt: 2 }}>{data?.description}</Box>
+      <Box sx={{ mt: 2 }}>{data?.answer}</Box>
+      <Box sx={{ mt: 2 }}>{data?.score}</Box>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+        <ToggleButton data={data} onClick={handleProblemActivate} />
+        <Link to={URLWithParam.SHORT_PROBLEM_EDIT(id!)}>
+          <Button variant='contained'>수정</Button>
+        </Link>
+      </Box>
     </PageTemplate>
   );
 };
