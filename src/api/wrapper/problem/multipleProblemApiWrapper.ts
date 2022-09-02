@@ -32,6 +32,6 @@ export const multipleProblemApiWrapper = {
     apiClient.post(API_URL.MULTIPLE_PROBLEM_CREATE, data);
   },
   updateMultipleProblem: (problem_id: string, data: IMultipleUpdateRequest) => {
-    apiClient.put(API_URL_WITH_PARAMS.MULTIPLE_PROBLEM_UPDATE(problem_id), data);
+    return apiClient.put(API_URL_WITH_PARAMS.MULTIPLE_PROBLEM_UPDATE(problem_id), data);
   },
 };

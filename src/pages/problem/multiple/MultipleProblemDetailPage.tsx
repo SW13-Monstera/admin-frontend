@@ -1,26 +1,62 @@
 import PageTemplate from '../../../templates/PageTemplate';
 import { Typography, Box, Button } from '@mui/material';
 import { Link, useParams } from 'react-router-dom';
-import { useState, useEffect } from 'react';
 import { URLWithParam } from '../../../constants/url';
 import { TAGS } from '../../../constants/tags';
-import { IMultipleDetailResponseData } from '../../../types/problem/multipleApi';
+import { IMultipleUpdateRequest } from '../../../types/problem/multipleApi';
 import { multipleProblemApiWrapper } from '../../../api/wrapper/problem/multipleProblemApiWrapper';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
+import { useMutation, useQuery } from 'react-query';
+import { ActivationToggleButton } from '../../../components/Button/ActivationToggleButton';
+
+interface IUpdateMultipleProblemDetail {
+  id: string;
+  data: IMultipleUpdateRequest;
+}
 
 export const MultipleProblemDetailPage = () => {
   const { id } = useParams();
-  const [data, setData] = useState<IMultipleDetailResponseData | null>(null);
+  const { data, refetch } = useQuery(['multiple-problems'], getMultipleProblemDetailData, {
+    refetchOnWindowFocus: false,
+    enabled: true,
+    onError: (e: Error) => {
+      throw new Error(e.message);
+    },
+  });
+  const { mutate } = useMutation(
+    ({ id, data }: IUpdateMultipleProblemDetail) => {
+      return multipleProblemApiWrapper.updateMultipleProblem(id, data);
+    },
+    {
+      onSuccess: () => {
+        refetch();
+      },
+    },
+  );
 
-  function editProblem() {}
-
-  useEffect(() => {
+  function getMultipleProblemDetailData() {
     if (!id) return;
-    multipleProblemApiWrapper.getMultipleProblemDetail({ problem_id: id }).then((res) => {
-      setData(res);
+    return multipleProblemApiWrapper.getMultipleProblemDetail({ problem_id: id }).then((res) => {
+      return res;
     });
-  }, []);
+  }
+
+  function handleProblemActivate() {
+    if (!id || !data) return;
+
+    const newData: IMultipleUpdateRequest = {
+      ...data,
+      isActive: !data.isActive,
+      choices: data.choiceData,
+    };
+
+    delete newData.choiceData;
+    delete newData.id;
+    delete newData.isMultiple;
+
+    mutate({ id, data: newData });
+  }
 
   return (
     <PageTemplate>
@@ -41,9 +77,12 @@ export const MultipleProblemDetailPage = () => {
         ))}
       </Box>
       <Box sx={{ mt: 2 }}>{data?.score}</Box>
-      <Link to={URLWithParam.MULTIPLE_PROBLEM_EDIT(id!)}>
-        <Button variant='contained'>수정</Button>
-      </Link>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+        <ActivationToggleButton data={data} onClick={handleProblemActivate} />
+        <Link to={URLWithParam.MULTIPLE_PROBLEM_EDIT(id!)}>
+          <Button variant='contained'>수정</Button>
+        </Link>
+      </Box>
     </PageTemplate>
   );
 };
