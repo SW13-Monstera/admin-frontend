@@ -1,11 +1,11 @@
 import { FormControlLabel, Switch } from '@mui/material';
 
-interface IToggleButton {
+interface IActivationToggleButton {
   data: any;
   onClick: () => void;
 }
 
-export const ToggleButton = ({ data, onClick }: IToggleButton) => {
+export const ActivationToggleButton = ({ data, onClick }: IActivationToggleButton) => {
   return (
     <FormControlLabel
       checked={data?.isActive}

@@ -5,7 +5,7 @@ import { URLWithParam } from '../../../constants/url';
 import { TAGS } from '../../../constants/tags';
 import { IShortProblemDetailResponse } from '../../../types/problem/shortApi';
 import { shortProblemApiWrapper } from '../../../api/wrapper/problem/shortProblemApiWrapper';
-import { ToggleButton } from '../../../components/Button/ToggleButton';
+import { ActivationToggleButton } from '../../../components/Button/ActivationToggleButton';
 import { useMutation, useQuery } from 'react-query';
 
 interface IUpdateShortProblemDetail {
@@ -60,7 +60,7 @@ export const ShortProblemDetailPage = () => {
       <Box sx={{ mt: 2 }}>{data?.answer}</Box>
       <Box sx={{ mt: 2 }}>{data?.score}</Box>
       <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-        <ToggleButton data={data} onClick={handleProblemActivate} />
+        <ActivationToggleButton data={data} onClick={handleProblemActivate} />
         <Link to={URLWithParam.SHORT_PROBLEM_EDIT(id!)}>
           <Button variant='contained'>수정</Button>
         </Link>

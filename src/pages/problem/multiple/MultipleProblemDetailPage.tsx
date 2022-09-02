@@ -8,7 +8,7 @@ import { multipleProblemApiWrapper } from '../../../api/wrapper/problem/multiple
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import { useMutation, useQuery } from 'react-query';
-import { ToggleButton } from '../../../components/Button/ToggleButton';
+import { ActivationToggleButton } from '../../../components/Button/ActivationToggleButton';
 
 interface IUpdateMultipleProblemDetail {
   id: string;
@@ -78,7 +78,7 @@ export const MultipleProblemDetailPage = () => {
       </Box>
       <Box sx={{ mt: 2 }}>{data?.score}</Box>
       <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-        <ToggleButton data={data} onClick={handleProblemActivate} />
+        <ActivationToggleButton data={data} onClick={handleProblemActivate} />
         <Link to={URLWithParam.MULTIPLE_PROBLEM_EDIT(id!)}>
           <Button variant='contained'>수정</Button>
         </Link>
