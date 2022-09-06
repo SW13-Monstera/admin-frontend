@@ -169,12 +169,11 @@ export const MultipleProblemEditPage = () => {
           id='score'
           label='점수'
           type='number'
-          value={score ?? ''}
+          value={score ?? 0}
           sx={{ my: 2 }}
           InputLabelProps={{ shrink: true }}
           inputProps={{
             min: '0',
-            max: '5',
             step: '0.5',
           }}
           onChange={(event) => {
