@@ -6,7 +6,7 @@ import {
   IShortProblemDetailResponse,
   IShortProblemListResponse,
 } from './../../../types/problem/shortApi';
-import { isEmptyOrNotNumbericError } from '../../../error';
+import { isEmptyOrNotNumericError } from '../../../error';
 
 export const shortProblemApiWrapper = {
   getShortProblemList: (params?: IProblemListRequest) => {
@@ -19,7 +19,7 @@ export const shortProblemApiWrapper = {
       });
   },
   getShortProblemDetail: ({ problem_id }: IProblemDetailRequest) => {
-    isEmptyOrNotNumbericError(problem_id);
+    isEmptyOrNotNumericError(problem_id);
     return apiClient
       .get(API_URL_WITH_PARAMS.SHORT_PROBLEM_DETAIL(problem_id!))
       .then((response: { data: IShortProblemDetailResponse }) => {
@@ -30,7 +30,7 @@ export const shortProblemApiWrapper = {
     apiClient.post(API_URL.SHORT_PROBLEM_CREATE, data);
   },
   updateShortProblem: (problem_id: string, data: ICreateShortProblemRequest) => {
-    isEmptyOrNotNumbericError(problem_id);
+    isEmptyOrNotNumericError(problem_id);
     return apiClient.put(API_URL_WITH_PARAMS.SHORT_PROBLEM_UPDATE(problem_id), data);
   },
 };
