@@ -19,6 +19,7 @@ import { URL } from '../../../constants/url';
 import { Link } from 'react-router-dom';
 import { StandardList } from '../../../components/FormGroup/StandardList';
 import { useStandard } from '../../../hooks/useStandard';
+import { MarkdownInputCard } from '../../../components/Card/MarkdownInputCard';
 
 export const LongProblemAddPage = () => {
   const [tagState, setTagState] = useState(
@@ -50,7 +51,7 @@ export const LongProblemAddPage = () => {
   function createProblem() {
     const data: IProblemCreateData = {
       title: (document.getElementById('title') as HTMLTextAreaElement).value || '',
-      description: (document.getElementById('desc') as HTMLTextAreaElement).value || '',
+      description: (document.getElementById('description') as HTMLTextAreaElement).value || '',
       standardAnswer:
         (document.getElementById('standardAnswer') as HTMLTextAreaElement).value || '',
       tags: tagState.filter((tag) => tag.isChecked).map((e) => e.id),
@@ -98,23 +99,8 @@ export const LongProblemAddPage = () => {
             </FormControl>
           </Box>
         </Card>
-        <TextField
-          id='desc'
-          label='문제 설명'
-          multiline
-          rows={4}
-          sx={{ my: 2 }}
-          InputLabelProps={{ shrink: true }}
-        />
-        <TextField
-          id='standardAnswer'
-          label='모범 답안'
-          multiline
-          rows={4}
-          sx={{ my: 2 }}
-          InputLabelProps={{ shrink: true }}
-          inputProps={{ maxLength: 300 }}
-        />
+        <MarkdownInputCard id='description' title='문제 설명' />
+        <MarkdownInputCard id='standardAnswer' title='모범답안' />
         <Divider sx={{ my: 2 }} />
         <StandardList
           type={STANDARD_TYPE.KEYWORD}

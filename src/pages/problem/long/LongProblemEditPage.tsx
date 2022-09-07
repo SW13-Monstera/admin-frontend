@@ -150,22 +150,12 @@ export const LongProblemEditPage = () => {
             </FormControl>
           </Box>
         </Card>
-        <MarkdownInputCard
-          title='문제 설명'
-          id='description'
-          defaultValue={data?.description}
-          onChange={handleProblemDescriptionChange}
-        >
-          {problemDescription}
-        </MarkdownInputCard>
+        <MarkdownInputCard title='문제 설명' id='description' defaultValue={data?.description} />
         <MarkdownInputCard
           title='모범답안'
           id='standardAnswer'
           defaultValue={data?.standardAnswer}
-          onChange={handleStandardAnswerChange}
-        >
-          {standardAnswer}
-        </MarkdownInputCard>
+        />
         <Divider sx={{ my: 2 }} />
         <StandardList
           type={STANDARD_TYPE.KEYWORD}

@@ -6,9 +6,7 @@ import { MarkdownCard } from './MarkdownCard';
 interface IMarkdownCard {
   id: string;
   title: string;
-  children: string | undefined;
-  defaultValue: string | undefined;
-  onChange: (event: ChangeEvent<HTMLInputElement>) => void;
+  defaultValue?: string | undefined;
 }
 
 export const MarkdownInputCard = ({ id, title, defaultValue }: IMarkdownCard) => {
