@@ -18,7 +18,7 @@ export const MarkdownInputCard = ({
   onChange,
 }: IMarkdownCard) => {
   return (
-    <Card sx={{ p: 2 }} variant='outlined'>
+    <Card sx={{ p: 2, my: 1 }} variant='outlined'>
       <Typography color='text.secondary' sx={{ fontSize: 12 }}>
         {title}
       </Typography>

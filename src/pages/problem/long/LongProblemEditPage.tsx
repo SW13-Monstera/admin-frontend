@@ -26,6 +26,9 @@ export const LongProblemEditPage = () => {
   const { id } = useParams();
   const [data, setData] = useState<IProblemDetailResponse | null>(null);
   const [standardAnswer, setStandardAnswer] = useState<string | undefined>(data?.standardAnswer);
+  const [problemDescription, setProblemDescription] = useState<string | undefined>(
+    data?.description,
+  );
 
   const [tagState, setTagState] = useState(
     TAGS.map((tag) => {
@@ -61,6 +64,11 @@ export const LongProblemEditPage = () => {
     setStandardAnswer(inputValue);
   };
 
+  const handleProblemDescriptionChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const inputValue = event.target.value;
+    setProblemDescription(inputValue);
+  };
+
   useEffect(() => {
     if (!id) return;
     longProblemApiWrapper.getLongProblemDetail({ problem_id: id }).then((res) => {
@@ -78,13 +86,14 @@ export const LongProblemEditPage = () => {
     setKeywordStandardState(data.gradingStandards.filter((e) => e.type === STANDARD_TYPE.KEYWORD));
     setContentStandardState(data.gradingStandards.filter((e) => e.type === STANDARD_TYPE.CONTENT));
     setStandardAnswer(data.standardAnswer);
+    setProblemDescription(data.description);
   }, [data]);
 
   function editProblem() {
     if (!id) return;
     const data: IProblemCreateData = {
       title: (document.getElementById('title') as HTMLTextAreaElement).value || '',
-      description: (document.getElementById('desc') as HTMLTextAreaElement).value || '',
+      description: (document.getElementById('description') as HTMLTextAreaElement).value || '',
       standardAnswer: standardAnswer || '',
       // (document.getElementById('standardAnswer') as HTMLTextAreaElement).value || '',
       tags: tagState.filter((tag) => tag.isChecked).map((e) => e.id),
@@ -141,14 +150,14 @@ export const LongProblemEditPage = () => {
             </FormControl>
           </Box>
         </Card>
-        <TextField
-          id='desc'
-          label='문제 설명'
-          multiline
+        <MarkdownInputCard
+          title='문제 설명'
+          id='description'
           defaultValue={data?.description}
-          sx={{ my: 2 }}
-          InputLabelProps={{ shrink: true }}
-        />
+          onChange={handleProblemDescriptionChange}
+        >
+          {problemDescription}
+        </MarkdownInputCard>
         <MarkdownInputCard
           title='모범답안'
           id='standardAnswer'

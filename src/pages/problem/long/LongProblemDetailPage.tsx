@@ -65,9 +65,9 @@ export const LongProblemDetailPage = () => {
       </Box>
       <Divider sx={{ my: 2 }} />
       <DetailTitle>문제 설명</DetailTitle>
-      <Box sx={{ mt: 2 }}>{data?.description}</Box>
+      <MarkdownCard>{data?.description}</MarkdownCard>
       <Divider sx={{ my: 2 }} />
-      <DetailTitle>모범 답안</DetailTitle>
+      <DetailTitle>모범답안</DetailTitle>
       <MarkdownCard>{data?.standardAnswer}</MarkdownCard>
       <Divider sx={{ my: 2 }} />
       <List>
