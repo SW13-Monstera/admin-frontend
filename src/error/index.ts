@@ -1,6 +1,6 @@
 import { isNumeric } from '../utils';
 
-export const isEmptyOrNotNumbericError = (value: any) => {
+export const isEmptyOrNotNumericError = (value: any) => {
   if (!value || !isNumeric(value)) {
     alert('Invalid value: 에러가 발생했습니다. 이전 페이지로 돌아갑니다.');
     setTimeout(() => {
