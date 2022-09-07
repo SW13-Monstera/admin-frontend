@@ -25,10 +25,6 @@ import { MarkdownInputCard } from '../../../components/Card/MarkdownInputCard';
 export const LongProblemEditPage = () => {
   const { id } = useParams();
   const [data, setData] = useState<IProblemDetailResponse | null>(null);
-  const [standardAnswer, setStandardAnswer] = useState<string | undefined>(data?.standardAnswer);
-  const [problemDescription, setProblemDescription] = useState<string | undefined>(
-    data?.description,
-  );
 
   const [tagState, setTagState] = useState(
     TAGS.map((tag) => {
@@ -59,16 +55,6 @@ export const LongProblemEditPage = () => {
     ]);
   };
 
-  const handleStandardAnswerChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const inputValue = event.target.value;
-    setStandardAnswer(inputValue);
-  };
-
-  const handleProblemDescriptionChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const inputValue = event.target.value;
-    setProblemDescription(inputValue);
-  };
-
   useEffect(() => {
     if (!id) return;
     longProblemApiWrapper.getLongProblemDetail({ problem_id: id }).then((res) => {
@@ -85,8 +71,6 @@ export const LongProblemEditPage = () => {
     );
     setKeywordStandardState(data.gradingStandards.filter((e) => e.type === STANDARD_TYPE.KEYWORD));
     setContentStandardState(data.gradingStandards.filter((e) => e.type === STANDARD_TYPE.CONTENT));
-    setStandardAnswer(data.standardAnswer);
-    setProblemDescription(data.description);
   }, [data]);
 
   function editProblem() {
@@ -94,8 +78,8 @@ export const LongProblemEditPage = () => {
     const data: IProblemCreateData = {
       title: (document.getElementById('title') as HTMLTextAreaElement).value || '',
       description: (document.getElementById('description') as HTMLTextAreaElement).value || '',
-      standardAnswer: standardAnswer || '',
-      // (document.getElementById('standardAnswer') as HTMLTextAreaElement).value || '',
+      standardAnswer:
+        (document.getElementById('standardAnswer') as HTMLTextAreaElement).value || '',
       tags: tagState.filter((tag) => tag.isChecked).map((e) => e.id),
       gradingStandards: [
         ...keywordStandardState.map(({ content, score, type }) => {

@@ -11,7 +11,7 @@ import {
   Typography,
 } from '@mui/material';
 import { TAGS } from '../../../constants/tags';
-import { useState, ChangeEvent, MouseEvent, useEffect } from 'react';
+import { useState, ChangeEvent } from 'react';
 import { URL } from '../../../constants/url';
 import { Link } from 'react-router-dom';
 import { multipleProblemApiWrapper } from '../../../api/wrapper/problem/multipleProblemApiWrapper';
@@ -19,6 +19,7 @@ import { IChoiceElement, IMultipleCreateRequest } from '../../../types/problem/m
 import { CheckboxFormGroup } from '../../../components/FormGroup/CheckboxFormGroup';
 import { DeleteButton } from '../../../components/Button/DeleteButton';
 import { useChoice } from '../../../hooks/useChoice';
+import { MarkdownInputCard } from '../../../components/Card/MarkdownInputCard';
 
 export const MultipleProblemAddPage = () => {
   const [tagState, setTagState] = useState(
@@ -52,7 +53,7 @@ export const MultipleProblemAddPage = () => {
   function createProblem() {
     const data: IMultipleCreateRequest = {
       title: (document.getElementById('title') as HTMLTextAreaElement).value || '',
-      description: (document.getElementById('desc') as HTMLTextAreaElement).value || '',
+      description: (document.getElementById('description') as HTMLTextAreaElement).value || '',
       tags: tagState.filter((tag) => tag.isChecked).map((e) => e.id),
       choices: getChoicesValue(),
       score: parseInt((document.getElementById('score') as HTMLTextAreaElement).value) || 0,
@@ -98,14 +99,7 @@ export const MultipleProblemAddPage = () => {
             </FormControl>
           </Box>
         </Card>
-        <TextField
-          id='desc'
-          label='문제 설명'
-          multiline
-          rows={4}
-          sx={{ my: 2 }}
-          InputLabelProps={{ shrink: true }}
-        />
+        <MarkdownInputCard id='description' title='문제 설명' />
         <Typography sx={{ fontSize: '1rem' }}>선택지</Typography>
         <Card
           id='choices'

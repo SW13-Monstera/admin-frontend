@@ -2,7 +2,6 @@ import PageTemplate from '../../../templates/PageTemplate';
 import {
   Box,
   TextField,
-  Divider,
   Button,
   Card,
   FormControl,
@@ -16,6 +15,7 @@ import { URL } from '../../../constants/url';
 import { Link } from 'react-router-dom';
 import { ICreateShortProblemRequest } from '../../../types/problem/shortApi';
 import { shortProblemApiWrapper } from '../../../api/wrapper/problem/shortProblemApiWrapper';
+import { MarkdownInputCard } from '../../../components/Card/MarkdownInputCard';
 
 export const ShortProblemAddPage = () => {
   const [tagState, setTagState] = useState(
@@ -34,7 +34,7 @@ export const ShortProblemAddPage = () => {
   function createProblem() {
     const data: ICreateShortProblemRequest = {
       title: (document.getElementById('title') as HTMLTextAreaElement).value || '',
-      description: (document.getElementById('desc') as HTMLTextAreaElement).value || '',
+      description: (document.getElementById('description') as HTMLTextAreaElement).value || '',
       tags: tagState.filter((tag) => tag.isChecked).map((e) => e.id),
       answer: (document.getElementById('answer') as HTMLTextAreaElement).value || '',
       score: parseInt((document.getElementById('score') as HTMLTextAreaElement).value) || 0,
@@ -80,14 +80,7 @@ export const ShortProblemAddPage = () => {
             </FormControl>
           </Box>
         </Card>
-        <TextField
-          id='desc'
-          label='문제 설명'
-          multiline
-          rows={4}
-          sx={{ my: 2 }}
-          InputLabelProps={{ shrink: true }}
-        />
+        <MarkdownInputCard id='description' title='문제 설명' />
         <TextField
           id='answer'
           label='정답'

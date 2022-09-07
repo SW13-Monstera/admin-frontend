@@ -20,6 +20,7 @@ import { CheckboxFormGroup } from '../../../components/FormGroup/CheckboxFormGro
 import { DeleteButton } from '../../../components/Button/DeleteButton';
 import { useChoice } from '../../../hooks/useChoice';
 import { useQuery } from 'react-query';
+import { MarkdownInputCard } from '../../../components/Card/MarkdownInputCard';
 
 export const MultipleProblemEditPage = () => {
   const { id } = useParams();
@@ -72,7 +73,7 @@ export const MultipleProblemEditPage = () => {
     if (!id) return;
     const data: IMultipleCreateRequest = {
       title: (document.getElementById('title') as HTMLTextAreaElement).value || '',
-      description: (document.getElementById('desc') as HTMLTextAreaElement).value || '',
+      description: (document.getElementById('description') as HTMLTextAreaElement).value || '',
       tags: tagState.filter((tag) => tag.isChecked).map((e) => e.id),
       choices: choiceState.map((choice) => {
         return { isAnswer: choice.isAnswer, content: choice.content };
@@ -122,15 +123,7 @@ export const MultipleProblemEditPage = () => {
             </FormControl>
           </Box>
         </Card>
-        <TextField
-          id='desc'
-          label='문제 설명'
-          multiline
-          rows={4}
-          defaultValue={data?.description}
-          sx={{ my: 2 }}
-          InputLabelProps={{ shrink: true }}
-        />
+        <MarkdownInputCard id='description' title='문제 설명' defaultValue={data?.description} />
         <Typography sx={{ fontSize: '1rem' }}>선택지</Typography>
         <Card
           id='choices'
