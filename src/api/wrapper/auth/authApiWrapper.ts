@@ -1,5 +1,5 @@
 import { IUserInfo } from './../../../types/auth/index';
-import { getUserInfo, setUserInfo, parseJwt } from './../../../utils/index';
+import { getUserInfo, setUserInfo, setLogout } from './../../../utils/index';
 import apiClient from '../../apiClient';
 import { API_URL } from '../../../constants/apiUrl';
 import { AUTHORIZTION, BEARER_TOKEN, ROLES } from '../../../constants';
@@ -28,20 +28,28 @@ export const authApiWrapper = {
   },
   refresh: () => {
     const userInfo = getUserInfo();
-    if (!userInfo) return new Error('localstorage.userInfo not found');
+    if (!userInfo) return;
 
-    apiClient
+    return apiClient
       .get(API_URL.REFRESH, {
-        headers: { Authorization: BEARER_TOKEN(userInfo.accessToken) },
+        headers: {
+          Authorization: BEARER_TOKEN(userInfo.accessToken),
+        },
       })
       .then(
-        (res) => {
+        (res: { data: { accessToken: string } }) => {
           const newAccessToken = res.data.accessToken;
           apiClient.defaults.headers.common[AUTHORIZTION] = BEARER_TOKEN(newAccessToken);
           setUserInfo({ ...userInfo, accessToken: newAccessToken });
+          return res.data.accessToken;
         },
         (err) => {
-          return;
+          setLogout();
+          alert('다시 로그인 해주세요.');
+          setTimeout(() => {
+            location.reload();
+          }, 1000);
+          return err;
         },
       );
   },
