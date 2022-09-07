@@ -14,15 +14,16 @@ import { TAGS } from '../../../constants/tags';
 import { useState, useEffect, ChangeEvent } from 'react';
 import { URL } from '../../../constants/url';
 import { shortProblemApiWrapper } from '../../../api/wrapper/problem/shortProblemApiWrapper';
-import {
-  ICreateShortProblemRequest,
-  IShortProblemDetailResponse,
-} from '../../../types/problem/shortApi';
+import { ICreateShortProblemRequest } from '../../../types/problem/shortApi';
+import { useQuery } from 'react-query';
 
 export const ShortProblemEditPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [data, setData] = useState<IShortProblemDetailResponse | null>(null);
+
+  const { data } = useQuery(['short-problem-detail', id], () =>
+    shortProblemApiWrapper.getShortProblemDetail({ problem_id: id ?? '' }),
+  );
 
   const [tagState, setTagState] = useState(
     TAGS.map((tag) => {
@@ -36,13 +37,6 @@ export const ShortProblemEditPage = () => {
       ...prev.map((e) => (e.id !== id ? e : { id: id, isChecked: !e.isChecked })),
     ]);
   };
-
-  useEffect(() => {
-    if (!id) return;
-    shortProblemApiWrapper.getShortProblemDetail({ problem_id: id }).then((res) => {
-      setData(res);
-    });
-  }, []);
 
   useEffect(() => {
     setTagState(
@@ -128,6 +122,10 @@ export const ShortProblemEditPage = () => {
           type='number'
           defaultValue={data?.score}
           sx={{ my: 2 }}
+          inputProps={{
+            min: '0',
+            step: '0.5',
+          }}
           InputLabelProps={{ shrink: true }}
         />
       </Box>

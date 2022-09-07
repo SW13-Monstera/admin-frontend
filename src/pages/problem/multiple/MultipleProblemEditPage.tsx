@@ -14,21 +14,27 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { TAGS } from '../../../constants/tags';
 import { useState, useEffect, ChangeEvent } from 'react';
 import { URL } from '../../../constants/url';
-import {
-  IMultipleCreateRequest,
-  IMultipleDetailResponseData,
-} from '../../../types/problem/multipleApi';
+import { IMultipleCreateRequest } from '../../../types/problem/multipleApi';
 import { multipleProblemApiWrapper } from '../../../api/wrapper/problem/multipleProblemApiWrapper';
 import { CheckboxFormGroup } from '../../../components/FormGroup/CheckboxFormGroup';
 import { DeleteButton } from '../../../components/Button/DeleteButton';
 import { useChoice } from '../../../hooks/useChoice';
+import { useQuery } from 'react-query';
 
 export const MultipleProblemEditPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [data, setData] = useState<IMultipleDetailResponseData | null>(null);
-  const [score, setScore] = useState<number | null>(0);
 
+  const { data } = useQuery(
+    ['multiple-problem-detail', id],
+    () => multipleProblemApiWrapper.getMultipleProblemDetail({ problem_id: id ?? '' }),
+    {
+      refetchOnWindowFocus: false,
+      enabled: true,
+    },
+  );
+
+  const [score, setScore] = useState<number | null>(0);
   const [tagState, setTagState] = useState(
     TAGS.map((tag) => {
       return { id: tag.id, isChecked: false };
@@ -44,13 +50,6 @@ export const MultipleProblemEditPage = () => {
       ...prev.map((e) => (e.id !== id ? e : { id: id, isChecked: !e.isChecked })),
     ]);
   };
-
-  useEffect(() => {
-    if (!id) return;
-    multipleProblemApiWrapper.getMultipleProblemDetail({ problem_id: id }).then((res) => {
-      setData(res);
-    });
-  }, []);
 
   useEffect(() => {
     if (!data) return;
@@ -169,12 +168,11 @@ export const MultipleProblemEditPage = () => {
           id='score'
           label='점수'
           type='number'
-          value={score ?? ''}
+          value={score ?? 0}
           sx={{ my: 2 }}
           InputLabelProps={{ shrink: true }}
           inputProps={{
             min: '0',
-            max: '5',
             step: '0.5',
           }}
           onChange={(event) => {

@@ -15,13 +15,14 @@ interface IUpdateShortProblemDetail {
 
 export const ShortProblemDetailPage = () => {
   const { id } = useParams();
-  const { data, refetch } = useQuery(['short-problems'], getShortProblemDetailData, {
-    refetchOnWindowFocus: false,
-    enabled: true,
-    onError: (e: Error) => {
-      throw new Error(e.message);
+  const { data, refetch } = useQuery(
+    ['short-problem-detail', id],
+    () => shortProblemApiWrapper.getShortProblemDetail({ problem_id: id ?? '' }),
+    {
+      refetchOnWindowFocus: false,
+      enabled: true,
     },
-  });
+  );
 
   const { mutate } = useMutation(
     ({ id, data }: IUpdateShortProblemDetail) => {
@@ -33,13 +34,6 @@ export const ShortProblemDetailPage = () => {
       },
     },
   );
-
-  function getShortProblemDetailData() {
-    if (!id) return;
-    return shortProblemApiWrapper.getShortProblemDetail({ problem_id: id }).then((res) => {
-      return res;
-    });
-  }
 
   function handleProblemActivate() {
     if (!id || !data) return;

@@ -23,7 +23,7 @@ export interface IProblemListData {
 }
 
 export interface IProblemDetailRequest {
-  problem_id: string;
+  problem_id: string | null;
 }
 
 export interface IStandardResponse extends IStandard {

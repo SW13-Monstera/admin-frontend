@@ -113,6 +113,7 @@ export const LongProblemAddPage = () => {
           rows={4}
           sx={{ my: 2 }}
           InputLabelProps={{ shrink: true }}
+          inputProps={{ maxLength: 300 }}
         />
         <Divider sx={{ my: 2 }} />
         <StandardList

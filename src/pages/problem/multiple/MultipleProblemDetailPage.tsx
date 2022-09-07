@@ -17,13 +17,14 @@ interface IUpdateMultipleProblemDetail {
 
 export const MultipleProblemDetailPage = () => {
   const { id } = useParams();
-  const { data, refetch } = useQuery(['multiple-problems'], getMultipleProblemDetailData, {
-    refetchOnWindowFocus: false,
-    enabled: true,
-    onError: (e: Error) => {
-      throw new Error(e.message);
+  const { data, refetch } = useQuery(
+    ['multiple-problem-detail', id],
+    () => multipleProblemApiWrapper.getMultipleProblemDetail({ problem_id: id ?? '' }),
+    {
+      refetchOnWindowFocus: false,
+      enabled: true,
     },
-  });
+  );
   const { mutate } = useMutation(
     ({ id, data }: IUpdateMultipleProblemDetail) => {
       return multipleProblemApiWrapper.updateMultipleProblem(id, data);
@@ -34,13 +35,6 @@ export const MultipleProblemDetailPage = () => {
       },
     },
   );
-
-  function getMultipleProblemDetailData() {
-    if (!id) return;
-    return multipleProblemApiWrapper.getMultipleProblemDetail({ problem_id: id }).then((res) => {
-      return res;
-    });
-  }
 
   function handleProblemActivate() {
     if (!id || !data) return;
