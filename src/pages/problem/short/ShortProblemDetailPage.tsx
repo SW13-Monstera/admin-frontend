@@ -21,9 +21,6 @@ export const ShortProblemDetailPage = () => {
     {
       refetchOnWindowFocus: false,
       enabled: true,
-      onError: (e: Error) => {
-        throw new Error(e.message);
-      },
     },
   );
 

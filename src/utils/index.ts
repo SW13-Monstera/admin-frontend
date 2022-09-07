@@ -52,3 +52,7 @@ export const parseJwt = (token: string) => {
   );
   return JSON.parse(jsonPayload) as IParsedToken;
 };
+
+export const isNumeric = (value: any) => {
+  return !isNaN(Number(value));
+};

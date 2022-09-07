@@ -25,9 +25,6 @@ export const LongProblemDetailPage = () => {
   const { data, refetch } = useQuery(['long-problems'], getLongProblemDetailData, {
     refetchOnWindowFocus: false,
     enabled: true,
-    onError: (e: Error) => {
-      throw new Error(e.message);
-    },
   });
 
   function getLongProblemDetailData() {

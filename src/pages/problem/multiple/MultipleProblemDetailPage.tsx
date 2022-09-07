@@ -23,9 +23,6 @@ export const MultipleProblemDetailPage = () => {
     {
       refetchOnWindowFocus: false,
       enabled: true,
-      onError: (e: Error) => {
-        throw new Error(e.message);
-      },
     },
   );
   const { mutate } = useMutation(
