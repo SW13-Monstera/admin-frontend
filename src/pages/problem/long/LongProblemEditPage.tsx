@@ -20,10 +20,12 @@ import { longProblemApiWrapper } from '../../../api/wrapper/problem/longProblemA
 import { STANDARD_TYPE } from '../../../constants/standard';
 import { useStandard } from '../../../hooks/useStandard';
 import { StandardList } from '../../../components/FormGroup/StandardList';
+import { MarkdownInputCard } from '../../../components/Card/MarkdownInputCard';
 
 export const LongProblemEditPage = () => {
   const { id } = useParams();
   const [data, setData] = useState<IProblemDetailResponse | null>(null);
+  const [standardAnswer, setStandardAnswer] = useState<string | undefined>(data?.standardAnswer);
 
   const [tagState, setTagState] = useState(
     TAGS.map((tag) => {
@@ -54,6 +56,11 @@ export const LongProblemEditPage = () => {
     ]);
   };
 
+  const handleStandardAnswerChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const inputValue = event.target.value;
+    setStandardAnswer(inputValue);
+  };
+
   useEffect(() => {
     if (!id) return;
     longProblemApiWrapper.getLongProblemDetail({ problem_id: id }).then((res) => {
@@ -70,6 +77,7 @@ export const LongProblemEditPage = () => {
     );
     setKeywordStandardState(data.gradingStandards.filter((e) => e.type === STANDARD_TYPE.KEYWORD));
     setContentStandardState(data.gradingStandards.filter((e) => e.type === STANDARD_TYPE.CONTENT));
+    setStandardAnswer(data.standardAnswer);
   }, [data]);
 
   function editProblem() {
@@ -77,8 +85,8 @@ export const LongProblemEditPage = () => {
     const data: IProblemCreateData = {
       title: (document.getElementById('title') as HTMLTextAreaElement).value || '',
       description: (document.getElementById('desc') as HTMLTextAreaElement).value || '',
-      standardAnswer:
-        (document.getElementById('standardAnswer') as HTMLTextAreaElement).value || '',
+      standardAnswer: standardAnswer || '',
+      // (document.getElementById('standardAnswer') as HTMLTextAreaElement).value || '',
       tags: tagState.filter((tag) => tag.isChecked).map((e) => e.id),
       gradingStandards: [
         ...keywordStandardState.map(({ content, score, type }) => {
@@ -141,15 +149,14 @@ export const LongProblemEditPage = () => {
           sx={{ my: 2 }}
           InputLabelProps={{ shrink: true }}
         />
-        <TextField
+        <MarkdownInputCard
+          title='모범답안'
           id='standardAnswer'
-          label='모범 답안'
-          multiline
           defaultValue={data?.standardAnswer}
-          sx={{ my: 2 }}
-          InputLabelProps={{ shrink: true }}
-          inputProps={{ maxLength: 300 }}
-        />
+          onChange={handleStandardAnswerChange}
+        >
+          {standardAnswer}
+        </MarkdownInputCard>
         <Divider sx={{ my: 2 }} />
         <StandardList
           type={STANDARD_TYPE.KEYWORD}
