@@ -89,7 +89,7 @@ export const BaseTable = ({
         count={totalElements ?? 0}
         rowsPerPage={rowsPerPage}
         rowsPerPageOptions={[rowsPerPage]}
-        page={page}
+        page={!totalElements || (totalElements && totalElements <= 0) ? 0 : page}
         onPageChange={handleChangePage}
       />
     </Box>
