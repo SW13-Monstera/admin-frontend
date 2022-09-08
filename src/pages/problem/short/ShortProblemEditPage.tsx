@@ -16,6 +16,7 @@ import { URL } from '../../../constants/url';
 import { shortProblemApiWrapper } from '../../../api/wrapper/problem/shortProblemApiWrapper';
 import { ICreateShortProblemRequest } from '../../../types/problem/shortApi';
 import { useQuery } from 'react-query';
+import { MarkdownInputCard } from '../../../components/Card/MarkdownInputCard';
 
 export const ShortProblemEditPage = () => {
   const { id } = useParams();
@@ -50,7 +51,7 @@ export const ShortProblemEditPage = () => {
     if (!id) return;
     const data: ICreateShortProblemRequest = {
       title: (document.getElementById('title') as HTMLTextAreaElement).value || '',
-      description: (document.getElementById('desc') as HTMLTextAreaElement).value || '',
+      description: (document.getElementById('description') as HTMLTextAreaElement).value || '',
       tags: tagState.filter((tag) => tag.isChecked).map((e) => e.id),
       answer: (document.getElementById('answer') as HTMLTextAreaElement).value || '',
       score: parseInt((document.getElementById('score') as HTMLTextAreaElement).value) || 0,
@@ -98,15 +99,7 @@ export const ShortProblemEditPage = () => {
             </FormControl>
           </Box>
         </Card>
-        <TextField
-          id='desc'
-          label='문제 설명'
-          multiline
-          rows={4}
-          defaultValue={data?.description}
-          sx={{ my: 2 }}
-          InputLabelProps={{ shrink: true }}
-        />
+        <MarkdownInputCard title='문제 설명' id='description' defaultValue={data?.description} />
         <TextField
           id='answer'
           label='정답'

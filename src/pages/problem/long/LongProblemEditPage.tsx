@@ -20,6 +20,7 @@ import { longProblemApiWrapper } from '../../../api/wrapper/problem/longProblemA
 import { STANDARD_TYPE } from '../../../constants/standard';
 import { useStandard } from '../../../hooks/useStandard';
 import { StandardList } from '../../../components/FormGroup/StandardList';
+import { MarkdownInputCard } from '../../../components/Card/MarkdownInputCard';
 
 export const LongProblemEditPage = () => {
   const { id } = useParams();
@@ -76,7 +77,7 @@ export const LongProblemEditPage = () => {
     if (!id) return;
     const data: IProblemCreateData = {
       title: (document.getElementById('title') as HTMLTextAreaElement).value || '',
-      description: (document.getElementById('desc') as HTMLTextAreaElement).value || '',
+      description: (document.getElementById('description') as HTMLTextAreaElement).value || '',
       standardAnswer:
         (document.getElementById('standardAnswer') as HTMLTextAreaElement).value || '',
       tags: tagState.filter((tag) => tag.isChecked).map((e) => e.id),
@@ -133,22 +134,11 @@ export const LongProblemEditPage = () => {
             </FormControl>
           </Box>
         </Card>
-        <TextField
-          id='desc'
-          label='문제 설명'
-          multiline
-          defaultValue={data?.description}
-          sx={{ my: 2 }}
-          InputLabelProps={{ shrink: true }}
-        />
-        <TextField
+        <MarkdownInputCard title='문제 설명' id='description' defaultValue={data?.description} />
+        <MarkdownInputCard
+          title='모범답안'
           id='standardAnswer'
-          label='모범 답안'
-          multiline
           defaultValue={data?.standardAnswer}
-          sx={{ my: 2 }}
-          InputLabelProps={{ shrink: true }}
-          inputProps={{ maxLength: 300 }}
         />
         <Divider sx={{ my: 2 }} />
         <StandardList
