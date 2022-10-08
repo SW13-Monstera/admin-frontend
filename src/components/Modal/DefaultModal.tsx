@@ -26,6 +26,9 @@ export const DefaultModal = ({ open, handleClose, title, children }: IDefaultMod
 };
 
 const style = {
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
   position: 'absolute' as 'absolute',
   top: '50%',
   left: '50%',

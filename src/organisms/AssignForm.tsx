@@ -26,15 +26,14 @@ export const AssignForm = ({ minId, maxId, submit }: IAssignForm) => {
         display: 'flex',
         flexDirection: 'column',
         gap: '16px',
-        width: 'fit-content',
-        height: 'fit-content',
+        width: '300px',
       }}
     >
       <Box
         sx={{
           display: 'flex',
           gap: '8px',
-          width: 'fit-content',
+          width: '100%',
           height: 'fit-content',
         }}
       >
@@ -43,8 +42,8 @@ export const AssignForm = ({ minId, maxId, submit }: IAssignForm) => {
           type='number'
           defaultValue={0}
           inputProps={{
-            min: { minId },
-            max: { maxId },
+            min: minId,
+            max: maxId,
           }}
           sx={{
             mr: 1,
@@ -61,8 +60,8 @@ export const AssignForm = ({ minId, maxId, submit }: IAssignForm) => {
           type='number'
           defaultValue={0}
           inputProps={{
-            min: { minId },
-            max: { maxId },
+            min: minId,
+            max: maxId,
           }}
           sx={{
             mr: 1,

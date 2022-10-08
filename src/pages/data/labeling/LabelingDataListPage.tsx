@@ -12,6 +12,7 @@ import { useTableParams } from '../../../hooks/useTableParams';
 import { useModal } from '../../../hooks/useModal';
 import { DefaultModal } from '../../../components/Modal/DefaultModal';
 import { AssignForm } from '../../../organisms/assignForm';
+import { AssignButton } from '../../../organisms/AssignButton';
 
 export const LabelingDataListPage = () => {
   const filterHandler = useFilter();
@@ -40,23 +41,18 @@ export const LabelingDataListPage = () => {
             csv 파일 불러오기
           </Button>
         </label>
-        <Button onClick={handleOpen} variant='outlined'>
-          라벨링 담당자 할당
-        </Button>
-        <DefaultModal open={open} handleClose={handleClose} title='라벨링 담당자 할당'>
-          <AssignForm
-            minId={0}
-            maxId={0}
-            submit={(nums: number[], adminId: string) => {
-              dataApiWrapper
-                .assignLabelingData({ userAnswerIds: nums, assigneeId: adminId })
-                .then(() => {
-                  refetch();
-                });
-              handleClose();
-            }}
-          />
-        </DefaultModal>
+        <AssignButton
+          title='라벨링 담당자 할당'
+          minId={0}
+          maxId={1008}
+          submit={(nums: number[], adminId: string) => {
+            dataApiWrapper
+              .assignLabelingData({ userAnswerIds: nums, assigneeId: adminId })
+              .then(() => {
+                refetch();
+              });
+          }}
+        />
         <Link to={'/data/labeling/0'}>
           <Button variant='contained' disabled>
             전체 라벨링 시작

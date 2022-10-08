@@ -9,12 +9,14 @@ import { IDataListRequest, IDataListResponse } from '../../../types/data/api';
 import { DataListPageTemplate } from '../DataListPageTemplate';
 import { validatingDataTableHeads } from '../../../constants/tableHeads';
 import { useTableParams } from '../../../hooks/useTableParams';
+import { useModal } from '../../../hooks/useModal';
 
 export const ValidatingDataListPage = () => {
   const filterHandler = useFilter();
+  const { open, handleOpen, handleClose } = useModal();
   const { page, handleChangePage, handleRowClick } = useTable(URLWithParam.DATA_VALIDATING);
   const { params } = useTableParams<IDataListRequest>(page, filterHandler.filterState);
-  const { data } = useQuery<IDataListResponse>(
+  const { data, refetch } = useQuery<IDataListResponse>(
     ['validatingData', params],
     () => dataApiWrapper.getDataList({ ...params, isLabeled: true, isValidated: false }),
     { enabled: !!params },
