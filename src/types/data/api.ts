@@ -39,7 +39,7 @@ interface IDataDetailResponseData {
   isLabeled: boolean;
   isValidated: boolean;
   keywordsGradingStandards: IStandardResponse[];
-  promptGradingStandards: IStandardResponse[];
+  contentGradingStandards: IStandardResponse[];
   problemId: number;
   problemTitle: string;
   problemDescription: string;
@@ -58,6 +58,11 @@ interface IDataListCreateRequestData {
   userAnswers: IUserAnswer[];
 }
 
+interface IAssignDataRequest {
+  userAnswerIds: number[];
+  assigneeId: string;
+}
+
 export type {
   IDataListRequest,
   IDataDetailRequest,
@@ -66,4 +71,5 @@ export type {
   IDataListResponse,
   IDataListElement,
   IDataDetailResponseData,
+  IAssignDataRequest,
 };
