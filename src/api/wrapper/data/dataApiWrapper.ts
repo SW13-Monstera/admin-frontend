@@ -3,6 +3,7 @@ import {
   IDataListCreateRequestData,
   IDataDetailRequest,
   IDataListResponse,
+  IAssignDataRequest,
 } from '../../../types/data/api';
 import apiClient from '../../apiClient';
 import { API_URL, API_URL_WITH_PARAMS } from '../../../constants/apiUrl';
@@ -30,5 +31,12 @@ export const dataApiWrapper = {
   validatingData: ({ user_answer_id, selectedGradingStandardIds }: IDataDetailRequest) => {
     const data = { selectedGradingStandardIds };
     return apiClient.post(API_URL_WITH_PARAMS.DATA_VALIDATING(user_answer_id), data);
+  },
+  assignLabelingData: ({ userAnswerIds, assigneeId }: IAssignDataRequest) => {
+    return apiClient.put(API_URL.ASSIGN_LABELING_DATA, { userAnswerIds, assigneeId });
+  },
+
+  assignValidatingData: ({ userAnswerIds, assigneeId }: IAssignDataRequest) => {
+    return apiClient.put(API_URL.ASSIGN_VALIDATING_DATA, { userAnswerIds, assigneeId });
   },
 };

@@ -4,14 +4,10 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
-
-interface IMenuItem {
-  value: string;
-  name: string;
-}
+import { IMenuItem } from '../../types/etc/dropdown';
 
 interface IDropdown {
-  title: string;
+  title?: string;
   menuItems: IMenuItem[];
   defaultValue?: string;
   id: number;

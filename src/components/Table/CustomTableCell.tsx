@@ -1,6 +1,6 @@
 import { Checkbox, TableCell } from '@mui/material';
 import { ITableHead } from '../../types/etc';
-import { roundToSecondDigit } from '../../utils';
+import { parseDateTime, roundToSecondDigit } from '../../utils';
 
 interface ICustomTableCell {
   tableHeads: ITableHead[];
@@ -46,7 +46,7 @@ export const CustomTableCell = ({
             ) : typeof row[keyName] === 'number' ? (
               roundToSecondDigit(row[keyName]) ?? 'N/A'
             ) : (
-              row[keyName] ?? 'N/A'
+              parseDateTime(row[keyName]) ?? 'N/A'
             )}
           </TableCell>
         )

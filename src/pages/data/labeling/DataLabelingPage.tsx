@@ -23,18 +23,7 @@ interface ICheckedState {
 
 export const DataLabelingPage = () => {
   const navigate = useNavigate();
-  const [data, setData] = useState<IDataDetailResponseData>({
-    id: 0,
-    answer: '',
-    isLabeled: false,
-    isValidated: false,
-    keywordsGradingStandards: [],
-    promptGradingStandards: [],
-    problemId: 0,
-    problemTitle: '',
-    problemDescription: '',
-    selectedGradingStandards: [],
-  });
+  const [data, setData] = useState<IDataDetailResponseData>();
   const [keywordStandards, setKeywordStandards] = useState<ICheckedState[]>([]);
   const [contentStandards, setContentStandards] = useState<ICheckedState[]>([]);
 
@@ -56,8 +45,9 @@ export const DataLabelingPage = () => {
   }
 
   function postLabelingData() {
+    if (!data || !data.id) return;
     const postData = {
-      user_answer_id: data.id.toString(),
+      user_answer_id: data?.id.toString(),
       selectedGradingStandardIds: [
         ...keywordStandards.map((e) => (e.checked ? e.id : -1)),
         ...contentStandards.map((e) => (e.checked ? e.id : -1)),
@@ -84,29 +74,29 @@ export const DataLabelingPage = () => {
 
   useEffect(() => {
     setKeywordStandards(
-      data.keywordsGradingStandards.map((e) => {
+      data?.keywordsGradingStandards.map((e) => {
         return { id: e.id, checked: false };
-      }),
+      }) ?? [],
     );
     setContentStandards(
-      data.promptGradingStandards.map((e) => {
+      data?.contentGradingStandards.map((e) => {
         return { id: e.id, checked: false };
-      }),
+      }) ?? [],
     );
   }, [data]);
 
   return (
     <PageTemplate title='AI 데이터 관리'>
-      <Typography variant='h4'>[라벨링] {data.problemTitle}</Typography>
-      <Box sx={{ mt: 2 }}>{data.problemDescription}</Box>
+      <Typography variant='h4'>[라벨링] {data?.problemTitle}</Typography>
+      <Box sx={{ mt: 2 }}>{data?.problemDescription}</Box>
       <Card variant='outlined' sx={{ mt: 2, p: 2 }}>
-        {data.answer}
+        {data?.answer}
       </Card>
       <Box sx={{ display: 'flex' }}>
         <FormControl sx={{ m: 3 }} component='fieldset' variant='standard'>
           <FormLabel component='legend'>키워드 채점 기준</FormLabel>
           <FormGroup>
-            {data.keywordsGradingStandards.map((standard) => (
+            {data?.keywordsGradingStandards.map((standard) => (
               <FormControlLabel
                 control={
                   <Checkbox
@@ -127,7 +117,7 @@ export const DataLabelingPage = () => {
         <FormControl sx={{ m: 3 }} component='fieldset' variant='standard'>
           <FormLabel component='legend'>내용 채점 기준</FormLabel>
           <FormGroup>
-            {data.promptGradingStandards.map((standard) => (
+            {data?.contentGradingStandards.map((standard) => (
               <FormControlLabel
                 control={
                   <Checkbox

@@ -7,6 +7,11 @@ export interface IUserListResponseData {
   role: typeof ROLES;
 }
 
+export interface IAdminUserResponseData {
+  id: string;
+  username: string;
+}
+
 export interface IUserListRequestParams {
   page: number;
 }

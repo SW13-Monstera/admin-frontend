@@ -9,12 +9,16 @@ import { useQuery } from 'react-query';
 import { DataListPageTemplate } from '../DataListPageTemplate';
 import { labelingDataTableHeads } from '../../../constants/tableHeads';
 import { useTableParams } from '../../../hooks/useTableParams';
+import { useModal } from '../../../hooks/useModal';
+import { DefaultModal } from '../../../components/Modal/DefaultModal';
+import { AssignForm } from '../../../organisms/assignForm';
 
 export const LabelingDataListPage = () => {
   const filterHandler = useFilter();
+  const { open, handleOpen, handleClose } = useModal();
   const { page, handleChangePage, handleRowClick } = useTable(URLWithParam.DATA_LABELING);
   const { params } = useTableParams<IDataListRequest>(page, filterHandler.filterState);
-  const { data } = useQuery<IDataListResponse>(
+  const { data, refetch } = useQuery<IDataListResponse>(
     ['labelingData', params],
     () => dataApiWrapper.getDataList({ ...params, isLabeled: false, isValidated: false }),
     { enabled: !!params },
@@ -36,8 +40,25 @@ export const LabelingDataListPage = () => {
             csv 파일 불러오기
           </Button>
         </label>
+        <Button onClick={handleOpen} variant='outlined'>
+          라벨링 담당자 할당
+        </Button>
+        <DefaultModal open={open} handleClose={handleClose} title='라벨링 담당자 할당'>
+          <AssignForm
+            minId={0}
+            maxId={0}
+            submit={(nums: number[], adminId: string) => {
+              dataApiWrapper
+                .assignLabelingData({ userAnswerIds: nums, assigneeId: adminId })
+                .then(() => {
+                  refetch();
+                });
+              handleClose();
+            }}
+          />
+        </DefaultModal>
         <Link to={'/data/labeling/0'}>
-          <Button variant='outlined' disabled>
+          <Button variant='contained' disabled>
             전체 라벨링 시작
           </Button>
         </Link>
