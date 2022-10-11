@@ -4,9 +4,19 @@ import { AUTHORIZTION, BEARER_TOKEN } from '../constants';
 import { authApiWrapper } from './wrapper/auth/authApiWrapper';
 
 const apiClient = axios.create({
-  baseURL: 'https://dev.api.csbroker.io/api',
+  baseURL: import.meta.env.VITE_API_BASE_URL,
   withCredentials: true,
 });
+
+try {
+  const userInfo = getUserInfo();
+  if (userInfo) {
+    const token: string | null | undefined = userInfo.accessToken;
+    if (typeof token === 'string') {
+      apiClient.defaults.headers.common[AUTHORIZTION] = BEARER_TOKEN(token);
+    }
+  }
+} catch (e) {}
 
 apiClient.interceptors.response.use(
   (res) => res.data,
