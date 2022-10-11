@@ -3,5 +3,8 @@
   to = "/"
   status = 200
 
-  [build.environment]
-  VITE_API_BASE_URL = "https://dev.api.csbroker.io/api"
+[context."dev".environment]
+VITE_API_BASE_URL = "https://dev.api.csbroker.io/api"
+
+[context."main".environment]
+VITE_API_BASE_URL = "https://api.csbroker.io/api"

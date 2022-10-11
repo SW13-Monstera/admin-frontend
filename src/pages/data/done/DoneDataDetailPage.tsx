@@ -15,7 +15,7 @@ export const DoneDataDetailPage = () => {
     isLabeled: false,
     isValidated: false,
     keywordsGradingStandards: [],
-    contentGradingStandards: [],
+    promptGradingStandards: [],
     problemId: 0,
     problemTitle: '',
     problemDescription: '',
@@ -57,7 +57,7 @@ export const DoneDataDetailPage = () => {
         <Divider />
         <Typography variant='h6'>내용 채점 기준</Typography>
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, mt: 1 }}>
-          {data.contentGradingStandards.map((standard) => (
+          {data.promptGradingStandards.map((standard) => (
             <Box sx={{ display: 'flex', gap: 1, mt: 1 }} key={standard.id}>
               <Typography>{standard.content}</Typography>
               <Typography>{standard.score}</Typography>
