@@ -11,7 +11,7 @@ export interface ILongProblem {
   title: string;
   creator: string;
   avgKeywordScore: number | null;
-  avgPromptScore: number | null;
+  avgContentScore: number | null;
   userAnswerCnt: number | null;
   isActive: boolean;
 }
@@ -68,5 +68,5 @@ export interface IProblemListElement {
   isActive: boolean;
   answerRate?: number | null;
   avgKeywordScore?: number | null;
-  avgPromptScore?: number | null;
+  avgContentScore?: number | null;
 }
