@@ -4,11 +4,10 @@ import { AUTHORIZTION, BEARER_TOKEN } from '../constants';
 import { authApiWrapper } from './wrapper/auth/authApiWrapper';
 
 const apiClient = axios.create({
-  baseURL: 'https://dev.api.csbroker.io/api',
+  baseURL: import.meta.env.VITE_API_BASE_URL,
   withCredentials: true,
 });
 
-// isLogin? -> localstorage userInfo check -> 아래 로직 세팅
 try {
   const userInfo = getUserInfo();
   if (userInfo) {
