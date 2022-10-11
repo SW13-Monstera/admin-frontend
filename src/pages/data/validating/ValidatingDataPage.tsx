@@ -29,7 +29,7 @@ export const ValidatingDataPage = () => {
     isLabeled: false,
     isValidated: false,
     keywordsGradingStandards: [],
-    contentGradingStandards: [],
+    promptGradingStandards: [],
     problemId: 0,
     problemTitle: '',
     problemDescription: '',
@@ -89,7 +89,7 @@ export const ValidatingDataPage = () => {
       }),
     );
     setContentStandards(
-      data.contentGradingStandards.map((e) => {
+      data.promptGradingStandards.map((e) => {
         return { id: e.id, checked: data.selectedGradingStandards.includes(e.id) };
       }),
     );
@@ -127,7 +127,7 @@ export const ValidatingDataPage = () => {
         <FormControl sx={{ m: 3 }} component='fieldset' variant='standard'>
           <FormLabel component='legend'>내용 채점 기준</FormLabel>
           <FormGroup>
-            {data.contentGradingStandards.map((standard) => (
+            {data.promptGradingStandards.map((standard) => (
               <FormControlLabel
                 control={
                   <Checkbox

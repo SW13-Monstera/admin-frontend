@@ -18,7 +18,7 @@ export const longProblemTableHeads: ITableHead[] = [
     name: '평균 키워드 점수',
   },
   {
-    id: 'avgContentScore',
+    id: 'avgPromptScore',
     name: '평균 내용 점수',
   },
   {
