@@ -8,6 +8,8 @@ export interface ICreateShortProblemRequest {
 
 export interface IShortProblemDetailResponse extends ICreateShortProblemRequest {
   id: number;
+  isActive: boolean;
+  isGradable: boolean;
 }
 
 export interface IShortProblemListResponse {
@@ -16,15 +18,6 @@ export interface IShortProblemListResponse {
 }
 
 export interface IShortProblemListElement {
-  id: number;
-  title: string;
-  creator: string;
-  answerRate: number | null;
-  userAnswerCnt: number;
-  isActive: boolean;
-}
-
-export interface IMultipleProblemListElement {
   id: number;
   title: string;
   creator: string;

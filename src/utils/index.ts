@@ -1,5 +1,7 @@
 import { USER_INFO } from '../constants/localStorage';
 import { IParsedToken, IUserInfo } from '../types/auth';
+import apiClient from '../api/apiClient';
+import { AUTHORIZTION, BEARER_TOKEN } from '../constants';
 
 export const roundToSecondDigit = (num: number) => Math.round(num * 100) / 100;
 
@@ -51,4 +53,28 @@ export const parseJwt = (token: string) => {
       .join(''),
   );
   return JSON.parse(jsonPayload) as IParsedToken;
+};
+
+export const isNumeric = (value: any) => {
+  return !isNaN(Number(value));
+};
+
+export function setLogout() {
+  localStorage.removeItem(USER_INFO);
+  delete apiClient.defaults.headers.common[AUTHORIZTION];
+}
+
+export const setTokenHeader = () => {
+  try {
+    const userInfoString = localStorage.getItem('userInfo');
+    if (userInfoString !== null) {
+      const userInfo = JSON.parse(userInfoString);
+      const token: string | null | undefined = userInfo.accessToken;
+      if (typeof token === 'string') {
+        apiClient.defaults.headers.common[AUTHORIZTION] = BEARER_TOKEN(token);
+      }
+    }
+  } catch (e) {
+    throw new Error('cannot set token');
+  }
 };

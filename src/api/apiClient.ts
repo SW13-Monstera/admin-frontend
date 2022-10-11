@@ -19,25 +19,27 @@ try {
 } catch (e) {}
 
 apiClient.interceptors.response.use(
-  (res) => {
-    const userInfo = getUserInfo();
-    if (userInfo) {
-      const { exp } = parseJwt(userInfo.accessToken);
-      if (Date.now() >= exp * 1000) {
-        authApiWrapper.refresh();
-      }
-    }
-    return res.data;
-  },
+  (res) => res.data,
   (err) => {
-    const { status, data } = err.response;
+    const { config, status } = err.response;
+    const originalRequest = config;
 
     if (status === 401) {
-      // authApiWrapper.refresh();
-    } else if (status === 400) {
-      // location.reload();
+      const userInfo = getUserInfo();
+
+      if (userInfo) {
+        const { exp } = parseJwt(userInfo.accessToken);
+        if (Date.now() >= exp * 1000) {
+          authApiWrapper.refresh()?.then((newAccessToken) => {
+            originalRequest.headers[AUTHORIZTION] = BEARER_TOKEN(newAccessToken);
+            return apiClient(originalRequest);
+          });
+        }
+      }
+    } else if (status === 400 || status === 500) {
+      //   location.reload();
     } else if (status !== 200) {
-      // window.location.replace('/');
+      //   window.location.replace('/');
     }
     return Promise.reject(err);
   },

@@ -19,15 +19,14 @@ import { IProblemUpdateData } from '../../../types/problem/api';
 import { STANDARD_TYPE } from '../../../constants/standard';
 import { TAGS } from '../../../constants/tags';
 import { useQuery } from 'react-query';
+import { MarkdownCard } from '../../../components/Card/MarkdownCard';
+import { DetailTitle } from '../../../components/Typography/DetailTitle';
 
 export const LongProblemDetailPage = () => {
   const { id } = useParams();
   const { data, refetch } = useQuery(['long-problems'], getLongProblemDetailData, {
     refetchOnWindowFocus: false,
     enabled: true,
-    onError: (e: Error) => {
-      throw new Error(e.message);
-    },
   });
 
   function getLongProblemDetailData() {
@@ -57,14 +56,20 @@ export const LongProblemDetailPage = () => {
   return (
     <PageTemplate>
       <Typography variant='h4'>{data?.title}</Typography>
+      <Divider sx={{ my: 2 }} />
+      <DetailTitle>카테고리</DetailTitle>
       <Box sx={{ display: 'flex', gap: 1, my: 1 }}>
         {data?.tags.map((id) => (
           <Box key={id}>{TAGS.find((e) => e.id === id)?.name}</Box>
         ))}
       </Box>
-
-      <Box sx={{ mt: 2 }}>{data?.description}</Box>
-      <Box sx={{ mt: 2 }}>{data?.standardAnswer}</Box>
+      <Divider sx={{ my: 2 }} />
+      <DetailTitle>문제 설명</DetailTitle>
+      <MarkdownCard>{data?.description}</MarkdownCard>
+      <Divider sx={{ my: 2 }} />
+      <DetailTitle>모범답안</DetailTitle>
+      <MarkdownCard>{data?.standardAnswer}</MarkdownCard>
+      <Divider sx={{ my: 2 }} />
       <List>
         <ListSubheader
           component='div'

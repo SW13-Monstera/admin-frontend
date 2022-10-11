@@ -10,27 +10,22 @@ import {
   IProblemListRequest,
 } from '../../../types/problem/api';
 import { IMultipleDetailResponseData } from '../../../types/problem/multipleApi';
+import { isEmptyOrNotNumericError } from '../../../error';
 
 export const multipleProblemApiWrapper = {
-  getMultipleProblemList: ({ id, title, description, page, size = 10 }: IProblemListRequest) => {
-    const params = {
-      id,
-      title,
-      description,
-      page,
-      size,
-    };
+  getMultipleProblemList: (params?: IProblemListRequest) => {
     return apiClient
       .get(API_URL.MULTIPLE_PROBLEM_LIST, {
-        params: params,
+        params: { ...params, size: 10 },
       })
       .then((response: { data: IProblemListData }) => {
         return response.data;
       });
   },
   getMultipleProblemDetail: ({ problem_id }: IProblemDetailRequest) => {
+    isEmptyOrNotNumericError(problem_id);
     return apiClient
-      .get(API_URL_WITH_PARAMS.MULTIPLE_PROBLEM_DETAIL(problem_id))
+      .get(API_URL_WITH_PARAMS.MULTIPLE_PROBLEM_DETAIL(problem_id!))
       .then((response: { data: IMultipleDetailResponseData }) => {
         return response.data;
       });
@@ -39,6 +34,7 @@ export const multipleProblemApiWrapper = {
     apiClient.post(API_URL.MULTIPLE_PROBLEM_CREATE, data);
   },
   updateMultipleProblem: (problem_id: string, data: IMultipleUpdateRequest) => {
-    apiClient.put(API_URL_WITH_PARAMS.MULTIPLE_PROBLEM_UPDATE(problem_id), data);
+    isEmptyOrNotNumericError(problem_id);
+    return apiClient.put(API_URL_WITH_PARAMS.MULTIPLE_PROBLEM_UPDATE(problem_id), data);
   },
 };

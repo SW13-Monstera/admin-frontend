@@ -14,22 +14,17 @@ import { TAGS } from '../../../constants/tags';
 import { useState, useEffect, ChangeEvent } from 'react';
 import { URL } from '../../../constants/url';
 import { shortProblemApiWrapper } from '../../../api/wrapper/problem/shortProblemApiWrapper';
-import {
-  ICreateShortProblemRequest,
-  IShortProblemDetailResponse,
-} from '../../../types/problem/shortApi';
+import { ICreateShortProblemRequest } from '../../../types/problem/shortApi';
+import { useQuery } from 'react-query';
+import { MarkdownInputCard } from '../../../components/Card/MarkdownInputCard';
 
 export const ShortProblemEditPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [data, setData] = useState<IShortProblemDetailResponse>({
-    id: 0,
-    title: '',
-    description: '',
-    answer: '',
-    tags: [],
-    score: 0,
-  });
+
+  const { data } = useQuery(['short-problem-detail', id], () =>
+    shortProblemApiWrapper.getShortProblemDetail({ problem_id: id ?? '' }),
+  );
 
   const [tagState, setTagState] = useState(
     TAGS.map((tag) => {
@@ -45,16 +40,9 @@ export const ShortProblemEditPage = () => {
   };
 
   useEffect(() => {
-    if (!id) return;
-    shortProblemApiWrapper.getShortProblemDetail({ problem_id: id }).then((res) => {
-      setData(res);
-    });
-  }, []);
-
-  useEffect(() => {
     setTagState(
       TAGS.map((tag) => {
-        return { id: tag.id, isChecked: data.tags.includes(tag.id) };
+        return { id: tag.id, isChecked: data?.tags.includes(tag.id) ?? false };
       }),
     );
   }, [data]);
@@ -63,7 +51,7 @@ export const ShortProblemEditPage = () => {
     if (!id) return;
     const data: ICreateShortProblemRequest = {
       title: (document.getElementById('title') as HTMLTextAreaElement).value || '',
-      description: (document.getElementById('desc') as HTMLTextAreaElement).value || '',
+      description: (document.getElementById('description') as HTMLTextAreaElement).value || '',
       tags: tagState.filter((tag) => tag.isChecked).map((e) => e.id),
       answer: (document.getElementById('answer') as HTMLTextAreaElement).value || '',
       score: parseInt((document.getElementById('score') as HTMLTextAreaElement).value) || 0,
@@ -84,7 +72,7 @@ export const ShortProblemEditPage = () => {
           id='title'
           label='문제 제목'
           multiline
-          defaultValue={data.title}
+          defaultValue={data?.title}
           sx={{ my: 2 }}
           InputLabelProps={{ shrink: true }}
         />
@@ -111,21 +99,13 @@ export const ShortProblemEditPage = () => {
             </FormControl>
           </Box>
         </Card>
-        <TextField
-          id='desc'
-          label='문제 설명'
-          multiline
-          rows={4}
-          defaultValue={data.description}
-          sx={{ my: 2 }}
-          InputLabelProps={{ shrink: true }}
-        />
+        <MarkdownInputCard title='문제 설명' id='description' defaultValue={data?.description} />
         <TextField
           id='answer'
           label='정답'
           multiline
           rows={4}
-          defaultValue={data.answer}
+          defaultValue={data?.answer}
           sx={{ my: 2 }}
           InputLabelProps={{ shrink: true }}
         />
@@ -133,8 +113,12 @@ export const ShortProblemEditPage = () => {
           id='score'
           label='점수'
           type='number'
-          defaultValue={data.score}
+          defaultValue={data?.score}
           sx={{ my: 2 }}
+          inputProps={{
+            min: '0',
+            step: '0.5',
+          }}
           InputLabelProps={{ shrink: true }}
         />
       </Box>

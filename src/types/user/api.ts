@@ -6,3 +6,7 @@ export interface IUserListResponseData {
   username: string;
   role: typeof ROLES;
 }
+
+export interface IUserListRequestParams {
+  page: number;
+}

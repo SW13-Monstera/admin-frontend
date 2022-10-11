@@ -8,32 +8,10 @@ import apiClient from '../../apiClient';
 import { API_URL, API_URL_WITH_PARAMS } from '../../../constants/apiUrl';
 
 export const dataApiWrapper = {
-  getDataList: ({
-    id,
-    assignedBy,
-    validatedBy,
-    problemTitle,
-    answer,
-    isLabeled,
-    isValidated,
-    page,
-    size = 10,
-  }: IDataListRequest) => {
-    const params = {
-      id,
-      assignedBy,
-      validatedBy,
-      problemTitle,
-      answer,
-      isLabeled,
-      isValidated,
-      page,
-      size,
-    };
-
+  getDataList: (params?: IDataListRequest) => {
     return apiClient
       .get(API_URL.DATA_LIST, {
-        params: params,
+        params: { ...params, size: 10 },
       })
       .then((res: { data: IDataListResponse }) => res.data);
   },
