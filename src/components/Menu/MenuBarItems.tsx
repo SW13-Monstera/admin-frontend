@@ -1,25 +1,46 @@
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import BarChartIcon from '@mui/icons-material/BarChart';
-import { Link } from 'react-router-dom';
+import ShortTextIcon from '@mui/icons-material/ShortText';
+import StickyNote2Icon from '@mui/icons-material/StickyNote2';
+import FormatListNumberedIcon from '@mui/icons-material/FormatListNumbered';
+import LabelIcon from '@mui/icons-material/Label';
+import SearchIcon from '@mui/icons-material/Search';
+import DoneAllIcon from '@mui/icons-material/DoneAll';
+import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import { URL } from '../../constants/url';
-import { ListItemButton, ListItemIcon, ListItemText, List } from '@mui/material';
-import { MenuBarListElement } from './MenuBarListElement';
+import { MenuBarItem } from './MenuBarItem';
+
+const MENU_BAR_ITEMS = [
+  {
+    title: '문제 관리',
+    menuBarListElements: [
+      { text: '서술형', icon: <StickyNote2Icon />, url: URL.LONG_PROBLEM_LIST },
+      { text: '단답형', icon: <ShortTextIcon />, url: URL.SHORT_PROBLEM_LIST },
+      { text: '객관식', icon: <FormatListNumberedIcon />, url: URL.MULTIPLE_PROBLEM_LIST },
+    ],
+  },
+  {
+    title: 'AI 데이터 관리',
+    menuBarListElements: [
+      { text: '라벨링', icon: <LabelIcon />, url: URL.LABELING_DATA_LIST },
+      { text: '검수', icon: <SearchIcon />, url: URL.VALIDATING_DATA_LIST },
+      { text: '완료', icon: <DoneAllIcon />, url: URL.DONE_DATA_LIST },
+    ],
+  },
+  {
+    title: '사용자 관리',
+    menuBarListElements: [{ text: '전체 사용자', icon: <PeopleAltIcon />, url: URL.USER }],
+  },
+];
 
 export const MenuBarItems = () => {
   return (
     <>
-      <MenuBarListElement text='문제 관리' />
-      <List component='div' disablePadding>
-        <MenuBarListElement text='서술형' icon={<BarChartIcon />} url={URL.LONG_PROBLEM_LIST} />
-        <MenuBarListElement text='단답형' icon={<BarChartIcon />} />
-        <MenuBarListElement text='객관식' icon={<BarChartIcon />} />
-      </List>
-      <MenuBarListElement text='AI 데이터 관리' />
-      <List component='div' disablePadding>
-        <MenuBarListElement text='라벨링' icon={<BarChartIcon />} url={URL.LABELING_DATA_LIST} />
-        <MenuBarListElement text='검수' icon={<BarChartIcon />} url={URL.VALIDATING_DATA_LIST} />
-        <MenuBarListElement text='완료' icon={<BarChartIcon />} url={URL.DONE_DATA_LIST} />
-      </List>
+      {MENU_BAR_ITEMS.map((menuBarItem) => (
+        <MenuBarItem
+          title={menuBarItem.title}
+          menuBarListElements={menuBarItem.menuBarListElements}
+          key={menuBarItem.title}
+        />
+      ))}
     </>
   );
 };

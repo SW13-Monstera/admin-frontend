@@ -3,9 +3,10 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Avatar, Button, CssBaseline, TextField, Box } from '@mui/material';
-import { authApiWrapper } from '../../api/wrapper/auth/authApiWrappter';
+import { authApiWrapper } from '../../api/wrapper/auth/authApiWrapper';
 import { useNavigate } from 'react-router-dom';
 import { URL } from '../../constants/url';
+import { setUserInfo } from '../../utils';
 
 const theme = createTheme();
 
@@ -21,7 +22,8 @@ export const LoginPage = () => {
         password: data.get('password')?.toString() || '',
       })
       .then((response) => {
-        localStorage.setItem('userInfo', JSON.stringify(response));
+        if (!response) return;
+        setUserInfo(response);
         navigate(URL.LONG_PROBLEM_LIST);
       });
   };
@@ -54,6 +56,7 @@ export const LoginPage = () => {
               name='email'
               autoComplete='email'
               autoFocus
+              InputLabelProps={{ shrink: true }}
             />
             <TextField
               margin='normal'
@@ -64,6 +67,7 @@ export const LoginPage = () => {
               type='password'
               id='password'
               autoComplete='current-password'
+              InputLabelProps={{ shrink: true }}
             />
             <Button type='submit' fullWidth variant='contained' sx={{ mt: 3, mb: 2 }}>
               Sign In

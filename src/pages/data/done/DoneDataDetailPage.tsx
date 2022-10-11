@@ -1,25 +1,13 @@
 import PageTemplate from '../../../templates/PageTemplate';
-import {
-  Typography,
-  Box,
-  Card,
-  Button,
-  Checkbox,
-  FormControl,
-  FormLabel,
-  FormGroup,
-  FormControlLabel,
-  Divider,
-} from '@mui/material';
+import { Typography, Box, Card, Button, Divider } from '@mui/material';
 import { Link, useParams } from 'react-router-dom';
-import { ChangeEvent, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { dataApiWrapper } from '../../../api/wrapper/data/dataApiWrapper';
 import { IDataDetailResponseData } from '../../../types/data/api';
 import { URL } from '../../../constants/url';
 
 export const DoneDataDetailPage = () => {
   const { id: dataId } = useParams();
-  if (!dataId) return;
 
   const [data, setData] = useState<IDataDetailResponseData>({
     id: 0,
@@ -27,7 +15,7 @@ export const DoneDataDetailPage = () => {
     isLabeled: false,
     isValidated: false,
     keywordsGradingStandards: [],
-    promptGradingStandards: [],
+    contentGradingStandards: [],
     problemId: 0,
     problemTitle: '',
     problemDescription: '',
@@ -35,9 +23,11 @@ export const DoneDataDetailPage = () => {
   });
 
   useEffect(() => {
+    if (!dataId) return;
+
     dataApiWrapper
       .getDataDetail({
-        user_answer_id: parseInt(dataId),
+        user_answer_id: dataId,
       })
       .then((res) => {
         setData(res);
@@ -67,7 +57,7 @@ export const DoneDataDetailPage = () => {
         <Divider />
         <Typography variant='h6'>내용 채점 기준</Typography>
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, mt: 1 }}>
-          {data.promptGradingStandards.map((standard) => (
+          {data.contentGradingStandards.map((standard) => (
             <Box sx={{ display: 'flex', gap: 1, mt: 1 }} key={standard.id}>
               <Typography>{standard.content}</Typography>
               <Typography>{standard.score}</Typography>

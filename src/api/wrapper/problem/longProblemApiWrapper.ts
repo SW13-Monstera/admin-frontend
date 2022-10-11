@@ -1,41 +1,37 @@
 import {
   IProblemListRequest,
-  ILongProblemListData,
   IProblemDetailRequest,
   IProblemDetailResponse,
   IProblemCreateData,
+  IProblemListData,
 } from '../../../types/problem/api';
 import apiClient from '../../apiClient';
-import { API_URL } from '../../../constants/apiUrl';
+import { API_URL, API_URL_WITH_PARAMS } from '../../../constants/apiUrl';
+import { isEmptyOrNotNumericError } from '../../../error';
 
 export const longProblemApiWrapper = {
-  getLongProblemList: ({ id, title, description, page, size = 10 }: IProblemListRequest) => {
-    const params = {
-      id,
-      title,
-      description,
-      page,
-      size,
-    };
+  getLongProblemList: (params?: IProblemListRequest) => {
     return apiClient
-      .get(API_URL.PROBLEM_LIST, {
-        params: params,
+      .get(API_URL.LONG_PROBLEM_LIST, {
+        params: { ...params, size: 10 },
       })
-      .then((response: { data: ILongProblemListData }) => {
+      .then((response: { data: IProblemListData }) => {
         return response.data;
       });
   },
   getLongProblemDetail: ({ problem_id }: IProblemDetailRequest) => {
+    isEmptyOrNotNumericError(problem_id);
     return apiClient
-      .get(API_URL.PROBLEM_DETAIL(problem_id))
+      .get(API_URL_WITH_PARAMS.LONG_PROBLEM_DETAIL(problem_id!))
       .then((response: { data: IProblemDetailResponse }) => {
         return response.data;
       });
   },
   createLongProblem: (data: IProblemCreateData) => {
-    apiClient.post(API_URL.PROBLEM_CREATE, data);
+    apiClient.post(API_URL.LONG_PROBLEM_CREATE, data);
   },
-  updateLongProblem: (problem_id: number, data: IProblemCreateData) => {
-    apiClient.put(API_URL.PROBLEM_UPDATE(problem_id), data);
+  updateLongProblem: (problem_id: string, data: IProblemCreateData) => {
+    isEmptyOrNotNumericError(problem_id);
+    return apiClient.put(API_URL_WITH_PARAMS.LONG_PROBLEM_UPDATE(problem_id), data);
   },
 };

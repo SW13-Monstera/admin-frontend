@@ -1,18 +1,19 @@
+import { getUserInfo, parseJwt } from './../utils/index';
 import axios from 'axios';
+import { AUTHORIZTION, BEARER_TOKEN } from '../constants';
+import { authApiWrapper } from './wrapper/auth/authApiWrapper';
 
 const apiClient = axios.create({
-  baseURL: 'https://dev.api.csbroker.io/api',
+  baseURL: import.meta.env.VITE_API_BASE_URL,
   withCredentials: true,
 });
 
-// isLogin? -> localstorage userInfo check -> 아래 로직 세팅
 try {
-  const userInfoString = localStorage.getItem('userInfo');
-  if (userInfoString !== null) {
-    const userInfo = JSON.parse(userInfoString);
+  const userInfo = getUserInfo();
+  if (userInfo) {
     const token: string | null | undefined = userInfo.accessToken;
     if (typeof token === 'string') {
-      apiClient.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      apiClient.defaults.headers.common[AUTHORIZTION] = BEARER_TOKEN(token);
     }
   }
 } catch (e) {}
@@ -20,10 +21,25 @@ try {
 apiClient.interceptors.response.use(
   (res) => res.data,
   (err) => {
-    const { status } = err.response;
+    const { config, status } = err.response;
+    const originalRequest = config;
 
-    if (status !== 200) {
-      // window.location.replace('/');
+    if (status === 401) {
+      const userInfo = getUserInfo();
+
+      if (userInfo) {
+        const { exp } = parseJwt(userInfo.accessToken);
+        if (Date.now() >= exp * 1000) {
+          authApiWrapper.refresh()?.then((newAccessToken) => {
+            originalRequest.headers[AUTHORIZTION] = BEARER_TOKEN(newAccessToken);
+            return apiClient(originalRequest);
+          });
+        }
+      }
+    } else if (status === 400 || status === 500) {
+      //   location.reload();
+    } else if (status !== 200) {
+      //   window.location.replace('/');
     }
     return Promise.reject(err);
   },

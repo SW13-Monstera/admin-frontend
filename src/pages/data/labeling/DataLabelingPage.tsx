@@ -10,11 +10,11 @@ import {
   FormGroup,
   FormControlLabel,
 } from '@mui/material';
-import { Link, useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { ChangeEvent, useEffect, useState } from 'react';
 import { dataApiWrapper } from '../../../api/wrapper/data/dataApiWrapper';
 import { IDataDetailResponseData } from '../../../types/data/api';
-import { URLWithParam } from '../../../constants/url';
+import { URL } from '../../../constants/url';
 
 interface ICheckedState {
   id: number;
@@ -22,13 +22,14 @@ interface ICheckedState {
 }
 
 export const DataLabelingPage = () => {
+  const navigate = useNavigate();
   const [data, setData] = useState<IDataDetailResponseData>({
     id: 0,
     answer: '',
     isLabeled: false,
     isValidated: false,
     keywordsGradingStandards: [],
-    promptGradingStandards: [],
+    contentGradingStandards: [],
     problemId: 0,
     problemTitle: '',
     problemDescription: '',
@@ -38,7 +39,6 @@ export const DataLabelingPage = () => {
   const [contentStandards, setContentStandards] = useState<ICheckedState[]>([]);
 
   const { id: dataId } = useParams();
-  if (!dataId) return;
 
   function handleKeywordChange(event: ChangeEvent) {
     setKeywordStandards((prev) =>
@@ -57,19 +57,25 @@ export const DataLabelingPage = () => {
 
   function postLabelingData() {
     const postData = {
-      user_answer_id: data.id,
+      user_answer_id: data.id.toString(),
       selectedGradingStandardIds: [
         ...keywordStandards.map((e) => (e.checked ? e.id : -1)),
         ...contentStandards.map((e) => (e.checked ? e.id : -1)),
       ].filter((e) => e !== -1),
     };
-    dataApiWrapper.labelingData(postData);
+    const result = confirm('라벨링 데이터를 제출하시겠습니까?');
+    if (result) {
+      dataApiWrapper.labelingData(postData);
+      navigate(URL.LABELING_DATA_LIST);
+    }
   }
 
   useEffect(() => {
+    if (!dataId) return;
+
     dataApiWrapper
       .getDataDetail({
-        user_answer_id: parseInt(dataId),
+        user_answer_id: dataId,
       })
       .then((res: any) => {
         setData(res);
@@ -83,7 +89,7 @@ export const DataLabelingPage = () => {
       }),
     );
     setContentStandards(
-      data.promptGradingStandards.map((e) => {
+      data.contentGradingStandards.map((e) => {
         return { id: e.id, checked: false };
       }),
     );
@@ -121,7 +127,7 @@ export const DataLabelingPage = () => {
         <FormControl sx={{ m: 3 }} component='fieldset' variant='standard'>
           <FormLabel component='legend'>내용 채점 기준</FormLabel>
           <FormGroup>
-            {data.promptGradingStandards.map((standard) => (
+            {data.contentGradingStandards.map((standard) => (
               <FormControlLabel
                 control={
                   <Checkbox
@@ -138,11 +144,9 @@ export const DataLabelingPage = () => {
           </FormGroup>
         </FormControl>
       </Box>
-      <Link to={URLWithParam.DATA_LABELING(data.id.toString())}>
-        <Button variant='contained' onClick={postLabelingData}>
-          제출
-        </Button>
-      </Link>
+      <Button variant='contained' onClick={postLabelingData}>
+        제출
+      </Button>
     </PageTemplate>
   );
 };
