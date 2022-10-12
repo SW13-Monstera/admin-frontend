@@ -29,7 +29,7 @@ export const DataLabelingPage = () => {
     isLabeled: false,
     isValidated: false,
     keywordsGradingStandards: [],
-    promptGradingStandards: [],
+    contentGradingStandards: [],
     problemId: 0,
     problemTitle: '',
     problemDescription: '',
@@ -89,7 +89,7 @@ export const DataLabelingPage = () => {
       }),
     );
     setContentStandards(
-      data.promptGradingStandards.map((e) => {
+      data.contentGradingStandards.map((e) => {
         return { id: e.id, checked: false };
       }),
     );
@@ -127,7 +127,7 @@ export const DataLabelingPage = () => {
         <FormControl sx={{ m: 3 }} component='fieldset' variant='standard'>
           <FormLabel component='legend'>내용 채점 기준</FormLabel>
           <FormGroup>
-            {data.promptGradingStandards.map((standard) => (
+            {data.contentGradingStandards.map((standard) => (
               <FormControlLabel
                 control={
                   <Checkbox
