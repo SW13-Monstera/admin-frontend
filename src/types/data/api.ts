@@ -39,7 +39,7 @@ interface IDataDetailResponseData {
   isLabeled: boolean;
   isValidated: boolean;
   keywordsGradingStandards: IStandardResponse[];
-  promptGradingStandards: IStandardResponse[];
+  contentGradingStandards: IStandardResponse[];
   problemId: number;
   problemTitle: string;
   problemDescription: string;
