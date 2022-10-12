@@ -10,5 +10,5 @@ export interface IListPageTemplate {
   filterStateHandler: IFilterStateHandler;
   pageHandler: IPageHandler;
   handleRowClick: (id: string) => void;
-  children?: ReactElement;
+  children?: React.ReactNode;
 }

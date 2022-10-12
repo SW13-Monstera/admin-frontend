@@ -9,11 +9,10 @@ import { IDataListRequest, IDataListResponse } from '../../../types/data/api';
 import { DataListPageTemplate } from '../DataListPageTemplate';
 import { validatingDataTableHeads } from '../../../constants/tableHeads';
 import { useTableParams } from '../../../hooks/useTableParams';
-import { useModal } from '../../../hooks/useModal';
+import { AssignButton } from '../../../organisms/AssignButton';
 
 export const ValidatingDataListPage = () => {
   const filterHandler = useFilter();
-  const { open, handleOpen, handleClose } = useModal();
   const { page, handleChangePage, handleRowClick } = useTable(URLWithParam.DATA_VALIDATING);
   const { params } = useTableParams<IDataListRequest>(page, filterHandler.filterState);
   const { data, refetch } = useQuery<IDataListResponse>(
@@ -31,6 +30,18 @@ export const ValidatingDataListPage = () => {
       pageHandler={{ page: page, handleChangePage: handleChangePage }}
       handleRowClick={handleRowClick}
     >
+      <AssignButton
+        title='검수 담당자 할당'
+        minId={0}
+        maxId={1008}
+        submit={(nums: number[], adminId: string) => {
+          dataApiWrapper
+            .assignValidatingData({ userAnswerIds: nums, assigneeId: adminId })
+            .then(() => {
+              refetch();
+            });
+        }}
+      />
       <Link to={URL.VALIDATING_DATA_LIST}>
         <Button variant='outlined' disabled>
           전체 검수 시작

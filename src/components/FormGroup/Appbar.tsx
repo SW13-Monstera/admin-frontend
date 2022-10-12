@@ -6,7 +6,7 @@ import { IFilter } from '../../types/etc';
 import { MouseEvent } from 'react';
 
 interface IAppbar {
-  children?: JSX.Element;
+  children?: React.ReactNode;
   menuItems: any[];
   conditions: IFilter[];
   filterCount: number;
