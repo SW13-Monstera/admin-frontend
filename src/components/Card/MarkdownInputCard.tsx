@@ -1,5 +1,4 @@
 import { Card, TextField, Typography } from '@mui/material';
-import { ChangeEvent } from 'react';
 import { useMarkdownInput } from '../../hooks/useMarkdownInput';
 import { MarkdownCard } from './MarkdownCard';
 
@@ -7,9 +6,10 @@ interface IMarkdownCard {
   id: string;
   title: string;
   defaultValue?: string | undefined;
+  maxLength?: number;
 }
 
-export const MarkdownInputCard = ({ id, title, defaultValue }: IMarkdownCard) => {
+export const MarkdownInputCard = ({ id, title, defaultValue, maxLength }: IMarkdownCard) => {
   const { value, handleValueChange } = useMarkdownInput(defaultValue);
   return (
     <Card sx={{ p: 2, my: 1 }} variant='outlined'>
@@ -24,7 +24,7 @@ export const MarkdownInputCard = ({ id, title, defaultValue }: IMarkdownCard) =>
         defaultValue={defaultValue}
         sx={{ my: 2, width: '100%' }}
         InputLabelProps={{ shrink: true }}
-        inputProps={{ maxLength: 300 }}
+        inputProps={{ maxLength: maxLength ?? 300 }}
         onChange={handleValueChange}
         variant='filled'
       />
