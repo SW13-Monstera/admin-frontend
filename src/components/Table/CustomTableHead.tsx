@@ -15,17 +15,6 @@ export function CustomTableHead(props: CustomTableProps) {
   return (
     <TableHead>
       <TableRow>
-        <TableCell padding='checkbox'>
-          <Checkbox
-            color='primary'
-            indeterminate={numSelected ? numSelected > 0 && numSelected < rowCount : false}
-            checked={rowCount > 0 && numSelected === rowCount}
-            onChange={onSelectAllClick}
-            inputProps={{
-              'aria-label': 'select all desserts',
-            }}
-          />
-        </TableCell>
         {tableHeads.map((tableHead) => (
           <TableCell key={tableHead.id} align='center'>
             {tableHead.name}

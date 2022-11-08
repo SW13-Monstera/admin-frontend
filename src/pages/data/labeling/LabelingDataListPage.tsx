@@ -28,20 +28,6 @@ export const LabelingDataListPage = () => {
       filterStateHandler={filterHandler}
       pageHandler={{ page: page, handleChangePage: handleChangePage }}
       handleRowClick={handleRowClick}
-    >
-      <>
-        <label htmlFor='upload-csv'>
-          <Input type='file' style={{ display: 'none' }} id='upload-csv' name='upload-csv' />
-          <Button variant='outlined' color='secondary' component='span' disabled>
-            csv 파일 불러오기
-          </Button>
-        </label>
-        <Link to={'/data/labeling/0'}>
-          <Button variant='outlined' disabled>
-            전체 라벨링 시작
-          </Button>
-        </Link>
-      </>
-    </DataListPageTemplate>
+    ></DataListPageTemplate>
   );
 };
