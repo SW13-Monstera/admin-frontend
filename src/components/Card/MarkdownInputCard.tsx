@@ -24,7 +24,7 @@ export const MarkdownInputCard = ({ id, title, defaultValue, maxLength }: IMarkd
         defaultValue={defaultValue}
         sx={{ my: 2, width: '100%' }}
         InputLabelProps={{ shrink: true }}
-        inputProps={{ maxLength: maxLength ?? 300 }}
+        inputProps={{ maxLength: 5000 }}
         onChange={handleValueChange}
         variant='filled'
       />

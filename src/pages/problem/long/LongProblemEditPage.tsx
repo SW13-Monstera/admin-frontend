@@ -134,12 +134,7 @@ export const LongProblemEditPage = () => {
             </FormControl>
           </Box>
         </Card>
-        <MarkdownInputCard
-          title='문제 설명'
-          id='description'
-          defaultValue={data?.description}
-          maxLength={5000}
-        />
+        <MarkdownInputCard title='문제 설명' id='description' defaultValue={data?.description} />
         <MarkdownInputCard
           title='모범답안'
           id='standardAnswer'

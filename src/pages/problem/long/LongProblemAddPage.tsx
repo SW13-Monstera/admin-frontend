@@ -99,7 +99,7 @@ export const LongProblemAddPage = () => {
             </FormControl>
           </Box>
         </Card>
-        <MarkdownInputCard id='description' title='문제 설명' maxLength={5000} />
+        <MarkdownInputCard id='description' title='문제 설명' />
         <MarkdownInputCard id='standardAnswer' title='모범답안' />
         <Divider sx={{ my: 2 }} />
         <StandardList
