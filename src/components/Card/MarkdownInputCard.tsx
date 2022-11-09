@@ -6,10 +6,9 @@ interface IMarkdownCard {
   id: string;
   title: string;
   defaultValue?: string | undefined;
-  maxLength?: number;
 }
 
-export const MarkdownInputCard = ({ id, title, defaultValue, maxLength }: IMarkdownCard) => {
+export const MarkdownInputCard = ({ id, title, defaultValue }: IMarkdownCard) => {
   const { value, handleValueChange } = useMarkdownInput(defaultValue);
   return (
     <Card sx={{ p: 2, my: 1 }} variant='outlined'>
