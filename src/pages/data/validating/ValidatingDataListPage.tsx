@@ -28,12 +28,6 @@ export const ValidatingDataListPage = () => {
       filterStateHandler={filterHandler}
       pageHandler={{ page: page, handleChangePage: handleChangePage }}
       handleRowClick={handleRowClick}
-    >
-      <Link to={URL.VALIDATING_DATA_LIST}>
-        <Button variant='outlined' disabled>
-          전체 검수 시작
-        </Button>
-      </Link>
-    </DataListPageTemplate>
+    ></DataListPageTemplate>
   );
 };

@@ -44,7 +44,6 @@ export const BaseTable = ({
   return (
     <Box sx={{ width: '100%' }}>
       <Typography>총 개수 {totalElements}개</Typography>
-      <CustomTableToolbar />
       <TableContainer>
         <Table sx={{ minWidth: 750 }} aria-labelledby='tableTitle' size='small'>
           <CustomTableHead
@@ -56,9 +55,6 @@ export const BaseTable = ({
             {data?.map((row) => {
               return (
                 <TableRow hover tabIndex={-1} key={row.id}>
-                  <TableCell padding='checkbox'>
-                    <Checkbox color='primary' checked={false} onClick={() => {}} />
-                  </TableCell>
                   {Object.keys(row).map((key) => (
                     <CustomTableCell
                       key={`${key}-${row.id}`}
