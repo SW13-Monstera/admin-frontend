@@ -14,10 +14,6 @@ export const CustomTableToolbar = (props: { numSelected?: any }) => {
             alpha(theme.palette.primary.main, theme.palette.action.activatedOpacity),
         }),
       }}
-    >
-      <Typography sx={{ flex: '1 1 100%' }} color='inherit' variant='subtitle1' component='div'>
-        {numSelected} selected
-      </Typography>
-    </Toolbar>
+    ></Toolbar>
   );
 };
