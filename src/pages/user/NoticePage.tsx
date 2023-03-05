@@ -7,11 +7,18 @@ export const NoticePage = () => {
     const content = (document.getElementById('content') as HTMLInputElement).value;
     const link = (document.getElementById('link') as HTMLInputElement).value;
     const userId = (document.getElementById('userId') as HTMLInputElement).value;
-    userApiWrapper.createNotice({
-      content,
-      link,
-      userId,
-    });
+    userApiWrapper
+      .createNotice({
+        content,
+        link,
+        userId,
+      })
+      .then(() => {
+        alert('알림이 생성되었습니다.');
+      })
+      .catch(() => {
+        alert('오류가 발생했습니다.');
+      });
   };
 
   return (
