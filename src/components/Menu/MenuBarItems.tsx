@@ -5,6 +5,7 @@ import LabelIcon from '@mui/icons-material/Label';
 import SearchIcon from '@mui/icons-material/Search';
 import DoneAllIcon from '@mui/icons-material/DoneAll';
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
+import NotificationsIcon from '@mui/icons-material/Notifications';
 import { URL } from '../../constants/url';
 import { MenuBarItem } from './MenuBarItem';
 
@@ -27,7 +28,10 @@ const MENU_BAR_ITEMS = [
   },
   {
     title: '사용자 관리',
-    menuBarListElements: [{ text: '전체 사용자', icon: <PeopleAltIcon />, url: URL.USER }],
+    menuBarListElements: [
+      { text: '전체 사용자', icon: <PeopleAltIcon />, url: URL.USER },
+      { text: '알림 생성', icon: <NotificationsIcon />, url: URL.NOTICE_CREATE },
+    ],
   },
 ];
 

@@ -11,6 +11,7 @@ const API_URL = {
   DATA_LIST_CREATE: '/admin/user-answers',
   USER_DETAIL: '',
   USER_LIST: '/v1/users',
+  NOTICES: 'admin/notifications',
 };
 
 const API_URL_WITH_PARAMS = {
