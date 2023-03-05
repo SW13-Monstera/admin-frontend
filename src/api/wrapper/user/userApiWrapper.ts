@@ -8,6 +8,9 @@ export const userApiWrapper = {
       .get(API_URL.USER_LIST, { params: params })
       .then((res: { data: IUserListResponseData[] }) => res.data);
   },
+  createNotice: (notice: INotice) => {
+    return apiClient.post(API_URL.NOTICE, notice).then((res) => res.data);
+  },
   createNotices: (notices: INotice[]) => {
     return apiClient.post(API_URL.NOTICES, notices).then((res) => res.data);
   },
