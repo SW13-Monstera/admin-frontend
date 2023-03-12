@@ -20,6 +20,7 @@ const URL = {
   MULTIPLE_PROBLEM_EDIT: `/problem/multiple/edit/:id`,
   DASHBOARD: '/dashboard',
   USER: '/user',
+  NOTICE_CREATE: '/notice/create',
 };
 
 const URLWithParam = {

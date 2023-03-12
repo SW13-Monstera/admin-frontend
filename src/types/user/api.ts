@@ -10,3 +10,9 @@ export interface IUserListResponseData {
 export interface IUserListRequestParams {
   page: number;
 }
+
+export interface INotice {
+  content: string;
+  userId: string;
+  link: string;
+}
