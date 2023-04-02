@@ -173,12 +173,12 @@ export const problemSetTableHeads: ITableHead[] = [
     name: '문제 세트 ID',
   },
   {
-    id: 'name',
-    name: '제목',
-  },
-  {
     id: 'problemCnt',
     name: '문제 개수',
+  },
+  {
+    id: 'name',
+    name: '제목',
   },
   {
     id: 'description',

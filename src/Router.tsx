@@ -24,6 +24,7 @@ import { ShortProblemListPage } from './pages/problem/short/ShortProblemListPage
 import { ProblemSetListPage } from './pages/problem/problemSet/ProblemSetListPage';
 import { NoticePage } from './pages/user/NoticePage';
 import { UserPage } from './pages/user/UserPage';
+import { ProblemSetAddPage } from './pages/problem/problemSet/ProblemSetAddPage';
 
 const Router = () => {
   return (
@@ -49,6 +50,7 @@ const Router = () => {
         <Route path={URL.MULTIPLE_PROBLEM_ADD} element={<MultipleProblemAddPage />} />
         <Route path={URL.MULTIPLE_PROBLEM_EDIT} element={<MultipleProblemEditPage />} />
         <Route path={URL.PROBLEM_SET_LIST} element={<ProblemSetListPage />} />
+        <Route path={URL.PROBLEM_SET_ADD} element={<ProblemSetAddPage />} />
         <Route path={URL.USER} element={<UserPage />} />
         <Route path={URL.NOTICE_CREATE} element={<NoticePage />} />
       </Routes>

@@ -6,3 +6,9 @@ export interface IProblemSetListElement {
   name: string;
   description: string;
 }
+
+export interface IProblemSetCreateRequest {
+  problemIds: number[];
+  name: string;
+  description?: string;
+}
