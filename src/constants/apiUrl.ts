@@ -7,6 +7,7 @@ const API_URL = {
   SHORT_PROBLEM_CREATE: '/admin/problems/short',
   MULTIPLE_PROBLEM_LIST: '/admin/problems/multiple',
   MULTIPLE_PROBLEM_CREATE: '/admin/problems/multiple',
+  PROBLEM_LIST: '/v1/problem-sets',
   DATA_LIST: '/admin/user-answers',
   DATA_LIST_CREATE: '/admin/user-answers',
   USER_DETAIL: '',
