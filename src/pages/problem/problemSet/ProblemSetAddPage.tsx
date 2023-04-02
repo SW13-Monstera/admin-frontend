@@ -8,47 +8,45 @@ import {
   Typography,
   Autocomplete,
   CircularProgress,
+  FormGroup,
+  FormControlLabel,
+  Checkbox,
 } from '@mui/material';
 import { useMutation, useQuery } from 'react-query';
 import { problemSetApiWrapper } from '../../../api/wrapper/problem/problemSetApiWrapper';
-import { ChangeEvent, KeyboardEvent, SyntheticEvent, useState } from 'react';
+import { ChangeEvent, SyntheticEvent, useState } from 'react';
 import { problemApiWrapper } from '../../../api/wrapper/problem/problemApiWrapper';
 import {
   IProblemSearchParam,
-  ISearchProblem,
   ISearchProblemElement,
+  TProblemTag,
 } from '../../../types/problem/api';
+import { PROBLEM_TAG } from '../../../constants/problem';
+import { useNavigate } from 'react-router-dom';
+import { URL } from '../../../constants/url';
 
 interface IProblem {
   id: number;
   title: string;
 }
 
-interface ISearchOption extends IProblem {
-  label: string;
-}
-
-const mockData = {
-  problemIds: [476, 479, 477, 478, 480],
-  name: '컴파일러와 인터프리터',
-  description: '컴파일러와 인터프리터에 대해 알아봅시다.',
-};
-
 const MAX_CNT = 5;
 const MIN_CNT = 2;
 
 export const ProblemSetAddPage = () => {
-  const [searchParams, setSearchParams] = useState<IProblemSearchParam>({});
+  const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useState<IProblemSearchParam>({ tags: [] });
   const [selectedProblems, setSelectedProblems] = useState<IProblem[]>([]);
   const { data: searchOptions } = useQuery(['problem-list', searchParams], () =>
     problemApiWrapper.searchProblem(searchParams),
   );
   const { mutate: submit } = useMutation(
     ['problemset-create'],
-    () => problemSetApiWrapper.createProblemSet(beforeSubmit()),
+    () => problemSetApiWrapper.createProblemSet(createData()),
     {
       onSuccess: () => {
         alert('문제 세트가 생성되었습니다.');
+        navigate(URL.PROBLEM_SET_LIST);
       },
     },
   );
@@ -63,7 +61,7 @@ export const ProblemSetAddPage = () => {
     setSelectedProblems((prev) => prev.filter((problem) => problem.title !== problemTitle));
   };
 
-  const beforeSubmit = () => {
+  const createData = () => {
     if (selectedProblems.length < MIN_CNT) {
       alert(`문제세트의 최소 문제 개수는 ${MIN_CNT}개 입니다.`);
     }
@@ -99,6 +97,41 @@ export const ProblemSetAddPage = () => {
               />
             ))}
           </Box>
+          <FormGroup aria-label='tag choices' row>
+            {Object.values(PROBLEM_TAG).map((tag) => (
+              <FormControlLabel
+                labelPlacement='end'
+                control={
+                  <Checkbox
+                    checked={searchParams.tags?.includes(tag)}
+                    onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                      if (!searchParams.tags?.includes(tag)) {
+                        setSearchParams((prev) => {
+                          return {
+                            ...prev,
+                            tags: Array.from(
+                              new Set([...(searchParams.tags ?? []), e.target.name as TProblemTag]),
+                            ),
+                          };
+                        });
+                      } else {
+                        setSearchParams((prev) => {
+                          return {
+                            ...prev,
+                            tags: prev.tags?.filter((tag) => tag !== e.target.name),
+                          };
+                        });
+                      }
+                    }}
+                    name={tag}
+                    id={tag}
+                  />
+                }
+                label={tag}
+                key={tag}
+              />
+            ))}
+          </FormGroup>
           <Autocomplete
             disablePortal
             getOptionLabel={(option) => option.title}
@@ -111,7 +144,6 @@ export const ProblemSetAddPage = () => {
                 return { ...prev, query: newInputValue };
               });
             }}
-            open
             renderInput={(params) => (
               <TextField
                 {...params}
@@ -136,6 +168,7 @@ export const ProblemSetAddPage = () => {
                 </li>
               );
             }}
+            componentsProps={{ popper: { placement: 'bottom-start' } }}
           />
         </Card>
       </Box>

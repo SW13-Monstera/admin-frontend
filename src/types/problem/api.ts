@@ -96,7 +96,7 @@ export interface ISearchProblemElement {
 
 export interface IProblemSearchParam {
   query?: string;
-  tags?: TProblemTag[];
+  tags: TProblemTag[];
   type?: TProblemType;
   page?: number;
   size?: number;
