@@ -40,7 +40,7 @@ const MIN_CNT = 2;
 export const ProblemSetAddPage = () => {
   const [searchParams, setSearchParams] = useState<IProblemSearchParam>({});
   const [selectedProblems, setSelectedProblems] = useState<IProblem[]>([]);
-  const { data: searchOptions } = useQuery(['problem-list'], () =>
+  const { data: searchOptions } = useQuery(['problem-list', searchParams], () =>
     problemApiWrapper.searchProblem(searchParams),
   );
   const { mutate: submit } = useMutation(
@@ -106,6 +106,11 @@ export const ProblemSetAddPage = () => {
             sx={{ width: 300, mt: 2 }}
             filterOptions={(x) => x}
             onChange={onSelectChange}
+            onInputChange={(event, newInputValue) => {
+              setSearchParams((prev) => {
+                return { ...prev, query: newInputValue };
+              });
+            }}
             open
             renderInput={(params) => (
               <TextField
