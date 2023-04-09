@@ -166,3 +166,22 @@ export const userTableHeads: ITableHead[] = [
     name: '권한',
   },
 ];
+
+export const problemSetTableHeads: ITableHead[] = [
+  {
+    id: 'id',
+    name: '문제 세트 ID',
+  },
+  {
+    id: 'problemCnt',
+    name: '문제 개수',
+  },
+  {
+    id: 'name',
+    name: '제목',
+  },
+  {
+    id: 'description',
+    name: '설명',
+  },
+];

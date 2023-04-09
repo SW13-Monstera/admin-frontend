@@ -15,6 +15,8 @@ const URL = {
   SHORT_PROBLEM_DETAIL: `/problem/short/:id`,
   SHORT_PROBLEM_ADD: `/problem/short/add`,
   SHORT_PROBLEM_EDIT: `/problem/short/edit/:id`,
+  PROBLEM_SET_LIST: `/problem/problem-set`,
+  PROBLEM_SET_ADD: `/problem/problem-set/add`,
   MULTIPLE_PROBLEM_DETAIL: `/problem/multiple/:id`,
   MULTIPLE_PROBLEM_ADD: `/problem/multiple/add`,
   MULTIPLE_PROBLEM_EDIT: `/problem/multiple/edit/:id`,

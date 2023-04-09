@@ -1,3 +1,5 @@
+import { PROBLEM_TAG, PROBLEM_TYPE } from '../../constants/problem';
+
 export interface IProblemListRequest {
   id?: number;
   title?: string;
@@ -69,4 +71,33 @@ export interface IProblemListElement {
   answerRate?: number | null;
   avgKeywordScore?: number | null;
   avgContentScore?: number | null;
+}
+
+export type TProblemType = typeof PROBLEM_TYPE[keyof typeof PROBLEM_TYPE];
+export type TProblemTag = typeof PROBLEM_TAG[keyof typeof PROBLEM_TAG];
+
+export interface ISearchProblem {
+  contents: ISearchProblemElement[];
+  currentPage: number;
+  totalPages: number;
+  totalElements: number;
+  numberOfElements: number;
+  size: number;
+}
+
+export interface ISearchProblemElement {
+  id: number;
+  title: string;
+  tags: TProblemTag[];
+  avgScore: number;
+  totalSubmission: number;
+  type: TProblemType;
+}
+
+export interface IProblemSearchParam {
+  query?: string;
+  tags: TProblemTag[];
+  type?: TProblemType;
+  page?: number;
+  size?: number;
 }

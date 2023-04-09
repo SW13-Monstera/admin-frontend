@@ -5,6 +5,7 @@ import LabelIcon from '@mui/icons-material/Label';
 import SearchIcon from '@mui/icons-material/Search';
 import DoneAllIcon from '@mui/icons-material/DoneAll';
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
+import ViewListIcon from '@mui/icons-material/ViewList';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import { URL } from '../../constants/url';
 import { MenuBarItem } from './MenuBarItem';
@@ -16,6 +17,7 @@ const MENU_BAR_ITEMS = [
       { text: '서술형', icon: <StickyNote2Icon />, url: URL.LONG_PROBLEM_LIST },
       { text: '단답형', icon: <ShortTextIcon />, url: URL.SHORT_PROBLEM_LIST },
       { text: '객관식', icon: <FormatListNumberedIcon />, url: URL.MULTIPLE_PROBLEM_LIST },
+      { text: '문제 세트', icon: <ViewListIcon />, url: URL.PROBLEM_SET_LIST },
     ],
   },
   {
